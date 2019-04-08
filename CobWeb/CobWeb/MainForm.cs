@@ -53,25 +53,7 @@ namespace CobWeb
         /// </summary>
         private void btn_test_Click(object sender, EventArgs e)
         {
-            Thread newThread = new Thread(new ThreadStart(() =>
-            {
-                //FormSpider dForm = new FormSpider(true,null);
-                //try
-                //{
-                //    dForm.ShowDialog();
-                //}
-                //catch (Exception ex)
-                //{
-                //    //  _log.FatalFormat("调试窗口异常:{0}", ex.Message);
-                //}
-                //finally
-                //{
-                //    dForm.Close();
-                //}
-            }));
-            newThread.SetApartmentState(ApartmentState.STA);
-            newThread.IsBackground = true; //随主线程一同退出
-            newThread.Start();
+           
         }
         /// <summary>
         /// 窗口初始化
@@ -205,12 +187,12 @@ namespace CobWeb
         //                        ExcuteRecord("接收到的信息");
         //                        ExcuteRecord(recvStr);
         //                        var result = Excute(recvStr);
-                                
+
         //                        SocketBasic.Send(socket, result, 3);
         //                    }
         //                    catch (Exception ex)
         //                    {
-                                
+
         //                    }
         //                    finally
         //                    {
@@ -228,7 +210,7 @@ namespace CobWeb
         //            }
         //            catch (Exception ex)
         //            {
-                       
+
         //                Process.GetCurrentProcess().Kill();
         //            }
         //        }
@@ -284,7 +266,7 @@ namespace CobWeb
 
         //        throw;
         //    }
-            
+
         //    //try
         //    //{
         //    //    var paramModel = JsonConvert.DeserializeObject<ParamModel>(dataParam);
@@ -458,9 +440,13 @@ namespace CobWeb
         //    }
 
         //    return JsonConvert.SerializeObject(resultModel);
-            
-        //}
 
-        
+        //}
+        protected override void OnClosed(EventArgs e)
+        {
+            this.Dispose();
+            base.OnClosed(e);
+        }
+
     }
 }

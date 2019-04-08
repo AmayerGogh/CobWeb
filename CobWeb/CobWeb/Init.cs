@@ -47,6 +47,7 @@ namespace CobWeb
                 BrowserSubprocessPath = Path.Combine(appPath, CefLibName, "CefSharp.BrowserSubprocess.exe"),//设置浏览器子程序启动路径 
                 
             };
+            CefSharpSettings.LegacyJavascriptBindingEnabled = true;//启用CEF中和网页的JS交互
             Cef.Initialize(settings);
 
         }

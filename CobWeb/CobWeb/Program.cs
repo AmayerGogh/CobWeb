@@ -1,4 +1,6 @@
-﻿using Microsoft.Win32;
+﻿
+using CobWeb.Web.Manager;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,17 +18,13 @@ namespace CobWeb
         [STAThread] 
         static void Main()
         {
+            LogManager.lc流程.Debug("普通");
+            LogManager.lc流程.Debug("heh");
 
             AppDomain.CurrentDomain.AssemblyResolve += Init.OnResolveAssembly;
             Init.Step1_InitializeCefSetting();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new FormSpider());
-           
-
-
-
-
             Application.Run(new FormBrowser());
 
         }
