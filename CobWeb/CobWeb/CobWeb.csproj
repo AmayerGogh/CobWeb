@@ -68,13 +68,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormBrowser_partial.cs" />
+    <Compile Include="MainForm_partial.cs" />
     <Compile Include="GetData.cs" />
     <Compile Include="Init.cs" />
+    <Compile Include="MainForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="MainForm.Designer.cs">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Manager\LogManager.cs" />
-    <Compile Include="ProcessFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="MainForm.resx">
+      <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -100,6 +108,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CobWeb.AProcess\CobWeb.AProcess.csproj">
+      <Project>{7A3E0CF9-7200-482F-B344-84A19F220336}</Project>
+      <Name>CobWeb.AProcess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CobWeb.Browser\CobWeb.Browser.csproj">
       <Project>{A72285A4-4681-490F-A0AC-9A6C3CB8C465}</Project>
       <Name>CobWeb.Browser</Name>

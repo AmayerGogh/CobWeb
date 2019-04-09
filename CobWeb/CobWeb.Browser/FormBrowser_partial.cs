@@ -136,7 +136,7 @@ namespace CobWeb.Browser
             this.Result = null;
 
             //得到处理程序,若有异常直接抛出
-            _process = ProcessFactory.GetProcessByMethod(this, paramModel);
+            _process = null;// ProcessFactory.GetProcessByMethod(this, paramModel);
 
             //开始执行
             _process?.Begin();

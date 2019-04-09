@@ -5,14 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-
-
 namespace CobWeb
 {
-    //public partial class FormBrowser
-    //{
+    public partial class MainForm
+    {
        
-        
 
-    //}    
+
+    }
 }

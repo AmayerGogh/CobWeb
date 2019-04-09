@@ -1,4 +1,5 @@
 ﻿using CobWeb.Core.Model;
+using CobWeb.Core.Process;
 using CobWeb.Util;
 using Newtonsoft.Json;
 using System;
@@ -19,7 +20,7 @@ namespace CobWeb.Browser
 {
     public partial class MainForm : Form
     {
-       
+
         /// <summary>
         /// 标记是否关闭程序
         /// </summary>
@@ -256,17 +257,17 @@ namespace CobWeb.Browser
                 else
                 {
                     var process = ProcessFactory.GetProcessByMethod(paramModel);
-                    return JsonConvert.SerializeObject(new ArtificialResultModel()
+                    return JsonConvert.SerializeObject(new ResultModel()
                     {
                         IsSuccess = true,
-                        Result = process.Excute(dataParam)
+                        Result = "{\"test\":\"666\"}"//process.Excute(dataParam)
                     });
                 }
             }
             catch (Exception ex)
             {
-                _log.FatalFormat("Excute()\r\n{0}", ex.Message);
-                return JsonConvert.SerializeObject(new ParamModel()
+                //_log.FatalFormat("Excute()\r\n{0}", ex.Message);
+                return JsonConvert.SerializeObject(new ResultModel()
                 {
                     IsSuccess = false,
                     Result = ex.Message
@@ -278,16 +279,16 @@ namespace CobWeb.Browser
         /// <summary>
         /// 中断请求的监视
         /// </summary>
-        //bool MonitorStopProcess(string guidkey)
-        //{
-        //    if (CommonCla.CacheIsHave(guidkey))
-        //    {
-        //        CommonCla.RemoveCache(guidkey);
-        //        return true;
-        //    }
-        //    else
-        //        return false;
-        //}
+        bool MonitorStopProcess(string guidkey)
+        {
+            if (CommonCla.CacheIsHave(guidkey))
+            {
+                CommonCla.RemoveCache(guidkey);
+                return true;
+            }
+            else
+                return false;
+        }
 
         string ProcessAndResult(FormBrowser form, string dataParam, ParamModel paramModel)
         {
@@ -362,7 +363,7 @@ namespace CobWeb.Browser
             Thread newThread = new Thread(new ThreadStart(() =>
             {
 
-                form = new FormBrowser(_isShowForm, ExcuteRecord);
+                form = new FormBrowser(_isShowForm, ExcuteRecord,this);
                 try
                 {
                     form.StartAssist();
@@ -370,7 +371,7 @@ namespace CobWeb.Browser
                 }
                 catch (Exception ex)
                 {
-                    _log.FatalFormat("处理窗口异常:{0}", ex.Message);
+                    //_log.FatalFormat("处理窗口异常:{0}", ex.Message);
                 }
                 finally
                 {

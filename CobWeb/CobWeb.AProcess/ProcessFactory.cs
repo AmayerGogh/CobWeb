@@ -1,4 +1,5 @@
 ﻿
+using CobWeb.AProcess;
 using CobWeb.Core.Model;
 using CobWeb.Core.Process;
 using System;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CobWeb
+namespace CobWeb.Core.Process
 {
     public class ProcessFactory
     {
@@ -38,7 +39,11 @@ namespace CobWeb
         }
         public static IProcessBase GetProcessByMethod(ParamModel paramModel)
         {
-            return null;
+
+            //var process = (IProcessBase)Activator.CreateInstance(ProcessBaseDic[paramModel.Method],
+            //null, paramModel);
+            var process = new GetVersion(null, paramModel);
+            return process;
         }
         //public static IProcessBase GetProcessByMethod(FormSpider form, ParamModel paramModel)
         //{

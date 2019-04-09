@@ -25,9 +25,10 @@ namespace CobWeb.Browser
         /// 窗口初始化
         /// </summary>
         /// <param name="isShow">是否显示</param>
-        public FormBrowser(bool isShow, Action<string> record)
+        public FormBrowser(bool isShow, Action<string> record,Form form)
         {
             _excuteRecord = record;
+            _mainForm = form;
             IsShowForm = isShow;
             BrowserInit();
             InitializeComponent();
@@ -218,31 +219,12 @@ namespace CobWeb.Browser
             browser.ShowDevTools();
         }
 
-        MainForm _mainForm;
+        Form _mainForm;
 
 
-        MainForm ShowMainForm()
-        {
-            if (_mainForm != null)
-            {
-                if (!_mainForm.IsDisposed)
-                {
-                    //_mainForm.Show();
-                    _mainForm.Focus();
-                    return _mainForm;
-                }
-            }
-            //Thread newThread = new Thread(new ThreadStart(() =>
-            //{
-            _mainForm = new MainForm();
+        void ShowMainForm()
+        {            
             _mainForm.Show();
-
-            //}));
-            //newThread.SetApartmentState(ApartmentState.STA);
-            //newThread.IsBackground = true; //随主线程一同退出
-            //newThread.Start();
-
-            return _mainForm;
         }
         void BrowserInit()
         {
