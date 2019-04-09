@@ -49,6 +49,7 @@
     <Compile Include="FlashLog\FlashLogSetting.cs" />
     <Compile Include="FlashLog\FlashLogWrite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SocketHelper\SocketBasic.cs" />
     <Compile Include="StringHelper.cs" />
     <Compile Include="ThredHelper\ThreadExtension.cs" />
     <Compile Include="ThredHelper\Timer.cs" />
@@ -56,8 +57,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="SocketHelper\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
