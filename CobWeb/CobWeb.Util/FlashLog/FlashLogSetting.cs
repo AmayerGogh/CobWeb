@@ -6,6 +6,14 @@ using System.Threading.Tasks;
 
 namespace CobWeb.Util.FlashLog
 {
+    public static class FlashLogSetting
+    {
+        /// <summary>
+        /// 单个日志的最大值
+        /// </summary>
+        public  static int Max_LogSize = 1024 * 10;
+    }
+
     /// <summary>
     /// 日志等级
     /// </summary>

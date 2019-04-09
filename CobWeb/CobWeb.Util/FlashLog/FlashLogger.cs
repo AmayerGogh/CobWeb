@@ -110,7 +110,7 @@ namespace CobWeb.Util.FlashLog
         public void Register()
         {
             Thread t = new Thread(new ThreadStart(WriteLog));
-            t.IsBackground = false;
+            t.IsBackground = true;
             t.Start();
         }
 
@@ -129,24 +129,7 @@ namespace CobWeb.Util.FlashLog
                 while (_que.Count > 0 && _que.TryDequeue(out msg))
                 {
                     // 判断日志等级，然后写日志
-                    switch (msg.Level)
-                    {
-                        case FlashLogLevel.Debug:
-                            _log.Debug(msg.Message,msg.Service, msg.Exception);
-                            break;
-                        case FlashLogLevel.Info:
-                            _log.Info(msg.Message, msg.Service, msg.Exception);
-                            break;
-                        case FlashLogLevel.Error:
-                            _log.Error(msg.Message, msg.Service, msg.Exception);
-                            break;
-                        case FlashLogLevel.Warn:
-                            _log.Warn(msg.Message, msg.Service, msg.Exception);
-                            break;
-                        case FlashLogLevel.Fatal:
-                            _log.Fatal(msg.Message, msg.Service, msg.Exception);
-                            break;
-                    }                    
+                    _log.Write(msg);
                 }
                 // 重新设置信号
                 _mre.Reset();

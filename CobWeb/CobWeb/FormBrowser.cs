@@ -27,17 +27,7 @@ namespace CobWeb
         /// <param name="isShow">是否显示</param>
         public FormBrowser(bool isShow = true)
         {
-            this.browser = new Browser.MyWebBrowser("html/test.html");
-            this.browser.Location = new System.Drawing.Point(0, 0);
-            this.browser.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
-            this.browser.MinimumSize = new System.Drawing.Size(20, 20);
-            this.browser.Name = "webBrowser1";
-            this.browser.Size = new System.Drawing.Size(963, 519);
-            this.browser.TabIndex = 1;
-            this.Closing += OnClosing;
-            this.browser.StartNewWindow += Browser_StartNewWindow;
-            this.browser.TitleChanged += Browser_TitleChanged; //new EventHandler<TitleChangedEventArgs> 
-
+            BrowserInit();
             InitializeComponent();
         }
 
@@ -150,7 +140,7 @@ namespace CobWeb
         private Browser.MyWebBrowser browser;
         private void FormBrowser_Load(object sender, EventArgs e)
         {            
-            this.browser.Load(@"file:///D:\Amayer\CobWeb\CobWeb\CobWeb\bin\Debug\html\test.html");//file:///D:/Amayer/CobWeb/CobWeb/CobWeb/bin/Debug/html/05.html
+            this.browser.Load(@"file:///D:\Code\CobWeb\CobWeb\CobWeb\bin\Debug\html\test.html");//file:///D:/Amayer/CobWeb/CobWeb/CobWeb/bin/Debug/html/05.html
             this.panel1.Controls.Add(browser);
             //this.webBrowser1.Navigate("https://www.baidu.com");                               
         }
@@ -184,7 +174,7 @@ namespace CobWeb
         }
         private void 首页ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.browser.Load(@"file:///D:\Amayer\CobWeb\CobWeb\CobWeb\bin\Debug\html\test.html");//file:///D:/Amayer/CobWeb/CobWeb/CobWeb/bin/Debug/html/05.html
+            this.browser.Load(@"file:///D:\Code\CobWeb\CobWeb\CobWeb\bin\Debug\html\test.html");//file:///D:/Amayer/CobWeb/CobWeb/CobWeb/bin/Debug/html/05.html
         }
         private void ToolStripTextBox1_KeyDown(object sender, KeyEventArgs e)
         {
@@ -205,7 +195,7 @@ namespace CobWeb
             }
             try
             {
-                this.browser.Load(address);                
+                this.browser.Load(address);
             }
             catch (System.UriFormatException)
             {
@@ -216,31 +206,7 @@ namespace CobWeb
         {
             base.OnClosing(e);
         }      
-        private MainForm _mainForm;
-
-        MainForm ShowMainForm()
-        {
-            if (_mainForm != null)
-            {
-                if (!_mainForm.IsDisposed)
-                {                    
-                    //_mainForm.Show();
-                    _mainForm.Focus();
-                    return _mainForm;
-                }
-            }
-            //Thread newThread = new Thread(new ThreadStart(() =>
-            //{
-                _mainForm = new MainForm();                                  
-                _mainForm.Show();
-                
-            //}));
-            //newThread.SetApartmentState(ApartmentState.STA);
-            //newThread.IsBackground = true; //随主线程一同退出
-            //newThread.Start();
-            
-            return _mainForm;
-        }
+       
         private void 通信ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowMainForm();

@@ -9,38 +9,39 @@ namespace CobWeb.Util.FlashLog
 {
     public class FlashLogWrite
     {
-        string FileIndex;
+        int  FileIndex;
         static string logPathRoot;
         public FlashLogWrite()
         {
             logPathRoot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Log");
         }
-        public void Info(string log,string serviceName=null,Exception ex =null)
+       
+       public void Write(FlashLogMessage msg)
         {
-            Write(log, "Info", serviceName);
-        }
-        public void Debug(string log, string serviceName = null, Exception ex = null)
-        {
-            Write(log, "Debug", serviceName);
-        }
-        public void Warn(string log, string serviceName = null, Exception ex = null)
-        {
-            Write(log, "Warn", serviceName);
-        }
-        public void Error(string log, string serviceName = null, Exception ex = null)
-        {
-            Write(log, "Error", serviceName);
-        }
-        public void Fatal(string log, string serviceName = null, Exception ex = null)
-        {
-            Write(log, "Fatal", serviceName);
-        }
-        void Write(string msg,string level,string serviceName = null, Exception ex = null)
-        {
+            var level = msg.Level.ToString();
+           
+            //switch (msg.Level)
+            //{
+            //    case FlashLogLevel.Debug:
+            //        level = "Debug";
+            //        break;
+            //    case FlashLogLevel.Info:
+            //        _log.Info(msg.Message, msg.Service, msg.Exception);
+            //        break;
+            //    case FlashLogLevel.Error:
+            //        _log.Error(msg.Message, msg.Service, msg.Exception);
+            //        break;
+            //    case FlashLogLevel.Warn:
+            //        _log.Warn(msg.Message, msg.Service, msg.Exception);
+            //        break;
+            //    case FlashLogLevel.Fatal:
+            //        _log.Fatal(msg.Message, msg.Service, msg.Exception);
+            //        break;
+            //}
             var path = logPathRoot;
-            if (!string.IsNullOrWhiteSpace(serviceName))
+            if (!string.IsNullOrWhiteSpace(msg.Service))
             {
-                path += $"\\{serviceName}";
+                path += $"\\{msg.Service}";
             }
             path += $"\\{level}";
             if (!Directory.Exists(path))
@@ -48,15 +49,14 @@ namespace CobWeb.Util.FlashLog
                 Directory.CreateDirectory(path);
             }
             string LogDate = DateTime.Now.Year.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Day.ToString();
-            string logFile = string.Format("{0}\\{1}.log", path, LogDate);
-            
-            if (msg.Length <= 1000)
+            string logFilePath = GetPath(path, LogDate, 0);
+            if (msg.Message.Length <= 1024 * 100) //100k
             {
-                WriteType1(logFile,msg);
+                WriteType1(logFilePath, msg.Message + Environment.NewLine);
             }
             else
             {
-                WriteType1(logFile, msg);
+                WriteType1(logFilePath, msg.Message);
             }
         }
         void WriteType1(string path,string msg)
@@ -65,13 +65,30 @@ namespace CobWeb.Util.FlashLog
         }
         void WriteType2(string patch,string msg)
         {
-            using (FileStream fs = new FileStream(patch, FileMode.Append, FileAccess.Write))
+            using (TextWriter tWriter = new StreamWriter(patch, true))
+            {                
+                tWriter.WriteLine(msg);
+            }           
+        }
+        string GetPath(string path , string LogDate,int index)
+        {           
+            string logFilePath = string.Format("{0}\\{1}.{2}.log", path, LogDate, index);
+            FileInfo file = new FileInfo(logFilePath);
+            if (file.Exists)
             {
-                byte[] data = System.Text.Encoding.Default.GetBytes(msg);
-                //开始写入
-                fs.Write(data, 0, data.Length);
-                fs.Flush();
-                fs.Close();
+                if (file.Length > FlashLogSetting.Max_LogSize)
+                {
+                    index++;
+                    return GetPath(path, LogDate, index);
+                }
+                else
+                {
+                    return logFilePath;
+                }
+            }
+            else
+            {
+                return logFilePath;
             }
         }
 
