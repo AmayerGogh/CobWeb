@@ -32,6 +32,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="CefSharp">
       <HintPath>bin\Debug\CEFSharp\CefSharp.dll</HintPath>
@@ -65,42 +68,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormBrowser_partial.cs">
-      <SubType>Form</SubType>
-    </Compile>
+    <Compile Include="FormBrowser_partial.cs" />
     <Compile Include="GetData.cs" />
-    <Compile Include="FormBrowser.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormBrowser.Designer.cs">
-      <DependentUpon>FormBrowser.cs</DependentUpon>
-    </Compile>
     <Compile Include="Init.cs" />
-    <Compile Include="MainForm - 复制.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm - 复制.Designer.cs">
-      <DependentUpon>MainForm - 复制.cs</DependentUpon>
-    </Compile>
-    <Compile Include="MainForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="MainForm.Designer.cs">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </Compile>
     <Compile Include="Manager\LogManager.cs" />
     <Compile Include="ProcessFactory.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FormBrowser.resx">
-      <DependentUpon>FormBrowser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm - 复制.resx">
-      <DependentUpon>MainForm - 复制.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
-      <DependentUpon>MainForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -129,6 +103,10 @@
     <ProjectReference Include="..\CobWeb.Browser\CobWeb.Browser.csproj">
       <Project>{A72285A4-4681-490F-A0AC-9A6C3CB8C465}</Project>
       <Name>CobWeb.Browser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\CobWeb.Info\CobWeb.Core.csproj">
+      <Project>{70495056-0b80-490d-b268-6396a2563404}</Project>
+      <Name>CobWeb.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\CobWeb.Util\CobWeb.Util.csproj">
       <Project>{1BD9FFD9-F0F6-479E-95A0-8F5F3E303DAC}</Project>

@@ -7,8 +7,8 @@
     <ProjectGuid>{70495056-0B80-490D-B268-6396A2563404}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CobWeb.Info</RootNamespace>
-    <AssemblyName>CobWeb.Info</AssemblyName>
+    <RootNamespace>CobWeb.Core</RootNamespace>
+    <AssemblyName>CobWeb.Core</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

@@ -1,4 +1,6 @@
 ﻿
+using CobWeb.Core.Model;
+using CobWeb.Core.Process;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +36,10 @@ namespace CobWeb
             //    }
             //}
         }
-
+        public static IProcessBase GetProcessByMethod(ParamModel paramModel)
+        {
+            return null;
+        }
         //public static IProcessBase GetProcessByMethod(FormSpider form, ParamModel paramModel)
         //{
         //    if (!ProcessBaseDic.ContainsKey(paramModel.Method))

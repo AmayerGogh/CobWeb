@@ -1,4 +1,4 @@
-﻿namespace CobWeb
+﻿namespace CobWeb.Browser
 {
     partial class MainForm
     {

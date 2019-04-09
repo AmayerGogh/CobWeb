@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CobWeb.Info.Model
+namespace CobWeb.Core.Model
 {
     public enum ArtificialCode
     {

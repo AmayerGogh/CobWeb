@@ -19,7 +19,7 @@ namespace CobWebAdapter
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormMain());
             var pro = Process.GetCurrentProcess();
-            //pro.ProcessName = "1";            
+            //pro.ProcessName = "1"; 
         }
     }
 }

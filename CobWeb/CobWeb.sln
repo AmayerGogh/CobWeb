@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CobWeb", "CobWeb\CobWeb.csproj", "{B7CD1CDC-BE42-414B-837B-75BEF63F7423}"
 EndProject
@@ -15,7 +15,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Adapter", "Adapter", "{B2AD
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CobWebAdapter", "CobWebAdapter\CobWebAdapter.csproj", "{5AD08285-C1E2-4CDD-BFFD-A7FE7259FBE9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CobWeb.Info", "CobWeb.Info\CobWeb.Info.csproj", "{70495056-0B80-490D-B268-6396A2563404}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CobWeb.Core", "CobWeb.Info\CobWeb.Core.csproj", "{70495056-0B80-490D-B268-6396A2563404}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1B1BFEA0-3A81-44EE-B965-12DE5DF567C7}"
+	ProjectSection(SolutionItems) = preProject
+		mark.txt = mark.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
