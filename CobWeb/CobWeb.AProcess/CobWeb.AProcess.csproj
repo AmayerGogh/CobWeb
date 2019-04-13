@@ -51,10 +51,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CobWeb.Browser\CobWeb.Browser.csproj">
-      <Project>{A72285A4-4681-490F-A0AC-9A6C3CB8C465}</Project>
-      <Name>CobWeb.Browser</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CobWeb.Info\CobWeb.Core.csproj">
       <Project>{70495056-0B80-490D-B268-6396A2563404}</Project>
       <Name>CobWeb.Core</Name>

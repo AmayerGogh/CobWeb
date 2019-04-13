@@ -260,7 +260,7 @@ namespace CobWeb.Browser
                     return JsonConvert.SerializeObject(new ResultModel()
                     {
                         IsSuccess = true,
-                        Result = "{\"test\":\"666\"}"//process.Excute(dataParam)
+                        Result = process.Excute(dataParam)
                     });
                 }
             }

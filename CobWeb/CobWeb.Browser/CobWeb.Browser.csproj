@@ -80,6 +80,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\CobWeb.AProcess\CobWeb.AProcess.csproj">
+      <Project>{7a3e0cf9-7200-482f-b344-84a19f220336}</Project>
+      <Name>CobWeb.AProcess</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CobWeb.Info\CobWeb.Core.csproj">
       <Project>{70495056-0B80-490D-B268-6396A2563404}</Project>
       <Name>CobWeb.Core</Name>

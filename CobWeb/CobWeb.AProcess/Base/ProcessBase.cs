@@ -1,4 +1,5 @@
-﻿using CobWeb.Browser;
+﻿
+using CobWeb.Core.Process;
 using CobWeb.Util.FlashLog;
 using Newtonsoft.Json;
 using System;
@@ -29,13 +30,13 @@ namespace CobWeb.AProcess.Base
             /// <summary>
             /// 需要交互的页面，这个需要释放
             /// </summary>
-            public FormBrowser _form;
+            public IBrowserBase _form;
             /// <summary>
             /// 用于限制一些潜在的并发操作
             /// </summary>
             protected Object _objLock = new Object();
 
-            public ProcessBase(FormBrowser form)
+            public ProcessBase(IBrowserBase form)
             {
                 _form = form;
             }
@@ -59,7 +60,7 @@ namespace CobWeb.AProcess.Base
                 {
                     if (_form != null)
                     {
-                        _form.Result = result;
+                        _form.SetResult(result);
                         return true;
                     }
                 }
@@ -77,8 +78,8 @@ namespace CobWeb.AProcess.Base
                     {
                         if (_form != null)
                         {
-                            if (_form.IsShowForm)
-                                _form._excuteRecord(txt);
+                            if (_form.IsShowForm())
+                                _form.ExcuteRecord(txt);
 
                             _sb.AppendLine(string.Format(" -->[{0}] [{1},{2}]:{3}",
                                 DateTime.Now.ToString("HH:mm:ss.fff"),
@@ -114,11 +115,11 @@ namespace CobWeb.AProcess.Base
 
                         //记录完整操作流程日志
                         //RecordLog("end 耗时:{0}", CommonCla.GetMilliseconds(_paramModel.StartTime));
-                        _sb.AppendLine(_form.Result);
+                        _sb.AppendLine(_form.GetResult());
 
                         if (!_isCloseForm)
                         {
-                            _form.IsWorking = false;
+                            _form.SetWorking(false);                            
                             _form.Stop();
                         }
                         else

@@ -44,7 +44,9 @@
     <Compile Include="Model\LoginResult.cs" />
     <Compile Include="Model\ParamModel.cs" />
     <Compile Include="Model\ResultModel.cs" />
+    <Compile Include="Process\IBrowserBase.cs" />
     <Compile Include="Process\IProcessBase.cs" />
+    <Compile Include="Process\IProcessBase2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -37,13 +37,13 @@ namespace CobWeb.Core.Process
             //    }
             //}
         }
-        public static IProcessBase GetProcessByMethod(ParamModel paramModel)
+        public static IProcessBase GetProcessByMethod(IBrowserBase formBrowser,ParamModel paramModel)
         {
 
             //var process = (IProcessBase)Activator.CreateInstance(ProcessBaseDic[paramModel.Method],
             //null, paramModel);
-            var process = new GetVersion(null, paramModel);
-            return process;
+            var process = new GetVersion(formBrowser, paramModel);
+            return (IProcessBase)process;
         }
         //public static IProcessBase GetProcessByMethod(FormSpider form, ParamModel paramModel)
         //{
@@ -56,14 +56,14 @@ namespace CobWeb.Core.Process
         //    return process;
         //}
 
-        //public static IProcessBase2 GetProcessByMethod(ArtificialParamModel paramModel)
-        //{
-        //    if (!ProcessBase2Dic.ContainsKey(paramModel.Method))
-        //        throw new Exception(ArtificialCode.A_UnknownMethod.ToString());
+        public static IProcessBase2 GetProcessByMethod(ParamModel paramModel)
+        {
+            if (!ProcessBase2Dic.ContainsKey(paramModel.Method))
+                throw new Exception(ArtificialCode.A_UnknownMethod.ToString());
 
-        //    var process = (IProcessBase2)Activator.CreateInstance(ProcessBase2Dic[paramModel.Method]);
+            var process = (IProcessBase2)Activator.CreateInstance(ProcessBase2Dic[paramModel.Method]);
 
-        //    return process;
-        //}
+            return process;
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using CobWeb.Browser;
-using CobWeb.Core.Model;
+﻿using CobWeb.Core.Model;
 using CobWeb.Core.Process;
 using CobWeb.Util;
 using System;
@@ -25,7 +24,7 @@ namespace CobWeb.AProcess.Base
         /// </summary>
         public int timeout = 30;
         public bool IsWorkGoOn { get; set; }
-        public ProcessBaseUseBrowser(FormBrowser form, ParamModel paramModel)
+        public ProcessBaseUseBrowser(IBrowserBase form, ParamModel paramModel)
         {
             processBase = new ProcessBase(form);
         }
@@ -83,13 +82,13 @@ namespace CobWeb.AProcess.Base
 
 
 
-        public MyWebBrowser Browser
-        {
-            get
-            {
-                return processBase._form.WebBrowser;
-            }
-        }
+        //public MyWebBrowser Browser
+        //{
+        //    get
+        //    {
+        //        return processBase._form.WebBrowser;
+        //    }
+        //}
         /// <summary>
         /// 对   TimerHelp Start     进行封装，提供判断  IsQuit() 的功能 ，子类不需要再判断
         /// </summary>

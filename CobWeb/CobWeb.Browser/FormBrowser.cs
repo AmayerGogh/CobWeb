@@ -1,6 +1,7 @@
 ﻿using CefSharp;
 using CefSharp.WinForms;
 using CobWeb.Browser;
+using CobWeb.Core.Process;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ using System.Windows.Forms;
 
 namespace CobWeb.Browser
 {
-    public partial class FormBrowser : Form
+    public partial class FormBrowser : Form, IBrowserBase
     {
 
         /// <summary>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CobWeb
 {
-    public partial class MainForm
+    public partial class MainForm1
     {
        
 

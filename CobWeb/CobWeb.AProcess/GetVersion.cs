@@ -1,6 +1,7 @@
 ﻿using CobWeb.AProcess.Base;
-using CobWeb.Browser;
+
 using CobWeb.Core.Model;
+using CobWeb.Core.Process;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,8 @@ namespace CobWeb.AProcess
 {
     public class GetVersion : ProcessBaseUseBrowser
     {
-        FormBrowser _form;
-        public GetVersion(FormBrowser form, ParamModel paramModel) : base(form, paramModel)
+        IBrowserBase _form;
+        public GetVersion(IBrowserBase form, ParamModel paramModel) : base(form, paramModel)
         {
             this._form = form;
         }
