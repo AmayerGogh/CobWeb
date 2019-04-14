@@ -97,21 +97,7 @@ namespace CobWeb.Util
             return false;
         }
 
-        /// <summary>
-        /// 缓存中是否有
-        /// </summary>
-        public static bool CacheIsHave(string key)
-        {
-            return MemoryCache.Default.Contains(key);
-        }
-
-        /// <summary>
-        /// 移除缓存
-        /// </summary>
-        public static object RemoveCache(string key)
-        {
-            return MemoryCache.Default.Remove(key);
-        }
+       
         public static int ProcessId
         {
             get

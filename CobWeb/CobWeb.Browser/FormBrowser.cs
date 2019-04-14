@@ -30,7 +30,7 @@ namespace CobWeb.Browser
         {
             _excuteRecord = record;
             _mainForm = form;
-            IsShowForm = isShow;
+            isShowForm = isShow;
             BrowserInit();
             InitializeComponent();
         }
@@ -134,6 +134,7 @@ namespace CobWeb.Browser
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(1200, 700);
             this.Name = "FormBrowser";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormBrowser_FormClosed);
             this.Load += new System.EventHandler(this.FormBrowser_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -188,24 +189,7 @@ namespace CobWeb.Browser
             }
         }
 
-        private void Navigate(String address)
-        {
-            if (String.IsNullOrEmpty(address)) return;
-            if (address.Equals("about:blank")) return;
-            if (!address.StartsWith("http://") &&
-                !address.StartsWith("https://"))
-            {
-                address = "http://" + address;
-            }
-            try
-            {
-                this.browser.Load(address);
-            }
-            catch (System.UriFormatException)
-            {
-                return;
-            }
-        }
+       
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
@@ -220,13 +204,7 @@ namespace CobWeb.Browser
             browser.ShowDevTools();
         }
 
-        Form _mainForm;
-
-
-        void ShowMainForm()
-        {            
-            _mainForm.Show();
-        }
+      
         void BrowserInit()
         {
             this.browser = new Browser.MyWebBrowser("about:blank");
@@ -239,6 +217,12 @@ namespace CobWeb.Browser
             this.Closing += OnClosing;
             this.browser.StartNewWindow += Browser_StartNewWindow;
             this.browser.TitleChanged += Browser_TitleChanged; //new EventHandler<TitleChangedEventArgs> 
+        }
+
+        private void FormBrowser_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            IsDisposed = true;
+            ClearWebBrowser();
         }
     }
 }

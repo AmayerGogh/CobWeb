@@ -15,10 +15,11 @@ namespace CobWeb.Core.Process
         string GetResult();
         void SetResult(string result);
         bool IsWorking();
-        bool SetWorking(bool iswork);
+        void SetWorking(bool iswork);
         bool IsShowForm();
 
         void ExcuteRecord(string txt);
         void AddAssistAction(Action action);
+        void Navigate(string address);
     }
 }

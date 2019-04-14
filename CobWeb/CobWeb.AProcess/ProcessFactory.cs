@@ -38,10 +38,7 @@ namespace CobWeb.Core.Process
             //}
         }
         public static IProcessBase GetProcessByMethod(IBrowserBase formBrowser,ParamModel paramModel)
-        {
-
-            //var process = (IProcessBase)Activator.CreateInstance(ProcessBaseDic[paramModel.Method],
-            //null, paramModel);
+        {           
             var process = new GetVersion(formBrowser, paramModel);
             return (IProcessBase)process;
         }

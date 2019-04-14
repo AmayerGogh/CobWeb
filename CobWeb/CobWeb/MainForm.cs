@@ -56,7 +56,8 @@ namespace CobWeb.Browser
         /// </summary>
         private void btn_test_Click(object sender, EventArgs e)
         {
-           
+           var browser = GetProcessForm();
+            browser.Show();
         }
         /// <summary>
         /// 窗口初始化
@@ -135,7 +136,7 @@ namespace CobWeb.Browser
         /// 显示执行时会造成程序无法响应,隐藏时没有问题
         /// </summary>
         private void ExcuteRecord(string msg)
-        {
+        {            
             if (_isShowForm)
             {
                 lock (rtb_record)
@@ -228,7 +229,7 @@ namespace CobWeb.Browser
                             if (!_excuteForm.IsDisposed)
                             {
                                 //如果还在执行则直接返回,这个很重要
-                                if (_excuteForm.IsWorking)
+                                if (_excuteForm._isWorking)
                                 {
                                     return JsonConvert.SerializeObject(new ResultModel()
                                     {
@@ -237,18 +238,18 @@ namespace CobWeb.Browser
                                     });
                                 }
                                 else
-                                    _excuteForm.IsWorking = true;
+                                    _excuteForm._isWorking = true;
                             }
                             else
                             {
                                 _excuteForm = GetProcessForm();
-                                _excuteForm.IsWorking = true;
+                                _excuteForm._isWorking = true;
                             }
                         }
                         else
                         {
                             _excuteForm = GetProcessForm();
-                            _excuteForm.IsWorking = true;
+                            _excuteForm._isWorking = true;
                         }
                     }
 
@@ -281,9 +282,9 @@ namespace CobWeb.Browser
         /// </summary>
         bool MonitorStopProcess(string guidkey)
         {
-            if (CommonCla.CacheIsHave(guidkey))
+            if (MemoryCacheHelper.CacheIsHave(guidkey))
             {
-                CommonCla.RemoveCache(guidkey);
+                MemoryCacheHelper.RemoveCache(guidkey);
                 return true;
             }
             else
@@ -305,7 +306,7 @@ namespace CobWeb.Browser
                     //得到执行结果
                     while (!CommonCla.IsTimeout(paramModel.StartTime, paramModel.Timeout))
                     {
-                        resultModel.Result = form.Result;
+                        resultModel.Result = form._result;
                         if (resultModel.Result == null)
                         {
                             if (MonitorStopProcess(paramModel.StopKey))
@@ -337,7 +338,7 @@ namespace CobWeb.Browser
             catch (Exception ex)//解析参数发生错误
             {
                 //如果Start发生异常
-                form.IsWorking = false;
+                form._isWorking = false;
 
                 resultModel.Result = ex.Message;
                 //_log.FatalFormat("{0}\r\nStart()\r\n{1}", paramModel.Method, ex.Message);
@@ -354,6 +355,9 @@ namespace CobWeb.Browser
             return JsonConvert.SerializeObject(resultModel);
 
         }
+
+      
+        
         /// <summary>
         /// 得到一个在线程中的处理窗口
         /// </summary>

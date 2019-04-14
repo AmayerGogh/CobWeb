@@ -53,6 +53,7 @@
     <Compile Include="FlashLog\FlashLogger.cs" />
     <Compile Include="FlashLog\FlashLogSetting.cs" />
     <Compile Include="FlashLog\FlashLogWrite.cs" />
+    <Compile Include="MemoryCacheHelper.cs" />
     <Compile Include="MemoryMappedHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SocketHelper\SocketBasic.cs" />

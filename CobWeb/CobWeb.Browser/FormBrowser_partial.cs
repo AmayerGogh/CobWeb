@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CobWeb.Browser
 {
@@ -17,23 +18,16 @@ namespace CobWeb.Browser
         void Initialize(bool isShow, Action<string> record)
         {
             _excuteRecord = record;
-            IsShowForm = isShow;           
+            isShowForm = isShow;
         }
         /// <summary>
         /// 需要辅助方法执行的代码
         /// </summary>
         List<Action> _assistActions = new List<Action>();
-        /// <summary>
-        /// 标记是否正在执行
-        /// </summary>
-       // public bool IsWorking = false;
-        /// <summary>
-        /// 是否显示窗口
-        /// </summary>
-        public bool IsShowForm { get; set; }
-        public bool IsWorking { get; set; }
         public new bool IsDisposed = false;
-        public Action<string> _excuteRecord;
+
+
+
         #region _assistActions
         /// <summary>
         /// 辅助方法,当需要借助主线程进行某种操作时
@@ -117,11 +111,6 @@ namespace CobWeb.Browser
         }
         #endregion
 
-        /// <summary>
-        /// 执行事件完成后返回的结果,未完成时为null
-        /// </summary>
-        public string Result { get; set; }
-
         #region 执行
         /// <summary>
         /// 处理程序,每次须重新创建
@@ -133,10 +122,10 @@ namespace CobWeb.Browser
         public void SetActionType(ParamModel paramModel)
         {
             //赋值为null
-            this.Result = null;
+            this._result = null;
 
             //得到处理程序,若有异常直接抛出
-            _process = null;// ProcessFactory.GetProcessByMethod(this, paramModel);
+            _process = ProcessFactory.GetProcessByMethod(this, paramModel);
 
             //开始执行
             _process?.Begin();
@@ -147,7 +136,6 @@ namespace CobWeb.Browser
         {
             try
             {
-              
                 browser.Dispose();
             }
             catch (Exception ex)
@@ -159,7 +147,7 @@ namespace CobWeb.Browser
         {
             try
             {
-                
+
             }
             catch (Exception ex)
             {
@@ -189,6 +177,79 @@ namespace CobWeb.Browser
             get
             {
                 return this.WebBrowser;
+            }
+        }
+
+
+        Form _mainForm;
+        void ShowMainForm()
+        {
+            _mainForm.Show();
+        }
+        //对外接口
+
+        /// <summary>
+        /// 执行事件完成后返回的结果,未完成时为null
+        /// </summary>
+        public string _result;
+        public string GetResult()
+        {
+            return _result;
+        }
+        public void SetResult(string result)
+        {
+            this._result = result;
+        }
+
+
+        /// <summary>
+        /// 标记是否正在执行
+        /// </summary>
+        public bool _isWorking = false;
+        public bool IsWorking()
+        {
+            return this._isWorking;
+        }
+
+        public void SetWorking(bool iswork)
+        {
+            this._isWorking = iswork;
+        }
+
+
+        /// <summary>
+        /// 是否显示窗口
+        /// </summary>
+        public bool isShowForm { get; set; }
+        public bool IsShowForm()
+        {
+            return isShowForm;
+        }
+
+
+        public Action<string> _excuteRecord;
+        public void ExcuteRecord(string txt)
+        {
+            this._excuteRecord(txt);
+        }
+
+        public void Navigate(string address)
+        {
+            if (String.IsNullOrEmpty(address)) return;
+            if (address.Equals("about:blank")) return;
+            if (!address.StartsWith("http://") &&
+                !address.StartsWith("https://"))
+            {
+                address = "http://" + address;
+            }
+            try
+            {
+                this.browser.Load(address);
+                //todo 为什么address没有
+            }
+            catch (System.UriFormatException)
+            {
+                return;
             }
         }
     }
