@@ -26,15 +26,19 @@ namespace CobWeb.Browser
         /// 窗口初始化
         /// </summary>
         /// <param name="isShow">是否显示</param>
-        public FormBrowser(bool isShow, Action<string> record,Form form)
+        public FormBrowser(bool isShow = true)
         {
-            _excuteRecord = record;
-            _mainForm = form;
+            //_excuteRecord = record;
+            //_mainForm = form;
             isShowForm = isShow;
             BrowserInit();
             InitializeComponent();
+            ShowLogForm();
+            Step1_GetSetting();
+            Step2_StartListen();
+            StartAssist();
         }
-       
+
         private void InitializeComponent()
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -144,14 +148,14 @@ namespace CobWeb.Browser
         }
         private Browser.MyWebBrowser browser;
         private void FormBrowser_Load(object sender, EventArgs e)
-        {            
+        {
             this.browser.Load(@"file:///D:\Code\CobWeb\CobWeb\CobWeb\bin\Debug\html\test.html");//file:///D:/Amayer/CobWeb/CobWeb/CobWeb/bin/Debug/html/05.html
             this.panel1.Controls.Add(browser);
             //this.webBrowser1.Navigate("https://www.baidu.com");                               
         }
-        
 
-       
+
+
         private void Browser_StartNewWindow(object sender, NewWindowEventArgs e)
         {
             Navigate(e.url);
@@ -186,35 +190,45 @@ namespace CobWeb.Browser
             }
         }
 
-       
+
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
-        }      
-       
+        }
+
         private void 通信ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowMainForm();
+            ShowLogForm();
         }
         private void 调试ToolStripMenuItem_Click(object sender, EventArgs e)
-        {            
+        {
             browser.ShowDevTools();
         }
 
-      
+
         void BrowserInit()
         {
-            this.browser = new Browser.MyWebBrowser("about:blank");
+            this.browser = new Browser.MyWebBrowser("about:blank")
+            {
+                
+            };
             this.browser.Location = new System.Drawing.Point(0, 0);
             this.browser.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
             this.browser.MinimumSize = new System.Drawing.Size(20, 20);
             this.browser.Name = "webBrowser1";
             this.browser.Size = new System.Drawing.Size(963, 519);
             this.browser.TabIndex = 1;
+
             this.Closing += OnClosing;
             this.browser.StartNewWindow += Browser_StartNewWindow;
             this.browser.TitleChanged += Browser_TitleChanged; //new EventHandler<TitleChangedEventArgs> 
+            this.browser.FrameLoadEnd += Browser_FrameLoadEnd;
+            this.browser.FrameLoadStart += Browser_FrameLoadStart;
+
         }
+
+
+
         private void OnClosing(object sender, CancelEventArgs e)
         {
             Cef.Shutdown();
@@ -225,5 +239,16 @@ namespace CobWeb.Browser
             ClearWebBrowser();
             Dispose();
         }
+
+        private void Browser_FrameLoadStart(object sender, FrameLoadStartEventArgs e)
+        {
+            this.Name = "加载中" + this.Name;
+        }
+        private void Browser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
+        {
+            this.toolStripTextBox1.Text = e.Url;
+
+        }
     }
+
 }

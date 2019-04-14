@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CobWeb
+namespace CobWeb.Browser
 {
-    public partial class MainForm1
+    public static class BrowserExtension
     {
-       
-
 
     }
+
 }

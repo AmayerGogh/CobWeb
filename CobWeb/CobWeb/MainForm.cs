@@ -279,7 +279,7 @@ namespace CobWeb.Browser
 
         /// <summary>
         /// 中断请求的监视
-        /// </summary>
+        /// </summary>ProcessAndResult
         bool MonitorStopProcess(string guidkey)
         {
             if (MemoryCacheHelper.CacheIsHave(guidkey))
@@ -348,7 +348,7 @@ namespace CobWeb.Browser
                 Task.Run(() =>
                 {
                     //本次执行完成,退出使用  //不阻塞执行,尽快返回结果
-                    form.Quit();
+                    form.ProcessEnd();
                 });
             }
 
@@ -367,7 +367,7 @@ namespace CobWeb.Browser
             Thread newThread = new Thread(new ThreadStart(() =>
             {
 
-                form = new FormBrowser(_isShowForm, ExcuteRecord,this);
+                form = new FormBrowser();
                 try
                 {
                     form.StartAssist();

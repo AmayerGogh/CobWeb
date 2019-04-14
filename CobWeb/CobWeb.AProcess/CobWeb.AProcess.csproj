@@ -30,6 +30,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CefSharp, Version=71.0.2.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138" />
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -45,8 +46,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Base\ProcessBase.cs" />
+    <Compile Include="Base\ProcessBaseNotUseBrowser.cs" />
     <Compile Include="Base\ProcessBaseUseBrowser.cs" />
     <Compile Include="GetVersion.cs" />
+    <Compile Include="JsTest.cs" />
     <Compile Include="ProcessFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

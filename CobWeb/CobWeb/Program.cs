@@ -24,7 +24,7 @@ namespace CobWeb
             Init.Step1_InitializeCefSetting();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new MainForm());
+            Application.Run(new FormBrowser());
            // MainForm
         }
 

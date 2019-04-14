@@ -49,7 +49,10 @@ namespace CobWeb
             };
             CefSharpSettings.LegacyJavascriptBindingEnabled = true;//启用CEF中和网页的JS交互
             Cef.Initialize(settings);
-
         }
+
+        
     }
+
+   
 }

@@ -8,27 +8,28 @@ using System.Threading.Tasks;
 
 namespace CobWeb.Browser
 {
-   public  class MyWebBrowser: ChromiumWebBrowser
+    public class MyWebBrowser : ChromiumWebBrowser
     {
-        public MyWebBrowser(string address, IRequestContext requestContext = null) :base(address,requestContext)
+        public MyWebBrowser(string address, IRequestContext requestContext = null) : base(address, requestContext)
         {
             this.LifeSpanHandler = new CefLifeSpanHandler();
+            MenuHandler = new MenuHandler();
         }
         public event EventHandler<NewWindowEventArgs> StartNewWindow;
 
         public void OnNewWindow(NewWindowEventArgs e)
-        {           
-             StartNewWindow?.Invoke(this, e);            
+        {
+            StartNewWindow?.Invoke(this, e);
         }
-       
+
 
 
     }
 
-
+    #region 新窗口打开
     public class CefLifeSpanHandler : CefSharp.ILifeSpanHandler
     {
-       
+
 
         public bool DoClose(IWebBrowser browserControl, CefSharp.IBrowser browser)
         {
@@ -42,12 +43,12 @@ namespace CobWeb.Browser
 
         public void OnAfterCreated(IWebBrowser chromiumWebBrowser, IBrowser browser)
         {
-            
+
         }
 
         public void OnBeforeClose(IWebBrowser chromiumWebBrowser, IBrowser browser)
         {
-            
+
         }
 
         public bool OnBeforePopup(IWebBrowser browserControl, IBrowser browser, IFrame frame, string targetUrl, string targetFrameName, WindowOpenDisposition targetDisposition, bool userGesture, IPopupFeatures popupFeatures, IWindowInfo windowInfo, IBrowserSettings browserSettings, ref bool noJavascriptAccess, out IWebBrowser newBrowser)
@@ -79,6 +80,32 @@ namespace CobWeb.Browser
             this.url = url;
         }
     }
+    #endregion
 
 
+    #region 右键
+    class MenuHandler : CefSharp.IContextMenuHandler
+    {
+        void CefSharp.IContextMenuHandler.OnBeforeContextMenu(CefSharp.IWebBrowser browserControl, CefSharp.IBrowser browser, CefSharp.IFrame frame, CefSharp.IContextMenuParams parameters, CefSharp.IMenuModel model)
+        {
+            model.Clear();
+        }
+
+        bool CefSharp.IContextMenuHandler.OnContextMenuCommand(CefSharp.IWebBrowser browserControl, CefSharp.IBrowser browser, CefSharp.IFrame frame, CefSharp.IContextMenuParams parameters, CefSharp.CefMenuCommand commandId, CefSharp.CefEventFlags eventFlags)
+        {
+            //throw new NotImplementedException();
+            return false;
+        }
+
+        void CefSharp.IContextMenuHandler.OnContextMenuDismissed(CefSharp.IWebBrowser browserControl, CefSharp.IBrowser browser, CefSharp.IFrame frame)
+        {
+            //throw new NotImplementedException();
+        }
+
+        bool CefSharp.IContextMenuHandler.RunContextMenu(CefSharp.IWebBrowser browserControl, CefSharp.IBrowser browser, CefSharp.IFrame frame, CefSharp.IContextMenuParams parameters, CefSharp.IMenuModel model, CefSharp.IRunContextMenuCallback callback)
+        {
+            return false;
+        }
+    }
+    #endregion
 }

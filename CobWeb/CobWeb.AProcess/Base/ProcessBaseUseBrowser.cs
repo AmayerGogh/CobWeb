@@ -1,6 +1,7 @@
 ﻿using CobWeb.Core.Model;
 using CobWeb.Core.Process;
 using CobWeb.Util;
+using CobWeb.Util.FlashLog;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,14 +20,17 @@ namespace CobWeb.AProcess.Base
         /// </summary>
         protected long startTime = 0;
         protected ProcessBase processBase;
+
+        protected FlashLogger _log;
         /// <summary>
         /// 等待的默认时间,单位:秒
         /// </summary>
         public int timeout = 30;
         public bool IsWorkGoOn { get; set; }
-        public ProcessBaseUseBrowser(IBrowserBase form, ParamModel paramModel)
+        public ProcessBaseUseBrowser(IBrowserBase form, ParamModel paramModel, FlashLogger log)
         {
-            processBase = new ProcessBase(form);
+            _log = log;
+            processBase = new ProcessBase(form,_log);            
         }
 
         public virtual void Begin()
@@ -98,7 +102,7 @@ namespace CobWeb.AProcess.Base
             {
                 if (IsQuit())
                 {
-                    //RecordLog("IsQuit() 退出：" + excuteCompleted?.Method?.Name);
+                    //_form. RecordLog("IsQuit() 退出：" + excuteCompleted?.Method?.Name);
                     return;
                 }
 
