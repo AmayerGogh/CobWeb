@@ -56,8 +56,8 @@ namespace CobWeb.Browser
         /// </summary>
         private void btn_test_Click(object sender, EventArgs e)
         {
-           var browser = GetProcessForm();
-            browser.Show();
+           //var browser = GetProcessForm();
+           // browser.Show();
         }
         /// <summary>
         /// 窗口初始化
@@ -382,8 +382,9 @@ namespace CobWeb.Browser
                     form.Close();
                 }
             }));
+            newThread.Name = "fromBrowser";
             newThread.SetApartmentState(ApartmentState.STA);
-            newThread.IsBackground = true; //随主线程一同退出
+            newThread.IsBackground = false; //随主线程一同退出
             newThread.Start();
 
             while (form == null)//等待form在异步线程中创建完毕

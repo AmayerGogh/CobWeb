@@ -149,10 +149,7 @@ namespace CobWeb.Browser
             this.panel1.Controls.Add(browser);
             //this.webBrowser1.Navigate("https://www.baidu.com");                               
         }
-        private void OnClosing(object sender, CancelEventArgs e)
-        {
-            Cef.Shutdown();
-        }
+        
 
        
         private void Browser_StartNewWindow(object sender, NewWindowEventArgs e)
@@ -218,11 +215,15 @@ namespace CobWeb.Browser
             this.browser.StartNewWindow += Browser_StartNewWindow;
             this.browser.TitleChanged += Browser_TitleChanged; //new EventHandler<TitleChangedEventArgs> 
         }
-
+        private void OnClosing(object sender, CancelEventArgs e)
+        {
+            Cef.Shutdown();
+        }
         private void FormBrowser_FormClosed(object sender, FormClosedEventArgs e)
         {
             IsDisposed = true;
             ClearWebBrowser();
+            Dispose();
         }
     }
 }
