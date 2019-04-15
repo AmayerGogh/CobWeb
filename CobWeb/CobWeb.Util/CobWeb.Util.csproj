@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonCla.cs" />
+    <Compile Include="CookieHelper.cs" />
     <Compile Include="FlashLog\FlashLogger.cs" />
     <Compile Include="FlashLog\FlashLogSetting.cs" />
     <Compile Include="FlashLog\FlashLogWrite.cs" />

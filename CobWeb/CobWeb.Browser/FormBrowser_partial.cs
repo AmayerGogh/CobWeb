@@ -531,33 +531,73 @@ namespace CobWeb.Browser
             //    }
             //});
         }
+        public void SetCookie(string url, string cookiesString)
+        {
+            if (string.IsNullOrWhiteSpace(cookiesString))
+            {
+                return;
+            }
+            var cookieAarray = cookiesString.Split(';');
+            var cookieManager = browser.GetCookieManager();
+            foreach (var cookie in cookieAarray)
+            {
+                var temp = cookie.Split('=');
+                if (temp.Length >= 2)
+                {
+                    var single = new CefSharp.Cookie()
+                    {
+                        Name = temp[0].Trim(),
+                        Value = temp[1],
+                        Domain = url,
+                        Path = "/"
+                    };
+                    cookieManager.SetCookie("http://" + url, single);
+                }
+            }
 
-        public void SetCookie(string url, List<CefSharp.Cookie> cookies)
+        }
+        public void SetCookie(string url, List<CookiePseudo> cookies)
         {
             var cookieManager = browser.GetCookieManager();
             foreach (var item in cookies)
             {
-                cookieManager.SetCookie(url, item);
+                var cookie = new CefSharp.Cookie()
+                {
+                    Creation = item.Creation,
+                    Domain = item.Domain,
+                    Expires = item.Expires,
+                    HttpOnly = item.HttpOnly,
+                    LastAccess = item.LastAccess,
+                    Name = item.Name,
+                    Path = item.Path,
+                    Secure = item.Secure,
+                    Value = item.Value
+                };
+                cookieManager.SetCookie("http://" + url, cookie);
             }
         }
-        public string GetCurrentCookie(string url)
-        {           
-            cookieList = new List<object>();
+        public string GetCurrentCookieStr(string url)
+        {
+            return null;
+        }
+        public List<CookiePseudo> GetCurrentCookie(string url)
+        {
+            cookieList = new List<CookiePseudo>();
             var cookieManager = browser.GetCookieManager();
             var cook = new CookieVisitor();
             //var c = cookieManager.VisitAllCookies(cook);//url,true,cook
-            cookieManager.VisitUrlCookies(url, true, cook);
+            cookieManager.VisitUrlCookies("http://" + url, true, cook);
             //cookieList = null;
             while (!cook.IsDispose)
             {
                 Thread.Sleep(10);
             }
-            return JsonConvert.SerializeObject(cookieList);
+            return cookieList;
         }
-        public static List<object> cookieList;
+        public static List<CookiePseudo> cookieList;
         class CookieVisitor : ICookieVisitor
         {
-           public bool IsDispose;
+            public bool IsDispose;
             /// <summary>
             /// 
             /// </summary>
@@ -568,7 +608,18 @@ namespace CobWeb.Browser
             /// <returns></returns>
             public bool Visit(CefSharp.Cookie cookie, int count, int total, ref bool deleteCookie)
             {
-                FormBrowser.cookieList.Add(new { cookie = cookie});
+                FormBrowser.cookieList.Add(new CookiePseudo()
+                {
+                    Creation = cookie.Creation,
+                    Domain = cookie.Domain,
+                    Expires = cookie.Expires,
+                    HttpOnly = cookie.HttpOnly,
+                    LastAccess = cookie.LastAccess,
+                    Name = cookie.Name,
+                    Path = cookie.Path,
+                    Secure = cookie.Secure,
+                    Value = cookie.Value
+                });
                 return true;
             }
             public void Dispose()
@@ -577,13 +628,13 @@ namespace CobWeb.Browser
             }
         }
         //??
-        void GetFrame(int i=0)
+        void GetFrame(int i = 0)
         {
             //idList里面装了页面所有iframe的数据 
-            List<long> idList = browser.GetBrowser().GetFrameIdentifiers();                       
-            IFrame frame = browser.GetBrowser().GetFrame(idList[i]);            
+            List<long> idList = browser.GetBrowser().GetFrameIdentifiers();
+            IFrame frame = browser.GetBrowser().GetFrame(idList[i]);
         }
 
     }
-    
+
 }

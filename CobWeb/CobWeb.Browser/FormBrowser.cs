@@ -149,9 +149,9 @@ namespace CobWeb.Browser
         private Browser.MyWebBrowser browser;
         private void FormBrowser_Load(object sender, EventArgs e)
         {
-            this.browser.Load(@"file:///D:\Code\CobWeb\CobWeb\CobWeb\bin\Debug\html\test.html");//file:///D:/Amayer/CobWeb/CobWeb/CobWeb/bin/Debug/html/05.html
+            //Navigate(@"www.baidu.com");
             this.panel1.Controls.Add(browser);
-            //this.webBrowser1.Navigate("https://www.baidu.com");                               
+
         }
 
 
@@ -210,7 +210,7 @@ namespace CobWeb.Browser
         {
             this.browser = new Browser.MyWebBrowser("about:blank")
             {
-                
+
             };
             this.browser.Location = new System.Drawing.Point(0, 0);
             this.browser.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
@@ -219,20 +219,24 @@ namespace CobWeb.Browser
             this.browser.Size = new System.Drawing.Size(963, 519);
             this.browser.TabIndex = 1;
 
-            this.Closing += OnClosing;
+
             this.browser.StartNewWindow += Browser_StartNewWindow;
             this.browser.TitleChanged += Browser_TitleChanged; //new EventHandler<TitleChangedEventArgs> 
             this.browser.FrameLoadEnd += Browser_FrameLoadEnd;
             this.browser.FrameLoadStart += Browser_FrameLoadStart;
+            if (CefSharpSettings.ShutdownOnExit)
+            {
+                Application.ApplicationExit += OnApplicationExit;
+            }
 
         }
 
-
-
-        private void OnClosing(object sender, CancelEventArgs e)
+        private void OnApplicationExit(object sender, EventArgs e)
         {
             Cef.Shutdown();
         }
+
+
         private void FormBrowser_FormClosed(object sender, FormClosedEventArgs e)
         {
             IsDisposed = true;
@@ -247,6 +251,9 @@ namespace CobWeb.Browser
         private void Browser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
         {
             this.toolStripTextBox1.Text = e.Url;
+
+            //获取网页代码
+            //var result = this.browser.GetSourceAsync().Result;
 
         }
     }

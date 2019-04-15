@@ -90,7 +90,31 @@ namespace CobWeb.AProcess
                     return;
                 }
             }
-          
+            else if (c.Type == 4)
+            {
+                try
+                {
+                    var url = (string)c.Url;
+                    var cookie = (string)c.Cookie;
+                    _form.SetCookie(url,cookie);
+                    processBase.SetResult(new ResultModel()
+                    {
+                        IsSuccess = false,
+                        Result = "成功"
+                    });
+                    return;
+                }
+                catch (Exception e)
+                {
+                    processBase.SetResult(new ResultModel()
+                    {
+                        IsSuccess = false,
+                        Result = e.ToString()
+                    });
+                    return;
+                }
+            }
+
             processBase.SetResult(new ResultModel()
             {
                 IsSuccess = false,

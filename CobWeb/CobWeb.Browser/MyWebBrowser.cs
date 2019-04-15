@@ -13,7 +13,7 @@ namespace CobWeb.Browser
         public MyWebBrowser(string address, IRequestContext requestContext = null) : base(address, requestContext)
         {
             this.LifeSpanHandler = new CefLifeSpanHandler();
-            MenuHandler = new MenuHandler();
+            //MenuHandler = new MenuHandler();
         }
         public event EventHandler<NewWindowEventArgs> StartNewWindow;
 

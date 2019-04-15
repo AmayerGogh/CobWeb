@@ -52,5 +52,11 @@
     <Compile Include="Process\IProcessBase2.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CobWeb.Util\CobWeb.Util.csproj">
+      <Project>{1BD9FFD9-F0F6-479E-95A0-8F5F3E303DAC}</Project>
+      <Name>CobWeb.Util</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

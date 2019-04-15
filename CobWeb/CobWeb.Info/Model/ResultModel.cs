@@ -9,6 +9,6 @@ namespace CobWeb.Core.Model
     public class ResultModel
     {
         public bool IsSuccess { get; set; }
-        public string Result { get; set; }
+        public object Result { get; set; }
     }
 }

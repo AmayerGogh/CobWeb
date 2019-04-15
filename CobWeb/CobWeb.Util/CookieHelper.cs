@@ -17,9 +17,18 @@ namespace CobWeb.Util
         public string Name { get; set; }
         public string Value { get; set; }
         public string Domain { get; set; }
+        /// <summary>
+        /// 一般都是/
+        /// </summary>
         public string Path { get; set; }
+        /// <summary>
+        /// false
+        /// </summary>
         public bool Secure { get; set; }
         public bool HttpOnly { get; set; }
+        /// <summary>
+        /// 过期时间
+        /// </summary>
         public DateTime? Expires { get; set; }
         public DateTime Creation { get; set; }
         public DateTime LastAccess { get; set; }

@@ -1,4 +1,5 @@
 ﻿using CefSharp;
+using CobWeb.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,9 +40,20 @@ namespace CobWeb.Core.Process
         /// <returns></returns>
         Task<JavascriptResponse> EvaluateScriptAsync(string js);
 
-        void SetCookie(string url, List<CefSharp.Cookie> cookies);
-        string GetCurrentCookie(string url);
-      
+
+        void SetCookie(string url, string cookiesString);
+
+
+        void SetCookie(string url, List<CookiePseudo> cookies);
+
+
+        string GetCurrentCookieStr(string url);
+
+
+        List<CookiePseudo> GetCurrentCookie(string url);
+
+
+
 
     }
 }
