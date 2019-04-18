@@ -27,7 +27,7 @@ namespace CobWeb.AProcess.Base
         /// </summary>
         public int timeout = 30;
         public bool IsWorkGoOn { get; set; }
-        public ProcessBaseUseBrowser(IBrowserBase form, ParamModel paramModel, FlashLogger log)
+        public ProcessBaseUseBrowser(IFormBase form, ParamModel paramModel, FlashLogger log)
         {
             _log = log;
             processBase = new ProcessBase(form,_log);            

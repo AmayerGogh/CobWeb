@@ -14,9 +14,9 @@ namespace CobWeb.AProcess
 {
     public class GetVersion : ProcessBaseUseBrowser
     {
-        IBrowserBase _form;
+        IFormBase _form;
         ParamModel _request;
-        public GetVersion(IBrowserBase form, ParamModel paramModel)
+        public GetVersion(IFormBase form, ParamModel paramModel)
             : base(form, paramModel, new FlashLogger("GetVersion"))
         {
             _request = paramModel;
@@ -29,116 +29,7 @@ namespace CobWeb.AProcess
 
         public override void StartRequest()
         {
-            
-            _form.ExcuteRecord("test");
-            dynamic c = JsonConvert.DeserializeObject<object>(_request.Param.ToString());
-           
-            if (c.Type == 1)
-            {
-                try
-                {
-                    var cc = (string)c.Js;
-                    _form.ExecuteScript(cc);
-                    
-                }
-                catch (Exception e)
-                {
-                    processBase.SetResult(new ResultModel()
-                    {
-                        IsSuccess = false,
-                        Result = e.ToString()
-                    });
-                    return;
-                }
-            }
-            else if (c.Type == 2)
-            {
-                try
-                {
-                    var cc = _form.EvaluateScriptAsync((string)c.Js);
-                   
-                }
-                catch (Exception e)
-                {
-                    processBase.SetResult(new ResultModel()
-                    {
-                        IsSuccess = false,
-                        Result = e.ToString()
-                    });
-                    return;
-                }
-            }
-            else if (c.Type == 3)
-            {
-                try
-                {
-                    var cc = _form.GetCurrentCookie((string)c.Url);
-                    processBase.SetResult(new ResultModel()
-                    {
-                        IsSuccess = false,
-                        Result = cc
-                    });
-                    return;
-                }
-                catch (Exception e)
-                {
-                    processBase.SetResult(new ResultModel()
-                    {
-                        IsSuccess = false,
-                        Result = e.ToString()
-                    });
-                    return;
-                }
-            }
-            else if (c.Type == 4)
-            {
-                try
-                {
-                    var url = (string)c.Url;
-                    var cookie = (string)c.Cookie;
-                    _form.SetCookie(url,cookie);
-                    processBase.SetResult(new ResultModel()
-                    {
-                        IsSuccess = false,
-                        Result = "成功"
-                    });
-                    return;
-                }
-                catch (Exception e)
-                {
-                    processBase.SetResult(new ResultModel()
-                    {
-                        IsSuccess = false,
-                        Result = e.ToString()
-                    });
-                    return;
-                }
-            }
-            //   //获取网页代码
-            //var result = this.browser.GetSourceAsync().Result;
-            else if (c.Type == 5)
-            {
-                try
-                {
-                    //获取网页代码
-                    _form.Test(null);
-                    processBase.SetResult(new ResultModel()
-                    {
-                        IsSuccess = false,
-                        Result =null
-                    });
-                }
-                catch (Exception e)
-                {
-                    processBase.SetResult(new ResultModel()
-                    {
-                        IsSuccess = false,
-                        Result = e.ToString()
-                    });
-                    return;
-                }
-            }
-
+                        
             processBase.SetResult(new ResultModel()
             {
                 IsSuccess = false,

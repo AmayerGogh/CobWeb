@@ -60,11 +60,17 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WebKitBrowser">
+      <HintPath>..\WebKit\WebKitBrowser.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonCla.cs" />
     <Compile Include="Control\MyWebBrowser.cs">
       <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\WebKitBrowser.cs">
+      <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="CookieHelper.cs" />
     <Compile Include="ExceptionHelper.cs" />

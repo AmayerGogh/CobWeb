@@ -20,134 +20,41 @@ using System.Windows.Forms;
 
 namespace CobWeb.Browser
 {
-    public partial class FormBrowser : Form, IBrowserBase
+    public  class FormBrowser2
     {
-
+        
         /// <summary>
         /// 窗口初始化
         /// </summary>
         /// <param name="isShow">是否显示</param>
-        public FormBrowser(bool isShow = true)
+        public FormBrowser2(bool isShow = true)
         {
-            //_excuteRecord = record;
-            //_mainForm = form;
-            isShowForm = isShow;
-            BrowserInit();
-            InitializeComponent();
-            ShowLogForm();
-            Step1_GetSetting();
-            Step2_StartListen();
-            StartAssist();
+            ////_excuteRecord = record;
+            ////_mainForm = form;
+            //isShowForm = isShow;
+            //BrowserInit();
+            //InitializeComponent();
+            //ShowLogForm();
+            //Step1_GetSetting();
+            //Step2_StartListen();
+            //StartAssist();
         }
 
         private void InitializeComponent()
         {
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.返回ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.前进ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.刷新ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.首页ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripTextBox1 = new System.Windows.Forms.ToolStripTextBox();
-            this.调试ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.通信ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.panel1 = new System.Windows.Forms.Panel();
-            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // menuStrip1
-            // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.返回ToolStripMenuItem,
-            this.前进ToolStripMenuItem,
-            this.刷新ToolStripMenuItem,
-            this.首页ToolStripMenuItem,
-            this.toolStripTextBox1,
-            this.调试ToolStripMenuItem,
-            this.通信ToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1184, 27);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
-            // 
-            // 返回ToolStripMenuItem
-            // 
-            this.返回ToolStripMenuItem.Name = "返回ToolStripMenuItem";
-            this.返回ToolStripMenuItem.Size = new System.Drawing.Size(44, 23);
-            this.返回ToolStripMenuItem.Text = "返回";
-            this.返回ToolStripMenuItem.Click += new System.EventHandler(this.返回ToolStripMenuItem_Click);
-            // 
-            // 前进ToolStripMenuItem
-            // 
-            this.前进ToolStripMenuItem.Name = "前进ToolStripMenuItem";
-            this.前进ToolStripMenuItem.Size = new System.Drawing.Size(44, 23);
-            this.前进ToolStripMenuItem.Text = "前进";
-            this.前进ToolStripMenuItem.Click += new System.EventHandler(this.前进ToolStripMenuItem_Click);
-            // 
-            // 刷新ToolStripMenuItem
-            // 
-            this.刷新ToolStripMenuItem.Name = "刷新ToolStripMenuItem";
-            this.刷新ToolStripMenuItem.Size = new System.Drawing.Size(44, 23);
-            this.刷新ToolStripMenuItem.Text = "刷新";
-            this.刷新ToolStripMenuItem.Click += new System.EventHandler(this.刷新ToolStripMenuItem_Click);
-            // 
-            // 首页ToolStripMenuItem
-            // 
-            this.首页ToolStripMenuItem.Name = "首页ToolStripMenuItem";
-            this.首页ToolStripMenuItem.Size = new System.Drawing.Size(44, 23);
-            this.首页ToolStripMenuItem.Text = "首页";
-            this.首页ToolStripMenuItem.Click += new System.EventHandler(this.首页ToolStripMenuItem_Click);
-            // 
-            // toolStripTextBox1
-            // 
-            this.toolStripTextBox1.BackColor = System.Drawing.SystemColors.Control;
-            this.toolStripTextBox1.Name = "toolStripTextBox1";
-            this.toolStripTextBox1.Size = new System.Drawing.Size(250, 23);
-            this.toolStripTextBox1.KeyDown += new System.Windows.Forms.KeyEventHandler(this.ToolStripTextBox1_KeyDown);
-            // 
-            // 调试ToolStripMenuItem
-            // 
-            this.调试ToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.调试ToolStripMenuItem.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.调试ToolStripMenuItem.Name = "调试ToolStripMenuItem";
-            this.调试ToolStripMenuItem.Size = new System.Drawing.Size(44, 23);
-            this.调试ToolStripMenuItem.Text = "调试";
-            this.调试ToolStripMenuItem.Click += new System.EventHandler(this.调试ToolStripMenuItem_Click);
-            // 
-            // 通信ToolStripMenuItem
-            // 
-            this.通信ToolStripMenuItem.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.通信ToolStripMenuItem.BackColor = System.Drawing.SystemColors.ButtonFace;
-            this.通信ToolStripMenuItem.Name = "通信ToolStripMenuItem";
-            this.通信ToolStripMenuItem.Size = new System.Drawing.Size(44, 23);
-            this.通信ToolStripMenuItem.Text = "通信";
-            this.通信ToolStripMenuItem.Click += new System.EventHandler(this.通信ToolStripMenuItem_Click);
-            // 
-            // panel1
-            // 
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(0, 27);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1184, 634);
-            this.panel1.TabIndex = 1;
-            // 
-            // FormBrowser
+            // FormBrowser2
             // 
             this.ClientSize = new System.Drawing.Size(1184, 661);
-            this.Controls.Add(this.panel1);
-            this.Controls.Add(this.menuStrip1);
-            this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(1200, 700);
-            this.Name = "FormBrowser";
+            this.Name = "FormBrowser2";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormBrowser_FormClosed);
             this.Load += new System.EventHandler(this.FormBrowser_Load);
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
-        private MyWebBrowser browser;
+        private MyWebKitBrowser browser;
         private void FormBrowser_Load(object sender, EventArgs e)
         {
             //Navigate(@"www.baidu.com");
@@ -159,7 +66,7 @@ namespace CobWeb.Browser
 
         private void Browser_StartNewWindow(object sender, NewWindowEventArgs e)
         {
-            Navigate(e.url);
+            
         }
         private void Browser_TitleChanged(object sender, TitleChangedEventArgs e)
         {
@@ -167,28 +74,25 @@ namespace CobWeb.Browser
         }
         private void 刷新ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.browser.Refresh();
+            browser.Refresh();
         }
 
         private void 返回ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.browser.Undo();
+           // this.browser.Undo();
         }
 
         private void 前进ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.browser.Forward();
+            //this.browser.Forward();
         }
         private void 首页ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.browser.Load(@"file:///D:\Code\CobWeb\CobWeb\CobWeb\bin\Debug\html\test.html");//file:///D:/Amayer/CobWeb/CobWeb/CobWeb/bin/Debug/html/05.html
+            //this.browser.Load(@"file:///D:\Code\CobWeb\CobWeb\CobWeb\bin\Debug\html\test.html");//file:///D:/Amayer/CobWeb/CobWeb/CobWeb/bin/Debug/html/05.html
         }
         private void ToolStripTextBox1_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.Enter)
-            {
-                Navigate(toolStripTextBox1.Text);
-            }
+
         }
 
         
@@ -199,17 +103,17 @@ namespace CobWeb.Browser
 
         private void 通信ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ShowLogForm();
+          
         }
         private void 调试ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            browser.ShowDevTools();
+            //browser.ShowDevTools();
         }
 
 
         void BrowserInit()
         {
-            this.browser = new MyWebBrowser("about:blank")
+            this.browser = new MyWebKitBrowser()
             {
 
             };
@@ -219,18 +123,18 @@ namespace CobWeb.Browser
             this.browser.Name = "webBrowser1";
             this.browser.Size = new System.Drawing.Size(963, 519);
             this.browser.TabIndex = 1;
+            this.browser.Navigate("http://www.baidu.com");
 
+            //this.browser.StartNewWindow += Browser_StartNewWindow;
+            //this.browser.TitleChanged += Browser_TitleChanged; //new EventHandler<TitleChangedEventArgs> 
+            //this.browser.FrameLoadEnd += Browser_FrameLoadEnd;
+            //this.browser.FrameLoadStart += Browser_FrameLoadStart;
 
-            this.browser.StartNewWindow += Browser_StartNewWindow;
-            this.browser.TitleChanged += Browser_TitleChanged; //new EventHandler<TitleChangedEventArgs> 
-            this.browser.FrameLoadEnd += Browser_FrameLoadEnd;
-            this.browser.FrameLoadStart += Browser_FrameLoadStart;
-
-            this.browser.LoadHandler = new LoadHandler();
-            if (CefSharpSettings.ShutdownOnExit)
-            {
-                Application.ApplicationExit += OnApplicationExit;
-            }
+            //this.browser.LoadHandler = new LoadHandler();
+            //if (CefSharpSettings.ShutdownOnExit)
+            //{
+            //    Application.ApplicationExit += OnApplicationExit;
+            //}
             
         }
 
@@ -259,7 +163,7 @@ namespace CobWeb.Browser
         private void Browser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
         {
             this.toolStripTextBox1.Text = e.Url;
-            this.Text = this.browser.Address;  
+            //this.Text = this.browser.Address;  
             
             //获取网页代码
             //var result = this.browser.GetSourceAsync().Result;

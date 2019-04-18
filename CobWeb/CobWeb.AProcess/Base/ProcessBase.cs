@@ -30,13 +30,13 @@ namespace CobWeb.AProcess.Base
         /// <summary>
         /// 需要交互的页面，这个需要释放
         /// </summary>
-        public IBrowserBase _form;
+        public IFormBase _form;
         /// <summary>
         /// 用于限制一些潜在的并发操作
         /// </summary>
         protected Object _objLock = new Object();
         FlashLogger _log;
-        public ProcessBase(IBrowserBase form, FlashLogger log)
+        public ProcessBase(IFormBase form, FlashLogger log)
         {
             _form = form;
             _log = log;
