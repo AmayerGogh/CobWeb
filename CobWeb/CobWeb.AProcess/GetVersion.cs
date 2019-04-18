@@ -114,6 +114,30 @@ namespace CobWeb.AProcess
                     return;
                 }
             }
+            //   //获取网页代码
+            //var result = this.browser.GetSourceAsync().Result;
+            else if (c.Type == 5)
+            {
+                try
+                {
+                    //获取网页代码
+                    _form.Test(null);
+                    processBase.SetResult(new ResultModel()
+                    {
+                        IsSuccess = false,
+                        Result =null
+                    });
+                }
+                catch (Exception e)
+                {
+                    processBase.SetResult(new ResultModel()
+                    {
+                        IsSuccess = false,
+                        Result = e.ToString()
+                    });
+                    return;
+                }
+            }
 
             processBase.SetResult(new ResultModel()
             {

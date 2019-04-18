@@ -52,7 +52,7 @@ namespace CobWeb.Core.Process
 
         List<CookiePseudo> GetCurrentCookie(string url);
 
-
+        void Test(string s);
 
 
     }

@@ -2,6 +2,7 @@
 using CobWeb.Core.Model;
 using CobWeb.Core.Process;
 using CobWeb.Util;
+using CobWeb.Util.Control;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -509,8 +510,11 @@ namespace CobWeb.Browser
         }
         public void ExecuteScript(string js)
         {
+            if (browser.InvokeRequired) { browser.Invoke(new runJSDelegate(ExecuteScript), new object[] { js }); return; }
+            if (browser == null || !browser.IsBrowserInitialized || browser.IsDisposed || browser.Disposing) { return; }
             browser.ExecuteScriptAsync(js);
         }
+        public delegate void runJSDelegate(string jsCodeStr);
         public async Task<JavascriptResponse> EvaluateScriptAsync(string js)
         {
             return await browser.EvaluateScriptAsync(js);
@@ -531,6 +535,38 @@ namespace CobWeb.Browser
             //    }
             //});
         }
+
+        /// <summary>
+        /// 浏览器执行JS代码获取返回值
+        /// </summary>
+        /// <param name="script"></param>
+        /// <param name="defaultValue"></param>
+        /// <param name="timeout"></param>
+        /// <returns></returns>
+        /// <example>同步：EvaluateScript("5555 * 19999 + 88888", 0, TimeSpan.FromSeconds(3)).GetAwaiter().GetResult();</example>
+        public async Task<object> EvaluateScript(string script, object defaultValue, TimeSpan timeout)
+        {
+            object result = defaultValue;
+            if (browser.IsBrowserInitialized && !browser.IsDisposed && !browser.Disposing)
+            {
+                try
+                {
+                    var task = browser.EvaluateScriptAsync(script, timeout);
+                    await task.ContinueWith(res => {
+                        if (!res.IsFaulted)
+                        {
+                            var response = res.Result;
+                            result = response.Success ? (response.Result ?? "null") : response.Message;
+                        }
+                    }).ConfigureAwait(false); // <-- This makes the task to synchronize on a different context
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.InnerException.Message);
+                }
+            }
+            return result;
+        }
         public void SetCookie(string url, string cookiesString)
         {
             if (string.IsNullOrWhiteSpace(cookiesString))
@@ -539,21 +575,33 @@ namespace CobWeb.Browser
             }
             var cookieAarray = cookiesString.Split(';');
             var cookieManager = browser.GetCookieManager();
-            foreach (var cookie in cookieAarray)
+            
+            try
             {
-                var temp = cookie.Split('=');
-                if (temp.Length >= 2)
+                foreach (var cookie in cookieAarray)
                 {
-                    var single = new CefSharp.Cookie()
+
+                    //var temp = cookie.Split('=');
+                    var i = cookie.IndexOf('=');
+                    if (i != 0)
                     {
-                        Name = temp[0].Trim(),
-                        Value = temp[1],
-                        Domain = url,
-                        Path = "/"
-                    };
-                    cookieManager.SetCookie("http://" + url, single);
+                        var single = new CefSharp.Cookie()
+                        {
+                            Name =  cookie.Substring(0, i).Trim(),
+                            Value = cookie.Substring(i + 1),
+                            Domain = url,
+                            Path = "/",
+                            Expires = DateTime.MinValue
+                        };
+                        cookieManager.SetCookie("http://" + url, single);
+                    }
                 }
             }
+            catch (Exception e)
+            {
+
+            }
+          
 
         }
         public void SetCookie(string url, List<CookiePseudo> cookies)
@@ -635,6 +683,22 @@ namespace CobWeb.Browser
             IFrame frame = browser.GetBrowser().GetFrame(idList[i]);
         }
 
+        public void Bound()
+        {
+            //前端注册js方法
+            this.browser.RegisterJsObject("bound",new object ());
+            //js中调用
+            //bound.xxx
+        }
+        public void Test(string s)
+        {
+            //获取网页代码
+            var result = this.browser.GetSourceAsync().Result;
+            var mainFrame= this.browser.GetMainFrame();
+            var form =this.browser.FindForm();
+            //this.browser.lo
+            
+        }
     }
 
 }

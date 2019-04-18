@@ -1,5 +1,5 @@
 web
-aprocess 流程 对外 
 browser 窗体
+aprocess 流程 对外 
 core 包含业务的封装
 util 常用工具 不包含业务

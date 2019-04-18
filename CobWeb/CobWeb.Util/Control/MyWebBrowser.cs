@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CobWeb.Browser
+namespace CobWeb.Util.Control
 {
     public class MyWebBrowser : ChromiumWebBrowser
     {
@@ -14,6 +14,7 @@ namespace CobWeb.Browser
         {
             this.LifeSpanHandler = new CefLifeSpanHandler();
             //MenuHandler = new MenuHandler();
+            
         }
         public event EventHandler<NewWindowEventArgs> StartNewWindow;
 

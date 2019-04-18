@@ -35,12 +35,25 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="CefSharp">
+      <HintPath>..\..\..\other code\temp\Nacollector\CefSharp\CefSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="CefSharp.BrowserSubprocess.Core">
+      <HintPath>..\..\..\other code\temp\Nacollector\CefSharp\CefSharp.BrowserSubprocess.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CefSharp.Core">
+      <HintPath>..\..\..\other code\temp\Nacollector\CefSharp\CefSharp.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="CefSharp.WinForms">
+      <HintPath>..\..\..\other code\temp\Nacollector\CefSharp\CefSharp.WinForms.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,7 +63,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommonCla.cs" />
+    <Compile Include="Control\MyWebBrowser.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="CookieHelper.cs" />
+    <Compile Include="ExceptionHelper.cs" />
     <Compile Include="FlashLog\FlashLogger.cs" />
     <Compile Include="FlashLog\FlashLogSetting.cs" />
     <Compile Include="FlashLog\FlashLogWrite.cs" />

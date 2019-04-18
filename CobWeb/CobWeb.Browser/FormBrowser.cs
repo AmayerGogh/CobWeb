@@ -2,6 +2,7 @@
 using CefSharp.WinForms;
 using CobWeb.Browser;
 using CobWeb.Core.Process;
+using CobWeb.Util.Control;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -146,7 +147,7 @@ namespace CobWeb.Browser
             this.PerformLayout();
 
         }
-        private Browser.MyWebBrowser browser;
+        private MyWebBrowser browser;
         private void FormBrowser_Load(object sender, EventArgs e)
         {
             //Navigate(@"www.baidu.com");
@@ -190,7 +191,7 @@ namespace CobWeb.Browser
             }
         }
 
-
+        
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
@@ -208,7 +209,7 @@ namespace CobWeb.Browser
 
         void BrowserInit()
         {
-            this.browser = new Browser.MyWebBrowser("about:blank")
+            this.browser = new MyWebBrowser("about:blank")
             {
 
             };
@@ -224,11 +225,13 @@ namespace CobWeb.Browser
             this.browser.TitleChanged += Browser_TitleChanged; //new EventHandler<TitleChangedEventArgs> 
             this.browser.FrameLoadEnd += Browser_FrameLoadEnd;
             this.browser.FrameLoadStart += Browser_FrameLoadStart;
+
+            this.browser.LoadHandler = new LoadHandler();
             if (CefSharpSettings.ShutdownOnExit)
             {
                 Application.ApplicationExit += OnApplicationExit;
             }
-
+            
         }
 
         private void OnApplicationExit(object sender, EventArgs e)
@@ -248,10 +251,16 @@ namespace CobWeb.Browser
         {
             this.Name = "加载中" + this.Name;
         }
+        /// <summary>
+        /// 每一项加载完成
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Browser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
         {
             this.toolStripTextBox1.Text = e.Url;
-
+            this.Text = this.browser.Address;  
+            
             //获取网页代码
             //var result = this.browser.GetSourceAsync().Result;
 

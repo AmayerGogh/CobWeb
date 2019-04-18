@@ -22,6 +22,7 @@ namespace CobWeb
         {          
             AppDomain.CurrentDomain.AssemblyResolve += Init.OnResolveAssembly;
             Init.Step1_InitializeCefSetting();
+            Init.Step2_GlobalException();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FormBrowser());

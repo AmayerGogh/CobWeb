@@ -24,6 +24,18 @@ namespace CobWeb.Web.Manager
                 return _lc流程;
             }
         }
+        static FlashLogger _yc全局异常;
+        public static FlashLogger yc全局异常
+        {
+            get
+            {
+                if (_yc全局异常 == null)
+                {
+                    _yc全局异常 = new FlashLogger("全局异常");
+                }
+                return _yc全局异常;
+            }
+        }
 
     }
 }
