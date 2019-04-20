@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Base\IKernelControl.cs" />
     <Compile Include="Control\Cef_Setting.cs" />
+    <Compile Include="Control\IE_Setting.cs" />
     <Compile Include="Control\TridentKernelControl.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -82,11 +83,11 @@
     <Compile Include="Form\FormLog.Designer.cs">
       <DependentUpon>FormLog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Manager\LogManager.cs" />
     <Compile Include="Model\ArtificialCode.cs" />
     <Compile Include="Model\LoginResult.cs" />
     <Compile Include="Model\ParamModel.cs" />
     <Compile Include="Model\ResultModel.cs" />
-    <Compile Include="IFormBase.cs" />
     <Compile Include="Control\CefKernelControl.cs">
       <SubType>Component</SubType>
     </Compile>

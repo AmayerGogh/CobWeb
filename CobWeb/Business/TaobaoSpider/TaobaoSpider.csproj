@@ -4,13 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{7A3E0CF9-7200-482F-B344-84A19F220336}</ProjectGuid>
+    <ProjectGuid>{756489E2-BF42-4B57-87D2-DC1B8739C715}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>CobWeb.AProcess</RootNamespace>
-    <AssemblyName>CobWeb.AProcess</AssemblyName>
+    <RootNamespace>TaobaoSpider</RootNamespace>
+    <AssemblyName>TaobaoSpider</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,21 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CefSharp">
-      <HintPath>..\Lib\CEFSharp\CefSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="CefSharp.BrowserSubprocess.Core">
-      <HintPath>..\Lib\CEFSharp\CefSharp.BrowserSubprocess.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="CefSharp.Core">
-      <HintPath>..\Lib\CEFSharp\CefSharp.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="CefSharp.WinForms">
-      <HintPath>..\Lib\CEFSharp\CefSharp.WinForms.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
@@ -56,28 +42,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="GetVersion.cs" />
-    <Compile Include="JsTest.cs" />
-    <Compile Include="ProcessControl.cs" />
-    <Compile Include="ProcessFactory.cs" />
+    <Compile Include="TaoBaoSpider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CobWeb.Browser\CobWeb.Browser.csproj">
+    <ProjectReference Include="..\..\CobWeb.Browser\CobWeb.Browser.csproj">
       <Project>{A72285A4-4681-490F-A0AC-9A6C3CB8C465}</Project>
       <Name>CobWeb.Browser</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CobWeb.Core\CobWeb.Core.csproj">
+    <ProjectReference Include="..\..\CobWeb.Core\CobWeb.Core.csproj">
       <Project>{70495056-0B80-490D-B268-6396A2563404}</Project>
       <Name>CobWeb.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CobWeb.Util\CobWeb.Util.csproj">
+    <ProjectReference Include="..\..\CobWeb.Util\CobWeb.Util.csproj">
       <Project>{1BD9FFD9-F0F6-479E-95A0-8F5F3E303DAC}</Project>
       <Name>CobWeb.Util</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Base\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

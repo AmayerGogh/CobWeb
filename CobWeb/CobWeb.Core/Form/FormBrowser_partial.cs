@@ -117,7 +117,7 @@ namespace CobWeb.Core
         /// 处理程序,每次须重新创建
         /// </summary>
         IProcessBase _process = null;
-       
+
         #endregion
 
         public void ClearWebBrowser()
@@ -157,26 +157,26 @@ namespace CobWeb.Core
         }
         void ShowLogForm()
         {
+            if (_formLog != null && !_formLog.IsDisposed)
+            {
+                if (_formLog.Visible == true)
+                {
+                    _formLog.Activate();
+                    return;
+                }
+            }
             Thread newThread = new Thread(new ThreadStart(() =>
             {
                 try
                 {
-                    var form = FormLog;
-                    if (form.Visible == true)
-                    {
-                        form.Activate();
-                    }
-                    else
-                    {
-                        FormLog.ShowDialog();
-                    }
-
+                    FormLog.ShowDialog();
                 }
                 finally
                 {
-                    //dForm.Close();
+                    FormLog.Close();
                 }
             }));
+            newThread.Name = "FormLog";
             newThread.SetApartmentState(ApartmentState.STA);
             newThread.IsBackground = true; //随主线程一同退出
             newThread.Start();
@@ -204,7 +204,7 @@ namespace CobWeb.Core
         string _result;
         public string GetResult()
         {
-            if (_result ==null)
+            if (_result == null)
             {
                 return null;
             }
@@ -259,14 +259,14 @@ namespace CobWeb.Core
             {
 
                 this.KernelControl.Navigate(address);
-                
+
             }
             catch (System.UriFormatException)
             {
                 return;
             }
         }
-       
+
     }
 
 }

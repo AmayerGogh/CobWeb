@@ -3,7 +3,7 @@ using CobWeb.AProcess;
 using CobWeb.Browser;
 using CobWeb.Core;
 using CobWeb.Core.Control;
-using CobWeb.Web.Manager;
+
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -20,40 +20,75 @@ namespace CobWeb
         /// <summary>
         /// 应用程序的主入口点。
         /// </summary>
-        [STAThread] 
+        [STAThread]
         static void Main()
-        {          
+        {
 
             //AppDomain.CurrentDomain.AssemblyResolve += Init.OnResolveAssembly;
-           // Init.Step1_InitializeCefSetting();
+
+            Init.Step1_Default();
             Init.Step2_GlobalException();
-            Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
 
-            //ie
-            //var browser = new TridentKernelControl();
-            //var formBrowser = new IEForm(browser);
 
-            //cefsharp
-            var browser = new CefKernelControl("about:blank");
-            var formBrowser = new CEF_Form(browser);
+            var browserType = string.Empty;
+            var port = 6666;
+            var number = 0;
+            FormBrowser formBrowser = null;
 
-            //暂时不用
-            //weibkit
-            //var browser = new WebKitKernelControl();
-            //var formBrowser = new WebKitForm(browser);
+            string[] cmdArgs = Environment.GetCommandLineArgs();
+            if (cmdArgs.Length > 0)
+            {
+                var param_str = cmdArgs.Where(m => m.Contains("cob") && m.Contains("|")).FirstOrDefault();
+                var param = param_str.Split('|');
+                if (param.Length > 1)
+                {
+                    browserType = param[1];
+                }
+                if (param.Length > 2)
+                {
+                    port = int.Parse(param[2]);
+                }
+                if (param.Length > 3)
+                {
+                    number = int.Parse(param[3]);
+                }
+            }
+
+            switch (browserType)
+            {
+                case "cef":
+                    formBrowser = new CEF_Form(new CefKernelControl("about:blank"));
+                    break;
+                case "ie":
+                    formBrowser = new IEForm(new TridentKernelControl());
+                    break;
+                case "webkit":
+                    formBrowser = new WebKitForm(new WebKitKernelControl());
+                    break;
+                default:
+                    formBrowser = new CEF_Form(new CefKernelControl("about:blank"));
+                    break;
+            }
+
 
             ProcessControl.FormBrowser = formBrowser;
+            ProcessControl processControl = new ProcessControl()
+            {
+                Number = number,
+                Port = port
+            };
+            processControl.StartListen();
+
             Application.Run(formBrowser);
-          
+
         }
 
 
-      
 
 
 
-      
+
+
 
     }
 }

@@ -1,7 +1,7 @@
 ﻿using CefSharp;
 using CefSharp.WinForms;
+using CobWeb.Core.Manager;
 using CobWeb.Util;
-using CobWeb.Web.Manager;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,7 +17,10 @@ namespace CobWeb
 {
     public static class Init
     {
+        #region  生成包的时候再设置
+        /*
         public const string CefLibName = "CEFSharp"; //cef目录名称
+
         public  static Assembly OnResolveAssembly(object sender, ResolveEventArgs args)
         {
             Assembly executingAssembly = Assembly.GetExecutingAssembly();
@@ -41,7 +44,14 @@ namespace CobWeb
                 return Assembly.Load(assemblyRawBytes);
             }
         }
-     
+        */
+        #endregion
+
+        public static void Step1_Default()
+        {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+        }
         public static void Step2_GlobalException()
         {
             //设置应用程序处理异常方式：ThreadException处理

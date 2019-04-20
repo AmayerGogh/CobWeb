@@ -39,5 +39,10 @@ namespace CobWeb.Core.Model
         /// 是否使用窗口
         /// </summary>
         public bool IsUseForm { get; set; }
+
+        /// <summary>
+        /// 浏览器内核
+        /// </summary>
+        public string KernelType { get; set; }
     }
 }

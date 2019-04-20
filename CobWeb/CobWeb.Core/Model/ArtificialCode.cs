@@ -29,6 +29,9 @@ namespace CobWeb.Core.Model
 
         [Description("请求被意外中断")]
         A_RequestAccidentBreak = -99993,
+
         A_RequestNormalBreak = -99992,
+        [Description("内核")]
+        A_KernelError =-99990
     }
 }

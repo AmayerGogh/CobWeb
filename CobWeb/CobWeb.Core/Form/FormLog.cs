@@ -108,11 +108,19 @@ namespace CobWeb.Core
             {
                 lock (rtb_record)
                 {
-                    if (rtb_record.Text.Length > 10000)
-                        rtb_record.Clear();
+                    if (rtb_record.InvokeRequired)
+                    {
+                        rtb_record.Invoke(new Action<RichTextBox, string>((a, b) =>
+                        {
+                            LogInner(a, b);
+                        }), rtb_record, msg);
+                    }
+                    else
+                    {
+                        LogInner(rtb_record, msg);
+                    }
+                  
 
-                    rtb_record.AppendText(string.Format("T[{0}][{1}] {2}\r\n", Thread.CurrentThread.ManagedThreadId, DateTime.Now.ToLongTimeString(), msg));
-                    rtb_record.ScrollToCaret();
                 }
             }
         }
@@ -120,7 +128,14 @@ namespace CobWeb.Core
         FormBrowser _excuteForm = null;//主业务窗口最终来源
         readonly Object _objLock = new Object();
 
+        void LogInner(RichTextBox rtb_record, string msg)
+        {
+            if (rtb_record.Text.Length > 10000)
+                rtb_record.Clear();
 
+            rtb_record.AppendText(string.Format("T[{0}][{1}] {2}\r\n", Thread.CurrentThread.ManagedThreadId, DateTime.Now.ToLongTimeString(), msg));
+            rtb_record.ScrollToCaret();
+        }
 
         protected override void OnClosed(EventArgs e)
         {

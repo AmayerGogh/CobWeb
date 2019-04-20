@@ -15,12 +15,11 @@ using System.Threading.Tasks;
 
 namespace CobWeb.AProcess
 {
-    public class ProcessControl
+    public  class ProcessControl
     {
-        public ProcessControl()
+        public  ProcessControl()
         {
-            Step1_GetSetting();
-            Step2_StartListen();
+                     
         }
         public void Init()
         {
@@ -32,44 +31,30 @@ namespace CobWeb.AProcess
         /// <summary>
         /// 端口号
         /// </summary>
-        public static int Port { get; set; }
+        public  int Port { get; set; }
 
         /// <summary>
         /// 进程编号
         /// </summary>
-        public static int Number { get; set; }
+        public  int Number { get; set; }
 
         /// <summary>
         /// 初始化所属MacUrl
         /// </summary>
-        public static string MacUrl { get; set; }
+        public  string MacUrl { get; set; }
 
+        public string KernelType { get; set; }
         //step
 
 
         public void Step1_GetSetting()
         {
-            //得到端口号
-            string[] cmdArgs = Environment.GetCommandLineArgs();
-            if (cmdArgs.Length > 0 && cmdArgs[0].StartsWith("BiHu|"))
-            {
-                var param = cmdArgs[0].Split('|');
-                Number = int.Parse(param[1]);
-                Port = int.Parse(param[2]);
-                MacUrl = param[3];
-
-                //LogDir = MacUrl.Replace(":", string.Empty);
-            }
-            else
-            {
-                Number = 0;
-                Port = 6666;
-            }
+           
         }
 
 
         Socket _serverSocket;
-        void Step2_StartListen()
+      public  void StartListen()
         {
             IPEndPoint ipe;
             _serverSocket = SocketBasic.GetSocket(out ipe, Port);
@@ -82,6 +67,7 @@ namespace CobWeb.AProcess
             ExcuteRecord("*******************************************************");
             Task.Run(() =>
             {
+                Thread.CurrentThread.Name = "socketBase";
                 while (true)
                 {
                     try
@@ -89,6 +75,7 @@ namespace CobWeb.AProcess
                         Socket cSocket = _serverSocket.Accept();
                         Task.Factory.StartNew((c) =>
                         {
+                            Thread.CurrentThread.Name = "socketListen";
                             var socket = c as Socket;
                             try
                             {
@@ -131,6 +118,14 @@ namespace CobWeb.AProcess
                 //是否使用窗口
                 if (paramModel.IsUseForm)
                 {
+                    if (paramModel.KernelType != null && paramModel.KernelType != KernelType)
+                    {
+                        return JsonConvert.SerializeObject(new ResultModel()
+                        {
+                            IsSuccess = false,
+                            Result = ArtificialCode.A_KernelError.ToString()
+                        });
+                    }
                     lock (_objLock)
                     {
                         //如果还在执行则直接返回,这个很重要

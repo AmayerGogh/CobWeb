@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 
 
-namespace CobWeb.Web.Manager
+namespace CobWeb.Core.Manager
 {
     public  class LogManager
     {
