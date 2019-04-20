@@ -30,7 +30,25 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CefSharp, Version=71.0.2.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138" />
+    <Reference Include="CefSharp, Version=71.0.2.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CEFSharp\CefSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CefSharp.BrowserSubprocess.Core">
+      <HintPath>..\CEFSharp\CefSharp.BrowserSubprocess.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CefSharp.Core, Version=71.0.2.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CEFSharp\CefSharp.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CefSharp.WinForms, Version=71.0.2.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CEFSharp\CefSharp.WinForms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -45,16 +63,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\ProcessBase.cs" />
-    <Compile Include="Base\ProcessBaseNotUseBrowser.cs" />
-    <Compile Include="Base\ProcessBaseUseBrowser.cs" />
     <Compile Include="GetVersion.cs" />
     <Compile Include="JsTest.cs" />
+    <Compile Include="ProcessControl.cs" />
     <Compile Include="ProcessFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CobWeb.Info\CobWeb.Core.csproj">
+    <ProjectReference Include="..\CobWeb.Core\CobWeb.Core.csproj">
       <Project>{70495056-0B80-490D-B268-6396A2563404}</Project>
       <Name>CobWeb.Core</Name>
     </ProjectReference>
@@ -63,6 +79,8 @@
       <Name>CobWeb.Util</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Base\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -1,7 +1,4 @@
-﻿using CobWeb.Core.Model;
-using CobWeb.Core.Process;
-using CobWeb.Util;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,7 +13,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CobWeb.Browser
+
+namespace CobWeb.Core
 {
     public partial class FormLog : Form
     {
@@ -72,7 +70,7 @@ namespace CobWeb.Browser
                 this.ShowInTaskbar = false;
                 this.WindowState = FormWindowState.Minimized;
             }
-            Control.CheckForIllegalCrossThreadCalls = false;
+            //Control.CheckForIllegalCrossThreadCalls = false;
         }
         /// <summary>
         /// 主页初始化,只触发一次
@@ -97,7 +95,7 @@ namespace CobWeb.Browser
                 Task.Run(() =>
                 {
                     Thread.Sleep(1000 * 5);
-                    Process.GetCurrentProcess().Kill();
+                    System.Diagnostics.Process.GetCurrentProcess().Kill();
                 });
             }
         }

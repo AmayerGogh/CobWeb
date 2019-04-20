@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CobWeb.AProcess.Base
+namespace CobWeb.Core
 {
     public class ProcessBaseNotUseBrowser : IProcessBase2
     {

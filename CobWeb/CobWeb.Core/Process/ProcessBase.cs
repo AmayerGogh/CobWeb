@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CobWeb.AProcess.Base
+namespace CobWeb.Core
 {
 
     public class ProcessBase
@@ -30,13 +30,13 @@ namespace CobWeb.AProcess.Base
         /// <summary>
         /// 需要交互的页面，这个需要释放
         /// </summary>
-        public IFormBase _form;
+        public FormBrowser _form;
         /// <summary>
         /// 用于限制一些潜在的并发操作
         /// </summary>
         protected Object _objLock = new Object();
         FlashLogger _log;
-        public ProcessBase(IFormBase form, FlashLogger log)
+        public ProcessBase(FormBrowser form, FlashLogger log)
         {
             _form = form;
             _log = log;
@@ -119,7 +119,7 @@ namespace CobWeb.AProcess.Base
 
                     if (!_isCloseForm)
                     {
-                        _form.SetWorking(false);
+                        _form.SetWorkingStop();
                         _form.Stop();
                     }
                     else

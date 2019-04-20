@@ -5,20 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using WebKit;
 
-namespace CobWeb.Util.Control
+namespace CobWeb.Core.Control
 {
-     public  class MyWebKitBrowser: WebKitBrowser,IBrowserBase
+     public  class WebKitKernelControl : WebKitBrowser,IKernelControl
     {
-        public MyWebKitBrowser()
+        public WebKitKernelControl ()
         {
             
         }
-        public IBrowserBase GetBrowser()
+        public IKernelControl GetBrowser()
         {
             return this;
         }
 
-        bool IBrowserBase.IsDisposed()
+        bool IKernelControl.IsDisposed()
         {
             throw new NotImplementedException();
         }

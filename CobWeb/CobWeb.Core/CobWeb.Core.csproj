@@ -32,31 +32,83 @@
   <ItemGroup>
     <Reference Include="CefSharp">
       <HintPath>..\CEFSharp\CefSharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="CefSharp.WinForms, Version=71.0.2.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\CobWeb\bin\Debug\CEFSharp\CefSharp.WinForms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WebKitBrowser">
+      <HintPath>..\WebKit\WebKitBrowser.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Base\IKernelControl.cs" />
+    <Compile Include="Control\TridentKernelControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Form\FormBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FormBrowser.Designer.cs">
+      <DependentUpon>FormBrowser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Form\FormBrowser_partial.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FormLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FormLog.Designer.cs">
+      <DependentUpon>FormLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\ArtificialCode.cs" />
     <Compile Include="Model\LoginResult.cs" />
     <Compile Include="Model\ParamModel.cs" />
     <Compile Include="Model\ResultModel.cs" />
-    <Compile Include="Process\IBrowserBase.cs" />
+    <Compile Include="IFormBase.cs" />
+    <Compile Include="Control\CefKernelControl.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Control\WebKitKernelControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
     <Compile Include="Process\IProcessBase.cs" />
     <Compile Include="Process\IProcessBase2.cs" />
+    <Compile Include="Process\ProcessBase.cs" />
+    <Compile Include="Process\ProcessBaseNotUseBrowser.cs" />
+    <Compile Include="Process\ProcessBaseUseBrowser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CobWeb.Util\CobWeb.Util.csproj">
       <Project>{1BD9FFD9-F0F6-479E-95A0-8F5F3E303DAC}</Project>
       <Name>CobWeb.Util</Name>
+      <Private>False</Private>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Form\FormBrowser.resx">
+      <DependentUpon>FormBrowser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Form\FormLog.resx">
+      <DependentUpon>FormLog.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

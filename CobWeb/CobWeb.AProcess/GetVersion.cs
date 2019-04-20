@@ -1,7 +1,5 @@
-﻿using CobWeb.AProcess.Base;
-
+﻿using CobWeb.Core;
 using CobWeb.Core.Model;
-using CobWeb.Core.Process;
 using CobWeb.Util.FlashLog;
 using Newtonsoft.Json;
 using System;
@@ -14,9 +12,9 @@ namespace CobWeb.AProcess
 {
     public class GetVersion : ProcessBaseUseBrowser
     {
-        IFormBase _form;
+        FormBrowser _form;
         ParamModel _request;
-        public GetVersion(IFormBase form, ParamModel paramModel)
+        public GetVersion(FormBrowser form, ParamModel paramModel)
             : base(form, paramModel, new FlashLogger("GetVersion"))
         {
             _request = paramModel;

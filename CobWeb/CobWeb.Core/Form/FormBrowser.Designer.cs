@@ -1,7 +1,6 @@
 ﻿using CefSharp.WinForms;
-using CobWeb.Browser;
 
-namespace CobWeb.Browser
+namespace CobWeb.Core
 {
     partial class FormBrowser
     {

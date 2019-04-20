@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using static CobWeb.Util.TimerHelp;
 
-namespace CobWeb.AProcess.Base
+namespace CobWeb.Core
 {
     public abstract class ProcessBaseUseBrowser : IProcessBase
     {
@@ -27,7 +27,7 @@ namespace CobWeb.AProcess.Base
         /// </summary>
         public int timeout = 30;
         public bool IsWorkGoOn { get; set; }
-        public ProcessBaseUseBrowser(IFormBase form, ParamModel paramModel, FlashLogger log)
+        public ProcessBaseUseBrowser(FormBrowser form, ParamModel paramModel, FlashLogger log)
         {
             _log = log;
             processBase = new ProcessBase(form,_log);            

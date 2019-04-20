@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CobWeb.Core.Process
+namespace CobWeb.Core
 {
     /// <summary>
     /// 需要窗口的接口,同时需要继承ProcessBase类

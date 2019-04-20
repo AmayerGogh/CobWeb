@@ -1,8 +1,6 @@
 ﻿using CefSharp;
 using CefSharp.WinForms;
-using CobWeb.Browser;
 using CobWeb.Core.Process;
-using CobWeb.Util.Control;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -18,27 +16,26 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CobWeb.Browser
+namespace CobWeb.Core
 {
-    public partial class FormBrowser : Form, IFormBase
+    public partial class FormBrowser : Form
     {
         
         /// <summary>
-        /// 窗口初始化
+        /// 
         /// </summary>
-        /// <param name="isShow">是否显示</param>
-        public FormBrowser(IBrowserBase browser,bool isShow = true)
+        /// <param name="kernelControl">使用哪个内核</param>
+        /// <param name="isShow"></param>
+        public FormBrowser(IKernelControl kernelControl, bool isShow = true)
         {
             //_excuteRecord = record;
             //_mainForm = form;
             isShowForm = isShow;
             BrowserInit();
             InitializeComponent();
-            ShowLogForm();
-            Step1_GetSetting();
-            Step2_StartListen();
+            ShowLogForm();         
             StartAssist();
-            this.Mybrowser = browser;
+            this.KernelControl = kernelControl;
         }
 
         private void InitializeComponent()
@@ -140,7 +137,7 @@ namespace CobWeb.Browser
             this.MainMenuStrip = this.menuStrip1;
             this.MinimumSize = new System.Drawing.Size(1200, 700);
             this.Name = "FormBrowser";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormBrowser_FormClosed);
+            //this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormBrowser_FormClosed);
             this.Load += new System.EventHandler(this.FormBrowser_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
@@ -148,9 +145,9 @@ namespace CobWeb.Browser
             this.PerformLayout();
 
         }
-        private IBrowserBase mybrowser;
+        
 
-        public IBrowserBase Mybrowser { get => mybrowser; set => mybrowser = value; }
+        public IKernelControl KernelControl { get; set; }
 
         private void FormBrowser_Load(object sender, EventArgs e)
         {
@@ -159,19 +156,14 @@ namespace CobWeb.Browser
 
         }
 
-
-
-        private void Browser_StartNewWindow(object sender, NewWindowEventArgs e)
-        {
-            //Navigate(e.url);
-        }
+     
         private void Browser_TitleChanged(object sender, TitleChangedEventArgs e)
         {
             //this.Text =this.browser
         }
         private void 刷新ToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Mybrowser.Refresh();
+            KernelControl.Refresh();
         }
 
         private void 返回ToolStripMenuItem_Click(object sender, EventArgs e)
@@ -238,18 +230,18 @@ namespace CobWeb.Browser
             
         }
 
-        private void OnApplicationExit(object sender, EventArgs e)
-        {
-            Cef.Shutdown();
-        }
+        //private void OnApplicationExit(object sender, EventArgs e)
+        //{
+        //   // Cef.Shutdown();
+        //}
 
 
-        private void FormBrowser_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            //IsDisposed = true;
-            //ClearWebBrowser();
-            Dispose();
-        }
+        //private void FormBrowser_FormClosed(object sender, FormClosedEventArgs e)
+        //{
+        //    //IsDisposed = true;
+        //    //ClearWebBrowser();
+        //    Dispose();
+        //}
 
      
        

@@ -1,4 +1,5 @@
-﻿using CobWeb.Util.Control;
+﻿using CobWeb.Core;
+using CobWeb.Core.Control;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace CobWeb.Browser
        
          
         
-        public WebKitForm(MyWebKitBrowser browser) : base(browser)
+        public WebKitForm(WebKitKernelControl  browser) : base(browser)
         {
 
              panel1.Controls.Add(browser);

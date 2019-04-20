@@ -1,4 +1,4 @@
-﻿namespace CobWeb.Browser
+﻿namespace CobWeb.Core
 {
     partial class FormLog
     {

@@ -1,8 +1,7 @@
-﻿using CefSharp;
+﻿using CobWeb.Core;
 using CobWeb.Core.Model;
 using CobWeb.Core.Process;
 using CobWeb.Util;
-using CobWeb.Util.Control;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,198 +12,22 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
-namespace CobWeb.Browser
+namespace CobWeb.AProcess
 {
-    public partial class FormBrowser
+    public class ProcessControl
     {
-
-        /// <summary>
-        /// 需要辅助方法执行的代码
-        /// </summary>
-        List<Action> _assistActions = new List<Action>();
-        public new bool IsDisposed = false;
-
-
-
-        #region _assistActions
-        /// <summary>
-        /// 辅助方法,当需要借助主线程进行某种操作时
-        /// </summary>
-        public void StartAssist()
+        public ProcessControl()
         {
-            var timer = new TimerHelp();
-            timer.ExcuteCompleted += Assist_timer_ExcuteCompleted;
-            timer.Start();
+            Step1_GetSetting();
+            Step2_StartListen();
         }
-        /// <summary>
-        /// 增加方法到辅助方法中进行执行,执行完之后会自动清除
-        /// </summary>
-        public void AddAssistAction(Action action)
+        public void Init()
         {
-            lock (_assistActions)
-            {
-                _assistActions.Add(action);
-            }
-        }
-
-        public void ClearAssistAction()
-        {
-            lock (_assistActions)
-            {
-                if (_assistActions.Count > 0)
-                {
-                    try
-                    {
-                        _assistActions.Clear();
-                    }
-                    catch (Exception ex)
-                    {
-
-                    }
-                }
-            }
-        }
-        void Assist_timer_ExcuteCompleted(TimerHelp timer, object param, bool isCancel)
-        {
-            lock (_assistActions)
-            {
-                if (_assistActions.Count > 0)
-                {
-                    try
-                    {
-                        foreach (var action in _assistActions)
-                        {
-                            try
-                            {
-                                action();
-                            }
-                            catch (Exception ee)
-                            {
-                                // var position = nameof(ProcessForm) + "--" + nameof(Assist_timer_ExcuteCompleted);
-                                //var errMsg = ee.ErrMessage(position);
-                                var errTitle = "【ProcessForm 定时方法执行异常】：";
-                                //LogManager.全局异常重点关注_Error(errTitle + errMsg.DetailErrMessage);
-                            }
-                        }
-                    }
-                    catch { }
-                    finally
-                    {
-                        _assistActions.Clear();
-                    }
-                }
-            }
-
-            //webBrowser销毁表示程序退出了
-            if (!Mybrowser.IsDisposed())
-            {
-                StartAssist();
-            }
-            else
-            {
-                //打个日志
-            }
-
-
-        }
-        #endregion
-
-        #region 执行
-        /// <summary>
-        /// 处理程序,每次须重新创建
-        /// </summary>
-        IProcessBase _process = null;
-        /// <summary>
-        /// 设置操作类型,也即设置处理事件
-        /// </summary>
-        public void SetActionType(ParamModel paramModel)
-        {
-            //赋值为null
-            this._result = null;
-
-            //得到处理程序,若有异常直接抛出
-            _process = ProcessFactory.GetProcessByMethod(this, paramModel);
-
-            //开始执行
-            _process?.Begin();
-        }
-        #endregion
-
-        public void ClearWebBrowser()
-        {
-            try
-            {
-                Mybrowser.Dispose();
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-        public void Stop()
-        {
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-
-        FormLog _formLog;
-        FormLog FormLog
-        {
-            get
-            {
-                if (_formLog == null || _formLog.IsDisposed)
-                {
-                    _formLog = new FormLog(true);
-                }
-                return _formLog;
-            }
-        }
-        void ShowLogForm()
-        {
-            Thread newThread = new Thread(new ThreadStart(() =>
-            {
-                try
-                {
-                    var form = FormLog;
-                    if (form.Visible == true)
-                    {
-                        form.Activate();
-                    }
-                    else
-                    {
-                        FormLog.ShowDialog();
-                    }
-
-                }
-                finally
-                {
-                    //dForm.Close();
-                }
-            }));
-            newThread.SetApartmentState(ApartmentState.STA);
-            newThread.IsBackground = true; //随主线程一同退出
-            newThread.Start();
-        }
-        //public Action<string> _excuteRecord;
-        public void ExcuteRecord(string txt)
-        {
-            if (_formLog != null)
-            {
-                _formLog.ExcuteRecord(txt);
-            }
-
 
         }
 
-
+        public static FormBrowser FormBrowser;
 
         /// <summary>
         /// 端口号
@@ -311,21 +134,15 @@ namespace CobWeb.Browser
                     lock (_objLock)
                     {
                         //如果还在执行则直接返回,这个很重要
-                        if (_isWorking)
+                        if (FormBrowser.IsWorking())
                         {
                             return JsonConvert.SerializeObject(new ResultModel()
                             {
                                 IsSuccess = false,
                                 Result = ArtificialCode.A_ChangeProcess.ToString()
                             });
-                        }
-                        else
-                        {
-                            _isWorking = true;
-                        }
-
+                        }                       
                     }
-
                     return ProcessAndResult(dataParam, paramModel);
                 }
                 else
@@ -364,7 +181,7 @@ namespace CobWeb.Browser
                     //得到执行结果
                     while (!CommonCla.IsTimeout(paramModel.StartTime, paramModel.Timeout))
                     {
-                        resultModel.Result = _result;
+                        resultModel.Result = FormBrowser.GetResult();
                         if (resultModel.Result == null)
                         {
                             if (MonitorStopProcess(paramModel.StopKey))
@@ -373,7 +190,7 @@ namespace CobWeb.Browser
                                 break;
                             }
 
-                            if (IsDisposed)
+                            if (FormBrowser.IsDisposed)
                                 throw new Exception(ArtificialCode.A_RequestAccidentBreak.ToString());
                             Thread.Sleep(100);
                         }
@@ -396,8 +213,7 @@ namespace CobWeb.Browser
             catch (Exception ex)//解析参数发生错误
             {
                 //如果Start发生异常
-                _isWorking = false;
-
+                FormBrowser.SetWorkingStop();                
                 resultModel.Result = ex.Message;
                 //_log.FatalFormat("{0}\r\nStart()\r\n{1}", paramModel.Method, ex.Message);
             }
@@ -423,6 +239,27 @@ namespace CobWeb.Browser
             return JsonConvert.SerializeObject(resultModel);
 
         }
+        #region 执行
+        /// <summary>
+        /// 处理程序,每次须重新创建
+        /// </summary>
+        IProcessBase _process = null;
+        /// <summary>
+        /// 设置操作类型,也即设置处理事件
+        /// </summary>
+        public void SetActionType(ParamModel paramModel)
+        {
+         
+            //赋值为null
+           // this._result = null;
+
+            //得到处理程序,若有异常直接抛出
+            _process = ProcessFactory.GetProcessByMethod(ProcessControl.FormBrowser, paramModel);
+            FormBrowser.SetWorking(_process);
+            //开始执行
+            _process?.Begin();
+        }
+        #endregion
         /// <summary>
         /// 中断请求的监视
         /// </summary>
@@ -436,69 +273,12 @@ namespace CobWeb.Browser
             else
                 return false;
         }
-
-
-
-        //对外接口
-
-        /// <summary>
-        /// 执行事件完成后返回的结果,未完成时为null
-        /// </summary>
-        public string _result;
-        public string GetResult()
+        public void ExcuteRecord(string txt)
         {
-            return _result;
-        }
-        public void SetResult(string result)
-        {
-            this._result = result;
+            FormBrowser.ExcuteRecord(txt);            
         }
 
 
-        /// <summary>
-        /// 标记是否正在执行
-        /// </summary>
-        public bool _isWorking = false;
-        public bool IsWorking()
-        {
-            return this._isWorking;
-        }
-
-        public void SetWorking(bool iswork)
-        {
-            this._isWorking = iswork;
-        }
-
-
-        /// <summary>
-        /// 是否显示窗口
-        /// </summary>
-        public bool isShowForm { get; set; }
-        public bool IsShowForm()
-        {
-            return isShowForm;
-        }
-        public void Navigate(string address)
-        {
-            if (String.IsNullOrEmpty(address)) return;
-            if (address.Equals("about:blank")) return;
-            if (!address.StartsWith("http://") &&
-                !address.StartsWith("https://"))
-            {
-                address = "http://" + address;
-            }
-            try
-            {
-
-                this.Mybrowser.Navigate(address);
-                
-            }
-            catch (System.UriFormatException)
-            {
-                return;
-            }
-        }
-       
+        //监听
     }
-
 }

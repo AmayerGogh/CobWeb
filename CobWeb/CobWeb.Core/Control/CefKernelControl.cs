@@ -1,16 +1,17 @@
 ﻿using CefSharp;
 using CefSharp.WinForms;
+using CobWeb.Util;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CobWeb.Util.Control
+namespace CobWeb.Core.Control
 {
-    public class CefBrowser : ChromiumWebBrowser, IBrowserBase
+    public class CefKernelControl : ChromiumWebBrowser, IKernelControl
     {
-        public CefBrowser(string address, IRequestContext requestContext = null) : base(address, requestContext)
+        public CefKernelControl(string address, IRequestContext requestContext = null) : base(address, requestContext)
         {
             this.LifeSpanHandler = new CefLifeSpanHandler();
             this.LoadHandler = new LoadHandler();
@@ -19,7 +20,7 @@ namespace CobWeb.Util.Control
         }
         public event EventHandler<NewWindowEventArgs> StartNewWindow;
 
-        public new IBrowserBase GetBrowser()
+        public new IKernelControl GetBrowser()
         {
             return this;
         }
@@ -186,6 +187,21 @@ namespace CobWeb.Util.Control
             ////js中调用
             ////bound.xxx
         }
+
+        bool IKernelControl.IsDisposed()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Refresh()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 
     #region 新窗口打开
@@ -215,7 +231,7 @@ namespace CobWeb.Util.Control
 
         public bool OnBeforePopup(IWebBrowser browserControl, IBrowser browser, IFrame frame, string targetUrl, string targetFrameName, WindowOpenDisposition targetDisposition, bool userGesture, IPopupFeatures popupFeatures, IWindowInfo windowInfo, IBrowserSettings browserSettings, ref bool noJavascriptAccess, out IWebBrowser newBrowser)
         {
-            var chromiumWebBrowser = (CefBrowser)browserControl;
+            var chromiumWebBrowser = (CefKernelControl)browserControl;
 
             chromiumWebBrowser.Invoke(new Action(() =>
             {

@@ -37,15 +37,19 @@
   <ItemGroup>
     <Reference Include="CefSharp">
       <HintPath>..\CEFSharp\CefSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="CefSharp.BrowserSubprocess.Core">
       <HintPath>..\CEFSharp\CefSharp.BrowserSubprocess.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="CefSharp.Core">
       <HintPath>..\CEFSharp\CefSharp.Core.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="CefSharp.WinForms">
       <HintPath>..\CEFSharp\CefSharp.WinForms.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -66,43 +70,34 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BrowserExtension.cs" />
-    <Compile Include="FormBrowser.cs">
+    <Compile Include="CEF_Form.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="FormBrowser.cs" />
     <Compile Include="FormBrowser.Designer.cs">
       <DependentUpon>FormBrowser.cs</DependentUpon>
     </Compile>
-    <Compile Include="FormBrowser_partial.cs">
+    <Compile Include="IEForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormLog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormLog.Designer.cs">
-      <DependentUpon>FormLog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="LoadHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WebKitForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="FormBrowser.resx">
       <DependentUpon>FormBrowser.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormLog.resx">
-      <DependentUpon>FormLog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CobWeb.AProcess\CobWeb.AProcess.csproj">
-      <Project>{7a3e0cf9-7200-482f-b344-84a19f220336}</Project>
-      <Name>CobWeb.AProcess</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\CobWeb.Info\CobWeb.Core.csproj">
+    <ProjectReference Include="..\CobWeb.Core\CobWeb.Core.csproj">
       <Project>{70495056-0B80-490D-B268-6396A2563404}</Project>
       <Name>CobWeb.Core</Name>
+      <Private>True</Private>
     </ProjectReference>
     <ProjectReference Include="..\CobWeb.Util\CobWeb.Util.csproj">
       <Project>{1BD9FFD9-F0F6-479E-95A0-8F5F3E303DAC}</Project>

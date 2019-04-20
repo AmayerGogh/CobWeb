@@ -38,22 +38,22 @@
   <ItemGroup>
     <Reference Include="CefSharp, Version=71.0.2.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\CEFSharp\CefSharp.dll</HintPath>
+      <HintPath>..\CEFSharp\CefSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CefSharp.BrowserSubprocess.Core, Version=71.0.2.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\CEFSharp\CefSharp.BrowserSubprocess.Core.dll</HintPath>
+      <HintPath>..\CEFSharp\CefSharp.BrowserSubprocess.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CefSharp.Core, Version=71.0.2.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\CEFSharp\CefSharp.Core.dll</HintPath>
+      <HintPath>..\CEFSharp\CefSharp.Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CefSharp.WinForms, Version=71.0.2.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>bin\Debug\CEFSharp\CefSharp.WinForms.dll</HintPath>
+      <HintPath>..\CEFSharp\CefSharp.WinForms.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -110,8 +110,8 @@
       <Project>{A72285A4-4681-490F-A0AC-9A6C3CB8C465}</Project>
       <Name>CobWeb.Browser</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CobWeb.Info\CobWeb.Core.csproj">
-      <Project>{70495056-0b80-490d-b268-6396a2563404}</Project>
+    <ProjectReference Include="..\CobWeb.Core\CobWeb.Core.csproj">
+      <Project>{70495056-0B80-490D-B268-6396A2563404}</Project>
       <Name>CobWeb.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\CobWeb.Util\CobWeb.Util.csproj">
