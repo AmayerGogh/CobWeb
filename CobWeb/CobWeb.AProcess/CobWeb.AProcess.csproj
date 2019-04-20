@@ -30,24 +30,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CefSharp, Version=71.0.2.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\CEFSharp\CefSharp.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="CefSharp">
+      <HintPath>..\Lib\CEFSharp\CefSharp.dll</HintPath>
     </Reference>
     <Reference Include="CefSharp.BrowserSubprocess.Core">
-      <HintPath>..\CEFSharp\CefSharp.BrowserSubprocess.Core.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\Lib\CEFSharp\CefSharp.BrowserSubprocess.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CefSharp.Core, Version=71.0.2.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\CEFSharp\CefSharp.Core.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="CefSharp.Core">
+      <HintPath>..\Lib\CEFSharp\CefSharp.Core.dll</HintPath>
     </Reference>
-    <Reference Include="CefSharp.WinForms, Version=71.0.2.0, Culture=neutral, PublicKeyToken=40c4b6fc221f4138, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\CEFSharp\CefSharp.WinForms.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="CefSharp.WinForms">
+      <HintPath>..\Lib\CEFSharp\CefSharp.WinForms.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>

@@ -23,8 +23,9 @@ namespace CobWeb
         [STAThread] 
         static void Main()
         {          
-            AppDomain.CurrentDomain.AssemblyResolve += Init.OnResolveAssembly;
-            Init.Step1_InitializeCefSetting();
+
+            //AppDomain.CurrentDomain.AssemblyResolve += Init.OnResolveAssembly;
+           // Init.Step1_InitializeCefSetting();
             Init.Step2_GlobalException();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
@@ -37,13 +38,14 @@ namespace CobWeb
             var browser = new CefKernelControl("about:blank");
             var formBrowser = new CEF_Form(browser);
 
+            //暂时不用
             //weibkit
             //var browser = new WebKitKernelControl();
             //var formBrowser = new WebKitForm(browser);
 
             ProcessControl.FormBrowser = formBrowser;
             Application.Run(formBrowser);
-           // MainForm
+          
         }
 
 

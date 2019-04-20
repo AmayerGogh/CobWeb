@@ -13,7 +13,7 @@ util 常用工具 不包含业务
 
 
 cef包
-将cef的包放入到bin\CEFSharp 下  包放在了微云中
-引用包的时候要引用CEFSharp 文件夹里的,并CopyLocal 设置为false
+将cef的包放入到bin 下  包放在了微云中
+
 webkit 
-将所有放到bin下
+将所有放到bin下 

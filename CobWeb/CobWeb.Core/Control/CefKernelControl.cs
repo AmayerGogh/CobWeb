@@ -11,6 +11,10 @@ namespace CobWeb.Core.Control
 {
     public class CefKernelControl : ChromiumWebBrowser, IKernelControl
     {
+        static CefKernelControl()
+        {
+            Cef_Setting.Step1_InitializeCefSetting();
+        }
         public CefKernelControl(string address, IRequestContext requestContext = null) : base(address, requestContext)
         {
             this.LifeSpanHandler = new CefLifeSpanHandler();

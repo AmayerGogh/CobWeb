@@ -41,18 +41,7 @@ namespace CobWeb
                 return Assembly.Load(assemblyRawBytes);
             }
         }
-        public static void Step1_InitializeCefSetting()
-        {
-            string appPath = Application.StartupPath;
-            CefSettings settings = new CefSettings
-            {
-                Locale = "zh-CN", //中文 
-                BrowserSubprocessPath = Path.Combine(appPath, CefLibName, "CefSharp.BrowserSubprocess.exe"),//设置浏览器子程序启动路径 
-                
-            };
-            CefSharpSettings.LegacyJavascriptBindingEnabled = true;//启用CEF中和网页的JS交互
-            Cef.Initialize(settings);
-        }
+     
         public static void Step2_GlobalException()
         {
             //设置应用程序处理异常方式：ThreadException处理

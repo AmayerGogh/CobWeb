@@ -36,20 +36,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="CefSharp">
-      <HintPath>..\CEFSharp\CefSharp.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\Lib\CEFSharp\CefSharp.dll</HintPath>
     </Reference>
     <Reference Include="CefSharp.BrowserSubprocess.Core">
-      <HintPath>..\CEFSharp\CefSharp.BrowserSubprocess.Core.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\Lib\CEFSharp\CefSharp.BrowserSubprocess.Core.dll</HintPath>
     </Reference>
     <Reference Include="CefSharp.Core">
-      <HintPath>..\CEFSharp\CefSharp.Core.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\Lib\CEFSharp\CefSharp.Core.dll</HintPath>
     </Reference>
     <Reference Include="CefSharp.WinForms">
-      <HintPath>..\CEFSharp\CefSharp.WinForms.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\Lib\CEFSharp\CefSharp.WinForms.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -65,7 +61,7 @@
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
     <Reference Include="WebKitBrowser">
-      <HintPath>..\WebKit\WebKitBrowser.dll</HintPath>
+      <HintPath>..\Lib\WebKit\WebKitBrowser.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
