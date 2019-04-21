@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace CobWebAdapter
 {
-    public partial class FormMain : Form
+    public partial class FormDashboard : Form
     {
-        public FormMain()
+        public FormDashboard()
         {
             InitializeComponent();
         }

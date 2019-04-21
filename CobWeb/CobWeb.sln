@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28729.10
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CobWeb", "CobWeb\CobWeb.csproj", "{B7CD1CDC-BE42-414B-837B-75BEF63F7423}"
 EndProject
@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CobWeb.Test", "CobWeb.Test\
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Adapter", "Adapter", "{B2ADECF3-B1F3-484C-97B9-CCF69756B56F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CobWebAdapter", "CobWebAdapter\CobWebAdapter.csproj", "{5AD08285-C1E2-4CDD-BFFD-A7FE7259FBE9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CobWeb.Adapter", "CobWebAdapter\CobWeb.Adapter.csproj", "{5AD08285-C1E2-4CDD-BFFD-A7FE7259FBE9}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1B1BFEA0-3A81-44EE-B965-12DE5DF567C7}"
 	ProjectSection(SolutionItems) = preProject

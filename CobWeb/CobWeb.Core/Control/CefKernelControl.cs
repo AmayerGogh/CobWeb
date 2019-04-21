@@ -194,7 +194,7 @@ namespace CobWeb.Core.Control
 
         bool IKernelControl.IsDisposed()
         {
-            throw new NotImplementedException();
+            return IsDisposed;
         }
 
         public void Refresh()

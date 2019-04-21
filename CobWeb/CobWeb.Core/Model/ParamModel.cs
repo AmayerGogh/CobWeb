@@ -44,5 +44,13 @@ namespace CobWeb.Core.Model
         /// 浏览器内核
         /// </summary>
         public string KernelType { get; set; }
+        /// <summary>
+        /// 需要动态加载
+        /// </summary>
+        public bool InAssembly { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string FileName { get; set; }  
     }
 }

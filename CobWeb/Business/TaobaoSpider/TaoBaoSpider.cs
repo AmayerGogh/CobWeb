@@ -28,7 +28,6 @@ namespace TaobaoSpider
             _request = paramModel;
             _form = form as IEForm;
             var baseform = base.processBase._form;
-
         }
         public override void Login()
         {
@@ -38,7 +37,7 @@ namespace TaobaoSpider
         public override void StartRequest()
         {
             _form.ExcuteRecord("start");
-            _form.browser.Navigate("http://ithome.com");            
+            _form.browser.Navigate("http://taobao.com");            
         }
     }
 }

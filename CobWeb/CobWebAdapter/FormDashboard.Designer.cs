@@ -1,6 +1,6 @@
 ﻿namespace CobWebAdapter
 {
-    partial class FormMain
+    partial class FormDashboard
     {
         /// <summary>
         /// Required designer variable.

@@ -47,11 +47,16 @@
     <Reference Include="CefSharp.WinForms">
       <HintPath>..\Lib\CEFSharp\CefSharp.WinForms.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Caching" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
@@ -71,6 +76,7 @@
     <Compile Include="FlashLog\FlashLogger.cs" />
     <Compile Include="FlashLog\FlashLogSetting.cs" />
     <Compile Include="FlashLog\FlashLogWrite.cs" />
+    <Compile Include="LocalHelper\MonitorConfig.cs" />
     <Compile Include="MemoryCacheHelper.cs" />
     <Compile Include="MemoryMappedHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,6 +84,9 @@
     <Compile Include="StringHelper.cs" />
     <Compile Include="ThredHelper\ThreadExtension.cs" />
     <Compile Include="ThredHelper\Timer.cs" />
+    <Compile Include="TridentHelper\CommonWb.cs" />
+    <Compile Include="TridentHelper\WebBrowserExtensions.cs" />
+    <Compile Include="TridentHelper\WebBrowserImage.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

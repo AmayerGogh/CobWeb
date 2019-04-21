@@ -4,9 +4,12 @@ using CobWeb.Core.Model;
 using CobWeb.Core.Process;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CobWeb.Core.Process
 {
@@ -14,7 +17,9 @@ namespace CobWeb.Core.Process
     {
         static readonly Dictionary<string, Type> ProcessBaseDic = new Dictionary<string, Type>();
         static readonly Dictionary<string, Type> ProcessBase2Dic = new Dictionary<string, Type>();
+        public static Dictionary<string, Type> dictionary = new Dictionary<string, Type>();
 
+        static Dictionary<string, object> classs = new Dictionary<string, object>();
         static ProcessFactory()
         {
             //{
@@ -38,8 +43,16 @@ namespace CobWeb.Core.Process
             //}
         }
 
-        public static IProcessBase GetProcessByMethod(FormBrowser formBrowser,ParamModel paramModel)
-        {           
+        public static IProcessBase GetProcessByMethod(FormBrowser formBrowser, ParamModel paramModel)
+        {
+            paramModel.InAssembly = true;
+            paramModel.FileName = "TaobaoSpider.dll";
+            paramModel.IsUseForm = true;
+            paramModel.Method = "TaoBaoSpider";
+            if (paramModel.InAssembly)
+            {
+                return GetProcessInAssembly(formBrowser, paramModel);
+            }
             var process = new GetVersion(formBrowser, paramModel);
             return (IProcessBase)process;
         }
@@ -62,6 +75,41 @@ namespace CobWeb.Core.Process
             var process = (IProcessBase2)Activator.CreateInstance(ProcessBase2Dic[paramModel.Method]);
 
             return process;
+        }
+        //ParamModel paramModel = new ParamModel()
+        //{
+        //    FileName = "TaobaoSpider.dll",
+        //    IsUseForm = true,
+        //    Method = "TaoBaoSpider"
+        //};
+        public static IProcessBase GetProcessInAssembly(FormBrowser formBrowser, ParamModel paramModel)
+        {
+         
+            if (!dictionary.ContainsKey(paramModel.Method))
+            {
+                string dllPath = Path.Combine(Application.StartupPath, "CobProcess", paramModel.FileName);
+                Assembly assembly = Assembly.LoadFrom(dllPath);
+                var types = assembly.GetTypes();
+                foreach (var item in types)
+                {
+                    var i = item.BaseType;
+                    if (i == typeof(ProcessBaseUseBrowser))
+                    {
+                        dictionary.Add(item.Name, item);
+                    }
+                }
+            }
+            if (!dictionary.ContainsKey(paramModel.Method))
+            {
+                Console.WriteLine("未能加载到");
+            }
+            var type = dictionary[paramModel.Method];
+           
+
+            var process = Activator.CreateInstance(type, formBrowser, paramModel);
+            var thisP = process as IProcessBase;
+            thisP?.Begin();
+            return (IProcessBase)process;
         }
     }
 }

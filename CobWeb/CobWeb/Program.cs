@@ -39,18 +39,21 @@ namespace CobWeb
             if (cmdArgs.Length > 0)
             {
                 var param_str = cmdArgs.Where(m => m.Contains("cob") && m.Contains("|")).FirstOrDefault();
-                var param = param_str.Split('|');
-                if (param.Length > 1)
+                if (param_str!=null)
                 {
-                    browserType = param[1];
-                }
-                if (param.Length > 2)
-                {
-                    port = int.Parse(param[2]);
-                }
-                if (param.Length > 3)
-                {
-                    number = int.Parse(param[3]);
+                    var param = param_str.Split('|');
+                    if (param.Length > 1)
+                    {
+                        browserType = param[1];
+                    }
+                    if (param.Length > 2)
+                    {
+                        port = int.Parse(param[2]);
+                    }
+                    if (param.Length > 3)
+                    {
+                        number = int.Parse(param[3]);
+                    }
                 }
             }
 
@@ -82,13 +85,5 @@ namespace CobWeb
             Application.Run(formBrowser);
 
         }
-
-
-
-
-
-
-
-
     }
 }

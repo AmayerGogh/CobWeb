@@ -12,6 +12,10 @@ namespace CobWeb.Core.Control
 {
     public class TridentKernelControl : WebBrowser, IKernelControl
     {
+        static TridentKernelControl()
+        {
+            IE_Setting.Step1_EmulationSet();
+        }
         public TridentKernelControl()
         {
             ScriptErrorsSuppressed = true;

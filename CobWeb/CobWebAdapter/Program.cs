@@ -17,7 +17,7 @@ namespace CobWebAdapter
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormMain());
+            Application.Run(new FormDashboard());
             var pro = Process.GetCurrentProcess();
             //pro.ProcessName = "1"; 
         }

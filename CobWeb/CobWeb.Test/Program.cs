@@ -1,10 +1,17 @@
-﻿using CobWeb.Util;
+﻿using CobWeb.Browser;
+using CobWeb.Core;
+using CobWeb.Core.Control;
+using CobWeb.Core.Model;
+using CobWeb.Util;
 using CobWeb.Util.FlashLog;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace CobWeb.Test
 {
@@ -40,10 +47,20 @@ namespace CobWeb.Test
         static void Main(string[] args)
         {
 
-            var test = "user=hash=4CD4FE9BD8795F178C8903D96B54E293E06F1C968135957810F1D94F0ED1573944A45B631BE04236C08128CC9569CDE90578E451C3EA9BC1B39F24213074125B9D1B81DB7C9291F2CCA327EC4C6D668A070FC0A5A6DC893C";
+            Load load = new Load();
+            load.Init();
             Console.ReadKey();
         }
     }
     
+    public class Load
+    {
+        public static Dictionary<string, Type> dictionary = new Dictionary<string, Type>();
+        public void Init()
+        {
+           
+        }
+
+    }
     
 }

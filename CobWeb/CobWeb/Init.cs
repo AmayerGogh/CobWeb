@@ -48,7 +48,7 @@ namespace CobWeb
         #endregion
 
         public static void Step1_Default()
-        {
+        {           
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
         }
