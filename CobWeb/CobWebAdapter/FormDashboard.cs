@@ -16,5 +16,22 @@ namespace CobWebAdapter
         {
             InitializeComponent();
         }
+
+        private void FormDashboard_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btn_test_debug_Click(object sender, EventArgs e)
+        {
+            FormAdapter form = new FormAdapter();
+            form.Show();
+        }
+
+        private void btn_bin_debug_Click(object sender, EventArgs e)
+        {
+            FormAdapter form = new FormAdapter();
+            form.Show();
+        }
     }
 }

@@ -34,7 +34,6 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.rtxt_Param = new System.Windows.Forms.RichTextBox();
-            this.label3 = new System.Windows.Forms.Label();
             this.rtxt_Result = new System.Windows.Forms.RichTextBox();
             this.txt_stopkey = new System.Windows.Forms.TextBox();
             this.lb_time = new System.Windows.Forms.Label();
@@ -42,16 +41,20 @@
             this.txt_prot = new System.Windows.Forms.TextBox();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
-            this.cb_istest = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.label7 = new System.Windows.Forms.Label();
+            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_Timeout)).BeginInit();
             this.SuspendLayout();
             // 
             // btn_Excute
             // 
             this.btn_Excute.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.btn_Excute.Location = new System.Drawing.Point(391, 414);
+            this.btn_Excute.Location = new System.Drawing.Point(622, 392);
             this.btn_Excute.Name = "btn_Excute";
-            this.btn_Excute.Size = new System.Drawing.Size(75, 25);
+            this.btn_Excute.Size = new System.Drawing.Size(150, 61);
             this.btn_Excute.TabIndex = 11;
             this.btn_Excute.Text = "调用";
             this.btn_Excute.UseVisualStyleBackColor = true;
@@ -124,35 +127,26 @@
             // 
             this.rtxt_Param.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
-            this.rtxt_Param.Location = new System.Drawing.Point(78, 112);
+            this.rtxt_Param.Location = new System.Drawing.Point(12, 112);
             this.rtxt_Param.Name = "rtxt_Param";
-            this.rtxt_Param.Size = new System.Drawing.Size(400, 274);
+            this.rtxt_Param.Size = new System.Drawing.Size(360, 274);
             this.rtxt_Param.TabIndex = 1;
             this.rtxt_Param.Text = "";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 115);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(59, 12);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "请求参数:";
             // 
             // rtxt_Result
             // 
             this.rtxt_Result.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.rtxt_Result.Location = new System.Drawing.Point(496, 47);
+            this.rtxt_Result.Location = new System.Drawing.Point(391, 112);
             this.rtxt_Result.Name = "rtxt_Result";
-            this.rtxt_Result.Size = new System.Drawing.Size(255, 339);
+            this.rtxt_Result.Size = new System.Drawing.Size(381, 274);
             this.rtxt_Result.TabIndex = 6;
             this.rtxt_Result.Text = "";
             // 
             // txt_stopkey
             // 
-            this.txt_stopkey.Location = new System.Drawing.Point(496, 18);
+            this.txt_stopkey.Location = new System.Drawing.Point(452, 15);
             this.txt_stopkey.Name = "txt_stopkey";
             this.txt_stopkey.Size = new System.Drawing.Size(254, 21);
             this.txt_stopkey.TabIndex = 5;
@@ -161,8 +155,8 @@
             // 
             this.lb_time.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lb_time.AutoSize = true;
-            this.lb_time.Font = new System.Drawing.Font("SimSun", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.lb_time.Location = new System.Drawing.Point(75, 420);
+            this.lb_time.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lb_time.Location = new System.Drawing.Point(10, 441);
             this.lb_time.Name = "lb_time";
             this.lb_time.Size = new System.Drawing.Size(78, 12);
             this.lb_time.TabIndex = 12;
@@ -203,23 +197,63 @@
             this.label4.TabIndex = 18;
             this.label4.Text = "使用窗口:";
             // 
-            // cb_istest
+            // label3
             // 
-            this.cb_istest.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
-            this.cb_istest.AutoSize = true;
-            this.cb_istest.Location = new System.Drawing.Point(291, 420);
-            this.cb_istest.Name = "cb_istest";
-            this.cb_istest.Size = new System.Drawing.Size(96, 16);
-            this.cb_istest.TabIndex = 19;
-            this.cb_istest.Text = "是否测试环境";
-            this.cb_istest.UseVisualStyleBackColor = true;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(389, 43);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(35, 12);
+            this.label3.TabIndex = 26;
+            this.label3.Text = "包名:";
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(389, 20);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(35, 12);
+            this.label6.TabIndex = 23;
+            this.label6.Text = "hash:";
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(389, 66);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(35, 12);
+            this.label7.TabIndex = 20;
+            this.label7.Text = "内核:";
+            this.label7.Click += new System.EventHandler(this.label7_Click);
+            // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(452, 37);
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(254, 21);
+            this.textBox1.TabIndex = 27;
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "IE",
+            "Cef",
+            "WebKit"});
+            this.comboBox1.Location = new System.Drawing.Point(452, 64);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(252, 20);
+            this.comboBox1.TabIndex = 29;
             // 
             // FormAdapter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 462);
-            this.Controls.Add(this.cb_istest);
+            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.label6);
+            this.Controls.Add(this.label7);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.checkBox1);
             this.Controls.Add(this.txt_prot);
@@ -229,7 +263,6 @@
             this.Controls.Add(this.rtxt_Result);
             this.Controls.Add(this.rtxt_Param);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label3);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.numeric_Timeout);
             this.Controls.Add(this.cmb_Type);
@@ -252,7 +285,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.RichTextBox rtxt_Param;
-        private System.Windows.Forms.Label label3;
         private System.Windows.Forms.RichTextBox rtxt_Result;
         private System.Windows.Forms.TextBox txt_stopkey;
         private System.Windows.Forms.Label lb_time;
@@ -260,6 +292,10 @@
         private System.Windows.Forms.TextBox txt_prot;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.CheckBox cb_istest;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
