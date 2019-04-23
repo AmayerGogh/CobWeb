@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +21,22 @@ namespace CobWeb.Util
         public static bool IsNotNullOrEmpty(this string s)
         {
             return !string.IsNullOrWhiteSpace(s);
+        }
+
+        
+
+    }
+
+    public static class JsonHelper
+    {
+        public static T DeserializeObject<T>(this string s)
+        {
+            return JsonConvert.DeserializeObject<T>(s);
+        }
+
+        public static string SerializeObject(this object obj)
+        {
+           return  JsonConvert.SerializeObject(obj);
         }
     }
 }

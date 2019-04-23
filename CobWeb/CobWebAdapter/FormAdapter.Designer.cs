@@ -58,6 +58,7 @@
             this.btn_Excute.TabIndex = 11;
             this.btn_Excute.Text = "调用";
             this.btn_Excute.UseVisualStyleBackColor = true;
+            this.btn_Excute.Click += new System.EventHandler(this.btn_Excute_Click);
             // 
             // cmb_Type
             // 
@@ -223,7 +224,7 @@
             this.label7.Size = new System.Drawing.Size(35, 12);
             this.label7.TabIndex = 20;
             this.label7.Text = "内核:";
-            this.label7.Click += new System.EventHandler(this.label7_Click);
+           
             // 
             // textBox1
             // 

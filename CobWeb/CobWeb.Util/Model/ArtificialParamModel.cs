@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CobWeb.Core.Model
+namespace CobWeb.Util.Model
 {
-    [Obsolete("使用util层的")]
-    public class ParamModel
+    public class ArtificialParamModel
     {
         /// <summary>
         /// 访问接口
@@ -40,18 +39,5 @@ namespace CobWeb.Core.Model
         /// 是否使用窗口
         /// </summary>
         public bool IsUseForm { get; set; }
-
-        /// <summary>
-        /// 浏览器内核
-        /// </summary>
-        public string KernelType { get; set; }
-        /// <summary>
-        /// 需要动态加载
-        /// </summary>
-        public bool InAssembly { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        public string FileName { get; set; }  
     }
 }

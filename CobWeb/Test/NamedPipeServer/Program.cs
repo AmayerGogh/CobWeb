@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
-namespace CobWeb.Temp
+namespace NamedPipeServer
 {
     class Program
     {
         static void Main(string[] args)
         {
-            //var  c = DateTime.Today.total
-            //var c = ConvertToUnixTimestamp(DateTime.Now);
+            FormServer formClient = new FormServer();
+
+            Application.Run(formClient);
         }
-       
     }
 }
