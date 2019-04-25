@@ -12,7 +12,7 @@ namespace CobWeb.Core.Control
     {
         static TridentKernelControl()
         {
-            IE_Setting.Step1_EmulationSet();
+            //IE_Setting.Step1_EmulationSet();
         }
         public TridentKernelControl()
         {
