@@ -1,7 +1,6 @@
 ﻿using System.Configuration;
 using System.IO;
 using System.Security.Permissions;
-
 namespace CobWeb.Util.LocalHelper
 {
     public class MonitorConfig
@@ -16,7 +15,6 @@ namespace CobWeb.Util.LocalHelper
             watcher.Path = path;
             watcher.NotifyFilter = NotifyFilters.LastWrite;
             watcher.Filter = "*.config";
-
             watcher.Changed += new FileSystemEventHandler((source, e) =>
             {
                 try
@@ -31,7 +29,6 @@ namespace CobWeb.Util.LocalHelper
                     //
                 }
             });
-
             watcher.EnableRaisingEvents = true;
         }
     }

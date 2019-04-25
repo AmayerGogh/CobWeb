@@ -4,14 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-
-
 namespace CobWeb.Core.Manager
 {
     public  class LogManager
     {
-     
         static FlashLogger _lc流程;
         public static FlashLogger lc流程
         {
@@ -36,6 +32,5 @@ namespace CobWeb.Core.Manager
                 return _yc全局异常;
             }
         }
-
     }
 }

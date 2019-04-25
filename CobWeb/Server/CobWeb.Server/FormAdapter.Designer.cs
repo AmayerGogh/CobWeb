@@ -1,4 +1,4 @@
-﻿namespace CobWebAdapter
+﻿namespace CobWeb.Server
 {
     partial class FormAdapter
     {
@@ -6,7 +6,6 @@
         /// 必需的设计器变量。
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-
         /// <summary>
         /// 清理所有正在使用的资源。
         /// </summary>
@@ -19,9 +18,7 @@
             }
             base.Dispose(disposing);
         }
-
         #region Windows 窗体设计器生成的代码
-
         /// <summary>
         /// 设计器支持所需的方法 - 不要
         /// 使用代码编辑器修改此方法的内容。
@@ -126,7 +123,7 @@
             // 
             // rtxt_Param
             // 
-            this.rtxt_Param.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.rtxt_Param.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
             | System.Windows.Forms.AnchorStyles.Left)));
             this.rtxt_Param.Location = new System.Drawing.Point(12, 112);
             this.rtxt_Param.Name = "rtxt_Param";
@@ -136,8 +133,8 @@
             // 
             // rtxt_Result
             // 
-            this.rtxt_Result.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.rtxt_Result.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+            | System.Windows.Forms.AnchorStyles.Left)
             | System.Windows.Forms.AnchorStyles.Right)));
             this.rtxt_Result.Location = new System.Drawing.Point(391, 112);
             this.rtxt_Result.Name = "rtxt_Result";
@@ -224,7 +221,6 @@
             this.label7.Size = new System.Drawing.Size(35, 12);
             this.label7.TabIndex = 20;
             this.label7.Text = "内核:";
-           
             // 
             // textBox1
             // 
@@ -275,11 +271,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.numeric_Timeout)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
-
         #endregion
-
         private System.Windows.Forms.Button btn_Excute;
         private System.Windows.Forms.ComboBox cmb_Type;
         private System.Windows.Forms.NumericUpDown numeric_Timeout;

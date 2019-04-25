@@ -59,7 +59,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CobWeb.Util\CobWeb.Util.csproj">
+    <ProjectReference Include="..\..\CobWeb.Util\CobWeb.Util.csproj">
       <Project>{1bd9ffd9-f0f6-479e-95a0-8f5f3e303dac}</Project>
       <Name>CobWeb.Util</Name>
     </ProjectReference>

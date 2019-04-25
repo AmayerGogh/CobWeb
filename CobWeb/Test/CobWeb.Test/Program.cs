@@ -12,7 +12,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 namespace CobWeb.Test
 {
     public class LogManager
@@ -39,28 +38,22 @@ namespace CobWeb.Test
                 LogManager.lc流程.Info(i.ToString() + "--------------------------------------------");
                 Console.WriteLine(i);
             }
-
         }
     }
     class Program
     {
         static void Main(string[] args)
         {
-
             Load load = new Load();
             load.Init();
             Console.ReadKey();
         }
     }
-    
     public class Load
     {
         public static Dictionary<string, Type> dictionary = new Dictionary<string, Type>();
         public void Init()
         {
-           
         }
-
     }
-    
 }

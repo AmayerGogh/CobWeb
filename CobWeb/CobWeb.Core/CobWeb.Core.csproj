@@ -68,6 +68,12 @@
     <Compile Include="Control\TridentKernelControl.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Form\FormAccess.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Form\FormAccess.Designer.cs">
+      <DependentUpon>FormAccess.cs</DependentUpon>
+    </Compile>
     <Compile Include="Form\FormBrowser.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,6 +108,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Form\FormAccess.resx">
+      <DependentUpon>FormAccess.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Form\FormBrowser.resx">
       <DependentUpon>FormBrowser.cs</DependentUpon>
     </EmbeddedResource>

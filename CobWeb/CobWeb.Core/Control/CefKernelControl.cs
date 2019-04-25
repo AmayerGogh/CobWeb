@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace CobWeb.Core.Control
 {
     public class CefKernelControl : ChromiumWebBrowser, IKernelControl
@@ -20,20 +19,16 @@ namespace CobWeb.Core.Control
             this.LifeSpanHandler = new CefLifeSpanHandler();
             this.LoadHandler = new LoadHandler();
             //MenuHandler = new MenuHandler();
-            
         }
         public event EventHandler<NewWindowEventArgs> StartNewWindow;
-
         public new IKernelControl GetBrowser()
         {
             return this;
         }
-
         public void OnNewWindow(NewWindowEventArgs e)
         {
             StartNewWindow?.Invoke(this, e);
         }
-
         public void Navigate(string url)
         {
             this.Load(url);
@@ -43,7 +38,6 @@ namespace CobWeb.Core.Control
             if (InvokeRequired) { Invoke(new runJSDelegate(RunJs), new object[] { js }); return; }
             if (IsBrowserInitialized || IsDisposed || Disposing) { return; }
             //ExecuteScriptAsync(js); //此为扩展方法
-            
         }
         delegate void runJSDelegate(string jsCodeStr);
         /// <summary>
@@ -79,7 +73,6 @@ namespace CobWeb.Core.Control
             }
             return result;
         }
-
         public void SetCookie(string url, string cookiesString)
         {
             //if (string.IsNullOrWhiteSpace(cookiesString))
@@ -88,12 +81,10 @@ namespace CobWeb.Core.Control
             //}
             //var cookieAarray = cookiesString.Split(';');
             //var cookieManager = GetCookieManager(); //此为扩展方法
-
             //try
             //{
             //    foreach (var cookie in cookieAarray)
             //    {
-
             //        //var temp = cookie.Split('=');
             //        var i = cookie.IndexOf('=');
             //        if (i != 0)
@@ -112,7 +103,6 @@ namespace CobWeb.Core.Control
             //}
             //catch (Exception e)
             //{
-
             //}
         }
         public void SetCookie(string url, List<CookiePseudo> cookies)
@@ -182,8 +172,6 @@ namespace CobWeb.Core.Control
                 IsDispose = true;
             }
         }
-
-
         public void Bound()
         {
             ////前端注册js方法
@@ -191,58 +179,44 @@ namespace CobWeb.Core.Control
             ////js中调用
             ////bound.xxx
         }
-
         bool IKernelControl.IsDisposed()
         {
             return IsDisposed;
         }
-
         public void Refresh()
         {
             throw new NotImplementedException();
         }
-
         public void Dispose()
         {
             throw new NotImplementedException();
         }
     }
-
     #region 新窗口打开
     public class CefLifeSpanHandler : CefSharp.ILifeSpanHandler
     {
-
-
         public bool DoClose(IWebBrowser browserControl, CefSharp.IBrowser browser)
         {
             if (browser.IsDisposed || browser.IsPopup)
             {
                 return false;
             }
-
             return true;
         }
-
         public void OnAfterCreated(IWebBrowser chromiumWebBrowser, IBrowser browser)
         {
-
         }
-
         public void OnBeforeClose(IWebBrowser chromiumWebBrowser, IBrowser browser)
         {
-
         }
-
         public bool OnBeforePopup(IWebBrowser browserControl, IBrowser browser, IFrame frame, string targetUrl, string targetFrameName, WindowOpenDisposition targetDisposition, bool userGesture, IPopupFeatures popupFeatures, IWindowInfo windowInfo, IBrowserSettings browserSettings, ref bool noJavascriptAccess, out IWebBrowser newBrowser)
         {
             var chromiumWebBrowser = (CefKernelControl)browserControl;
-
             chromiumWebBrowser.Invoke(new Action(() =>
             {
                 NewWindowEventArgs e = new NewWindowEventArgs(windowInfo, targetUrl);
                 chromiumWebBrowser.OnNewWindow(e);
             }));
-
             newBrowser = null;
             return true;
         }
@@ -263,8 +237,6 @@ namespace CobWeb.Core.Control
         }
     }
     #endregion
-
-
     #region 右键
     class MenuHandler : CefSharp.IContextMenuHandler
     {
@@ -272,51 +244,36 @@ namespace CobWeb.Core.Control
         {
             model.Clear();
         }
-
         bool CefSharp.IContextMenuHandler.OnContextMenuCommand(CefSharp.IWebBrowser browserControl, CefSharp.IBrowser browser, CefSharp.IFrame frame, CefSharp.IContextMenuParams parameters, CefSharp.CefMenuCommand commandId, CefSharp.CefEventFlags eventFlags)
         {
             //throw new NotImplementedException();
             return false;
         }
-
         void CefSharp.IContextMenuHandler.OnContextMenuDismissed(CefSharp.IWebBrowser browserControl, CefSharp.IBrowser browser, CefSharp.IFrame frame)
         {
             //throw new NotImplementedException();
         }
-
         bool CefSharp.IContextMenuHandler.RunContextMenu(CefSharp.IWebBrowser browserControl, CefSharp.IBrowser browser, CefSharp.IFrame frame, CefSharp.IContextMenuParams parameters, CefSharp.IMenuModel model, CefSharp.IRunContextMenuCallback callback)
         {
             return false;
         }
     }
     #endregion
-
-
-
-
     public class LoadHandler : ILoadHandler
     {
         public void OnFrameLoadEnd(IWebBrowser browserControl, FrameLoadEndEventArgs frameLoadEndArgs)
         {
             // browserControl.ExecuteScriptAsync("");
         }
-
         public void OnFrameLoadStart(IWebBrowser browserControl, FrameLoadStartEventArgs frameLoadStartArgs)
         {
             // Console.WriteLine("Start Load: " + browserControl.Address);
         }
-
         public void OnLoadError(IWebBrowser browserControl, LoadErrorEventArgs loadErrorArgs)
         {
-
         }
-
         public void OnLoadingStateChange(IWebBrowser browserControl, LoadingStateChangedEventArgs loadingStateChangedArgs)
         {
-
         }
     }
-
-
-
 }

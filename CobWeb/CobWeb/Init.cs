@@ -1,7 +1,6 @@
-﻿using CefSharp;
-using CefSharp.WinForms;
-using CobWeb.Core.Manager;
+﻿using CobWeb.Core.Manager;
 using CobWeb.Util;
+using CobWeb.Util.LocalHelper;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -12,7 +11,6 @@ using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 namespace CobWeb
 {
     public static class Init
@@ -20,7 +18,6 @@ namespace CobWeb
         #region  生成包的时候再设置
         /*
         public const string CefLibName = "CEFSharp"; //cef目录名称
-
         public  static Assembly OnResolveAssembly(object sender, ResolveEventArgs args)
         {
             Assembly executingAssembly = Assembly.GetExecutingAssembly();
@@ -46,50 +43,38 @@ namespace CobWeb
         }
         */
         #endregion
-
         public static void Step1_Default()
         {           
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            //监测config配置文件变化
+            MonitorConfig.Monitor(Application.StartupPath, new[] { "appSettings" });
         }
         public static void Step2_GlobalException()
         {
             //设置应用程序处理异常方式：ThreadException处理
             Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
-
             //处理UI线程异常
             Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
-
             //处理非UI线程异常
             AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
-
             AppDomain.CurrentDomain.FirstChanceException += new EventHandler<FirstChanceExceptionEventArgs>(CurrentDomain_FirstChanceException);
-
         }
-
-
-
         static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
         {
             string str = ExceptionHelper.GetExceptionMsg(e.Exception, e.ToString());
             LogManager.yc全局异常.Error(str);
         }
-
         static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             string str = ExceptionHelper.GetExceptionMsg(e.ExceptionObject as Exception, e.ToString());
             LogManager.yc全局异常.Error(str);
         }
-
         static void CurrentDomain_FirstChanceException(object sender, FirstChanceExceptionEventArgs e)
         {
             var ee = e.Exception as Exception;
-       
             string str = ExceptionHelper.GetExceptionMsg(ee, e.ToString());
             LogManager.yc全局异常.Error(str);
         }
-
     }
-
-   
 }

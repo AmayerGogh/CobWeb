@@ -1,5 +1,4 @@
-﻿
-using CobWeb.AProcess;
+﻿using CobWeb.AProcess;
 using CobWeb.Core.Model;
 using CobWeb.Core.Process;
 using System;
@@ -10,7 +9,6 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 namespace CobWeb.Core.Process
 {
     public class ProcessFactory
@@ -18,7 +16,6 @@ namespace CobWeb.Core.Process
         static readonly Dictionary<string, Type> ProcessBaseDic = new Dictionary<string, Type>();
         static readonly Dictionary<string, Type> ProcessBase2Dic = new Dictionary<string, Type>();
         public static Dictionary<string, Type> dictionary = new Dictionary<string, Type>();
-
         static Dictionary<string, object> classs = new Dictionary<string, object>();
         static ProcessFactory()
         {
@@ -31,7 +28,6 @@ namespace CobWeb.Core.Process
             //                ProcessBaseDic.Add(type.Name, type);
             //    }
             //}
-
             //{
             //    var types = CommonCla.FindAllClassByInterface<IProcessBase2>();
             //    foreach (var type in types)
@@ -42,7 +38,6 @@ namespace CobWeb.Core.Process
             //    }
             //}
         }
-
         public static IProcessBase GetProcessByMethod(FormBrowser formBrowser, ParamModel paramModel)
         {
             paramModel.InAssembly = true;
@@ -60,20 +55,15 @@ namespace CobWeb.Core.Process
         //{
         //    if (!ProcessBaseDic.ContainsKey(paramModel.Method))
         //        throw new Exception(ArtificialCode.A_UnknownMethod.ToString());
-
         //    var process = (IProcessBase)Activator.CreateInstance(ProcessBaseDic[paramModel.Method],
         //        form, paramModel);
-
         //    return process;
         //}
-
         public static IProcessBase2 GetProcessByMethod(ParamModel paramModel)
         {
             if (!ProcessBase2Dic.ContainsKey(paramModel.Method))
                 throw new Exception(ArtificialCode.A_UnknownMethod.ToString());
-
             var process = (IProcessBase2)Activator.CreateInstance(ProcessBase2Dic[paramModel.Method]);
-
             return process;
         }
         //ParamModel paramModel = new ParamModel()
@@ -84,7 +74,6 @@ namespace CobWeb.Core.Process
         //};
         public static IProcessBase GetProcessInAssembly(FormBrowser formBrowser, ParamModel paramModel)
         {
-         
             if (!dictionary.ContainsKey(paramModel.Method))
             {
                 string dllPath = Path.Combine(Application.StartupPath, "CobProcess", paramModel.FileName);
@@ -104,8 +93,6 @@ namespace CobWeb.Core.Process
                 Console.WriteLine("未能加载到");
             }
             var type = dictionary[paramModel.Method];
-           
-
             var process = Activator.CreateInstance(type, formBrowser, paramModel);
             var thisP = process as IProcessBase;
             thisP?.Begin();

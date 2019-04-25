@@ -5,7 +5,6 @@ using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
-
 namespace CobWeb.Util
 {
     public class SocketBasic
@@ -31,7 +30,6 @@ namespace CobWeb.Util
             socket.IOControl((IOControlCode)(-1744830460), array, null);
             return socket;
         }
-
         // Token: 0x06000015 RID: 21 RVA: 0x00002B50 File Offset: 0x00000D50
         public static bool Connect(Socket socket, IPEndPoint ipe, int timeout = 0)
         {
@@ -55,7 +53,6 @@ namespace CobWeb.Util
             asyncResult.AsyncWaitHandle.WaitOne(timeout * 1000);
             return socket.Connected;
         }
-
         // Token: 0x06000016 RID: 22 RVA: 0x00002BC0 File Offset: 0x00000DC0
         public static string Receive(Socket socket, int timeout = 0, int receiveTimeout = 60)
         {
@@ -106,7 +103,6 @@ namespace CobWeb.Util
         Block_5:
             throw new Exception("数据未能完整获取");
         }
-
         // Token: 0x06000017 RID: 23 RVA: 0x00002C9C File Offset: 0x00000E9C
         public static int Send(Socket socket, string msg, int timeout = 0)
         {
@@ -119,7 +115,6 @@ namespace CobWeb.Util
             }
             throw new Exception("请求数据发送失败");
         }
-
         // Token: 0x06000018 RID: 24 RVA: 0x00002CEC File Offset: 0x00000EEC
         public static bool IsComplete(List<byte> data)
         {
@@ -133,13 +128,11 @@ namespace CobWeb.Util
             }
             return false;
         }
-
         // Token: 0x06000019 RID: 25 RVA: 0x00002D68 File Offset: 0x00000F68
         public static int GetTimeout(long starttime, int timeout)
         {
             return (int)((long)timeout - (DateTime.Now.Ticks - starttime) / 10000L / 1000L);
         }
-
         // Token: 0x0600001A RID: 26 RVA: 0x00002D96 File Offset: 0x00000F96
         public SocketBasic()
         {

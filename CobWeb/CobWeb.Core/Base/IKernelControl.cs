@@ -4,7 +4,6 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace CobWeb.Core
 {
     /// <summary>
@@ -12,7 +11,6 @@ namespace CobWeb.Core
     /// </summary>
     public interface IKernelControl
     {      
-
         void Navigate(string url);
         void Refresh();
         IKernelControl GetBrowser();

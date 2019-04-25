@@ -7,7 +7,6 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
 namespace CobWeb.Util.SocketHelper
 {
     public  class SocketAccess
@@ -43,7 +42,6 @@ namespace CobWeb.Util.SocketHelper
                 {
                     var tempPort = _portNumber;
                     _portNumber += 2;
-
                     if (CheckPort(tempPort))
                         return tempPort;
                 }
@@ -63,11 +61,9 @@ namespace CobWeb.Util.SocketHelper
                 IPEndPoint ipe1;
                 serverSocket1 = SocketBasic.GetSocket(out ipe1, port);
                 serverSocket1.Bind(ipe1);
-
                 IPEndPoint ipe2;
                 serverSocket2 = SocketBasic.GetSocket(out ipe2, port + 1);
                 serverSocket2.Bind(ipe2);
-
                 return true;
             }
             catch
@@ -82,7 +78,6 @@ namespace CobWeb.Util.SocketHelper
                     serverSocket2.Dispose();
             }
         }
-
         public static T2 Access<T1, T2>(string method, T1 param, long starttime, int timeout, string stopkey, int port, bool isUseForm)
         {
             Socket socket = null;
@@ -93,7 +88,6 @@ namespace CobWeb.Util.SocketHelper
                 SocketBasic.Connect(socket, ipe, timeout / 2);
                 if (!socket.Connected)
                     throw new Exception("socket 连接失败");
-
                 var paramModel = new ArtificialParamModel();
                 paramModel.Method = method;
                 paramModel.IsUseForm = isUseForm;
@@ -115,7 +109,6 @@ namespace CobWeb.Util.SocketHelper
                 var resultModel = result.DeserializeObject<ArtificialResultModel>();
                 if (!resultModel.IsSuccess)
                     throw new Exception(resultModel.Result);
-
                 try
                 {
                     //如果返回的不是对应返回类型,则可能是想抛出此异常
@@ -131,7 +124,6 @@ namespace CobWeb.Util.SocketHelper
                 if (socket != null)
                     socket.Dispose();
             }
-
         }
     }
 }

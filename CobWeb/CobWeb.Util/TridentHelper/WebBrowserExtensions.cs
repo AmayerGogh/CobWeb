@@ -7,14 +7,12 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 namespace CobWeb.Util.TridentHelper
 {
     public static class WebBrowserExtensions
     {
         //IHTMLDocument2
         //IHTMLDocument1
-
         #region   执行命令
         public static void ExecCommandUtil(this HtmlDocument htmlDocument, string command)
         {
@@ -22,14 +20,12 @@ namespace CobWeb.Util.TridentHelper
             htmlDocument.ExecCommand(command, false, null);
         }
         #endregion
-
         //获取页面源码
         //webBrowser.Document.Body.InnerHtml
         //webBrowser.Document.GetElementById
         //htmlWindow = webBrowser.Document.Window.Frames[frameId];      //iframe内部元素为  htmlWindow 这个有点意思
         //htmlWindow.Document;
         //HtmlElement commForm = _document.Forms["commForm"];
-
         #region   获取页面源码
         public static string PageSource(this WebBrowser webBrowser)
         {
@@ -65,9 +61,7 @@ namespace CobWeb.Util.TridentHelper
             }
         }
         #endregion
-
         #region  获取元素
-
         /// <summary>
         ///  从当前集合中搜索符合条件的元素,返回第一个
         /// </summary>
@@ -78,23 +72,19 @@ namespace CobWeb.Util.TridentHelper
         {
             if (htmlElementCollection == null || htmlElementCollection.Count <= 0)
                 return null;
-
             foreach (HtmlElement htmlElement in htmlElementCollection)
             {
                 try
                 {
                     string stringClass = htmlElement.GetAttribute("className");
-
                     if (stringClass.NullContains(className))
                         return htmlElement;
                 }
                 catch (Exception ee)
                 { }
             }
-
             return null;
         }
-
         /// <summary>
         /// 从元素htmlElement 的子元素中，搜索  name 元素集合
         /// </summary>
@@ -105,7 +95,6 @@ namespace CobWeb.Util.TridentHelper
         {
             return htmlElement?.All?.GetElementsByName(name);
         }
-
         /// <summary>
         ///  从当前集合中搜索符合条件的元素
         /// </summary>
@@ -116,17 +105,13 @@ namespace CobWeb.Util.TridentHelper
         {
             if (htmlElementCollection == null || htmlElementCollection.Count <= 0)
                 return null;
-
             foreach (HtmlElement htmlElement in htmlElementCollection)
             {
                 if (htmlElement.InnerText.IsNotNullOrEmpty() && htmlElement.InnerText == innerText)
                     return htmlElement;
             }
-
             return null;
-
         }
-
         /// <summary>
         ///  从当前集合中搜索符合条件的元素
         /// </summary>
@@ -135,11 +120,8 @@ namespace CobWeb.Util.TridentHelper
         public static HtmlElement FirstOrDefault(this HtmlElementCollection htmlElementCollection)
         {
             if (htmlElementCollection== null || htmlElementCollection.Count == 0) return null;
-
             return htmlElementCollection[0];
-
         }
-
         /// <summary>
         ///  从当前集合中搜索符合条件的元素
         /// </summary>
@@ -148,11 +130,8 @@ namespace CobWeb.Util.TridentHelper
         public static HtmlElement LastOrDefault(this HtmlElementCollection htmlElementCollection)
         {
             if (htmlElementCollection== null || htmlElementCollection.Count == 0) return null;
-
             return htmlElementCollection[htmlElementCollection.Count - 1];
-
         }
-
         /// <summary>
         /// 从当前集合中搜索符合条件的元素
         /// </summary>
@@ -164,16 +143,13 @@ namespace CobWeb.Util.TridentHelper
         {
             if (htmlElementCollection== null || htmlElementCollection.Count <= 0)
                 return null;
-
             foreach (HtmlElement item in htmlElementCollection)
             {
                 if (item.HaveAttribute(attributeName, attributeValue))
                     return item;
             }
-
             return null;
         }
-
         /// <summary>
         /// 从当前集合中搜索符合条件的元素
         /// </summary>
@@ -185,7 +161,6 @@ namespace CobWeb.Util.TridentHelper
         {
             return htmlElementCollection.GetElementByAttribute("value", attributeValue);
         }
-
         /// <summary>
         /// 从当前元素，或者子元素中寻找某一属性值的元素
         /// </summary>
@@ -197,22 +172,16 @@ namespace CobWeb.Util.TridentHelper
         {
             if (htmlElement== null)
                 return null;
-
             if (htmlElement.HaveAttribute(attributeName, attributeValue))
                 return htmlElement;
-
             return htmlElement.All.GetElementByAttribute(attributeName, attributeValue);
         }
-
         public static HtmlElement GetElementByAttribute(this HtmlElement ele, string value)
         {
             return ele.GetElementByAttribute("ng-model", value);
         }
-
         #endregion
-
         #region 获取属性，获取值
-
         /// <summary>
         /// 当前元素是否拥有某一属性值
         /// </summary>
@@ -225,7 +194,6 @@ namespace CobWeb.Util.TridentHelper
             var value = htmlElement?.GetAttribute(attributeName);
             return value == attributeValue;
         }
-
         public static string GetAttributeNullOrEmpty(this HtmlElement ele, string keyattributeName)
         {
             if (ele == null)
@@ -234,7 +202,6 @@ namespace CobWeb.Util.TridentHelper
             }
             return ele.GetAttribute(keyattributeName);
         }
-
         /// <summary>
         /// 选择是第几项
         /// </summary>
@@ -258,46 +225,37 @@ namespace CobWeb.Util.TridentHelper
             }
             return num;
         }
-
         public static string GetValue(this HtmlElement htmlElement)
         {
             var value = htmlElement?.GetAttribute("value");
             return value;
         }
-
         public static bool Checked(this HtmlElement htmlElement)
         {
             return htmlElement.GetAttribute("checked").ToLower() == "true";
         }
-
         public static bool NoChecked(this HtmlElement htmlElement)
         {
             return htmlElement.GetAttribute("checked").ToLower() == "false";
         }
-
         #endregion
-
         #region  设置元素值
-
         public static void SetChecked(this HtmlElement htmlElement)
         {
             if (htmlElement.NoChecked())
                 htmlElement.ClickE();
         }
-
         public static void SetNoChecked(this HtmlElement htmlElement)
         {
             if (htmlElement.Checked())
                 htmlElement.ClickE();
         }
-
         /// <summary>
         /// 能设置 子元素的 内容
         /// </summary>
         public static void SetText(this HtmlElement htmlElement, string key, string value, string data, string eventName = "")
         {
             HtmlElement result = null;
-
             if (htmlElement.HaveAttribute(key, value))
             {
                 result = htmlElement;
@@ -313,13 +271,11 @@ namespace CobWeb.Util.TridentHelper
                     }
                 }
             }
-
             if (result!= null)
             {
                 result.SetText(data, eventName);
             }
         }
-
         /// <summary>
         /// 优先使用这个
         /// </summary>
@@ -329,19 +285,14 @@ namespace CobWeb.Util.TridentHelper
             {
                 ele.InnerText = data;
                 string excuteJSKey = string.IsNullOrEmpty(ele.GetAttributeNullOrEmpty("ui-valid-id").Trim()) ? "ng-model" : "ui-valid-id";
-
                 //string excuteJSValue = string.IsNullOrEmpty(ele.GetAttribute("ui-valid-id").Trim()) ? ele.GetAttributeNullOrEmpty("ng-model") : ele.GetAttribute("ui-valid-id").Trim();
                 string excuteJSValue = ele.GetAttribute(excuteJSKey).Trim();
-
                 WebBrowserExtensions.JSFireEvent((IHTMLDocument2)ele.Document.DomDocument, ele.TagName, excuteJSKey, excuteJSValue, "change");
                 WebBrowserExtensions.JSFireEvent((IHTMLDocument2)ele.Document.DomDocument, ele.TagName, excuteJSKey, excuteJSValue, "blur");
-
                 if (eventName.IsNotNullOrEmpty())
                     WebBrowserExtensions.JSFireEvent((IHTMLDocument2)ele.Document.DomDocument, ele.TagName, excuteJSKey, excuteJSValue, eventName);
-
             }
         }
-
         /// <summary>
         /// 不会触发事件
         /// </summary>
@@ -352,7 +303,6 @@ namespace CobWeb.Util.TridentHelper
             htmlElement.SetAttribute("value", value);
         }
         #endregion
-
         #region 点击元素
         public static void ClickE(this HtmlElement htmlElement)
         {
@@ -361,7 +311,6 @@ namespace CobWeb.Util.TridentHelper
                 htmlElement.InvokeMember("click");
             }
         }
-
         /// <summary>
         /// 用于点击radioButton
         /// </summary>
@@ -378,14 +327,11 @@ for (var i = 0; i < elementNames.length; i++)
         elementNames[i].checked = true
     }
 }";
-
             htmlElement.Document.ExecScript(js);
         }
         #endregion
-
         #region   获取js变量的值
         public const string outValueId = "outValueId";
-
         /// <summary>
         /// 目前仅支持一层的frame,如果需多层，需要外部调用
         /// </summary>
@@ -396,9 +342,7 @@ for (var i = 0; i < elementNames.length; i++)
         public static string GetValue(this WebBrowser webBrowser, string valueId)
         {
             var jsString = string.Empty;
-
             HtmlElement outValueIdHtmlElement = webBrowser.Document.GetElementById(outValueId);
-
             if (outValueIdHtmlElement== null)
             {
                 jsString = @" 
@@ -409,30 +353,20 @@ for (var i = 0; i < elementNames.length; i++)
 ";
                 ExecScript(webBrowser, jsString);
             }
-
             jsString = @"document.getElementById('" + outValueId + "').innerText=" + valueId;
-
             ExecScript(webBrowser, jsString);
-
-
             outValueIdHtmlElement = webBrowser.Document.GetElementById(outValueId);
             var result = outValueIdHtmlElement.InnerText;
             return result;
         }
-
         public static void SetValue(this WebBrowser webBrowser, string valueId, string value)
         {
             var jsString = valueId + "='" + value + "'";
-
             ExecScript(webBrowser, jsString);
         }
         #endregion
-
         #region 执行js
-
         #region js 触发事件  已整理
-
-
         /// <summary>
         /// 触发元素的事件
         /// </summary>
@@ -446,7 +380,6 @@ for (var i = 0; i < elementNames.length; i++)
             string proc = "(function () { var aElements = document.getElementsByTagName('" + tag + "'); for (var i = 0; i < aElements.length; i++) { if (aElements[i].getAttribute('" + key + "') == '" + value + "') { if ('createEvent' in document) { var evt = document.createEvent('HTMLEvents'); evt.initEvent('" + eventStr + "', false, true); aElements[i].dispatchEvent(evt); } else { aElements[i].fireEvent('on" + eventStr + "'); } break; } } })();";
             CommonWb.ExcuteJS(doc, proc);
         }
-
         /// <summary>
         /// 触发元素的事件
         /// </summary>
@@ -455,7 +388,6 @@ for (var i = 0; i < elementNames.length; i++)
             string proc = "(function () { var aElements = document.getElementsByTagName('" + tag + "'); for (var i = 0; i < aElements.length; i++) { if (aElements[i].getAttribute('" + key + "') == '" + value + "' &&  aElements[i].getAttribute('" + key2 + "') == '" + value2 + "') { if ('createEvent' in document) { var evt = document.createEvent('HTMLEvents'); evt.initEvent('" + eventStr + "', false, true); aElements[i].dispatchEvent(evt); } else { aElements[i].fireEvent('on" + eventStr + "'); } break; } } })();";
             CommonWb.ExcuteJS(doc, proc);
         }
-
         /// <summary>
         /// 触发元素的事件
         /// </summary>
@@ -463,7 +395,6 @@ for (var i = 0; i < elementNames.length; i++)
         {
             CommonWb.ExcuteJS(doc, "(function () { var pEle = null; var pElements = document.getElementsByTagName('" + parentTag + "'); for (var i = 0; i < pElements.length; i++) { if (pElements[i].getAttribute('" + parentKey + "') == '" + parentValue + "') { pEle = pElements[i]; break; } } if (pEle == null) return; var aElements = pEle.getElementsByTagName('" + tag + "'); for (var i = 0; i < aElements.length; i++) { if (aElements[i].getAttribute('" + key + "') == '" + value + "') { if ('createEvent' in document) { var evt = document.createEvent('HTMLEvents'); evt.initEvent('" + eventStr + "', false, true); aElements[i].dispatchEvent(evt); } else { aElements[i].fireEvent('on" + eventStr + "'); } break; } } })();");
         }
-
         /// <summary>
         /// 触发元素的事件
         /// </summary>
@@ -471,7 +402,6 @@ for (var i = 0; i < elementNames.length; i++)
         {
             CommonWb.ExcuteJS(doc, "(function () { var ele = document.getElementById('" + id + "'); if ('createEvent' in document) { var evt = document.createEvent('HTMLEvents'); evt.initEvent('" + eventStr + "', false, true); ele.dispatchEvent(evt); } else { ele.fireEvent('on" + eventStr + "'); } })();");
         }
-
         /// <summary>
         /// 触发元素的事件
         /// </summary>
@@ -479,7 +409,6 @@ for (var i = 0; i < elementNames.length; i++)
         {
             CommonWb.ExcuteJS(doc, "document.getElementById('" + id + "')." + eventStr + "()");
         }
-
         /// <summary>
         /// 触发元素的事件
         /// </summary>
@@ -487,8 +416,6 @@ for (var i = 0; i < elementNames.length; i++)
         {
             CommonWb.ExcuteJS(doc, "(function () { var ele = document.getElementsByName('" + name + "'); if ('createEvent' in document) { var evt = document.createEvent('HTMLEvents'); evt.initEvent('" + eventStr + "', false, true); ele.dispatchEvent(evt); } else { ele.fireEvent('on" + eventStr + "'); } })();");
         }
-
-
         /// <summary>
         ///触发元素的事件
         /// </summary>
@@ -497,7 +424,6 @@ for (var i = 0; i < elementNames.length; i++)
             CommonWb.ExcuteJS(doc, "(function(){var arr = document.getElementsByName('" + name + "');var a;for(var i=0;i<arr.length;i++){if(arr[i].value=='" + value + "'){var a=arr[i]}};a." + eventStr + "();})()");
         }
         #endregion
-
         /// <summary>
         /// 执行jQuery (注意更新,不保证长期有效)
         /// </summary>
@@ -507,14 +433,11 @@ for (var i = 0; i < elementNames.length; i++)
         {
             CommonWb.ExcuteJS((IHTMLDocument2)doc.DomDocument, jq);
         }
-
         public static void NavigateJs(this WebBrowser webBrowser, string jsStr)
         {
             string js = @"window.location.href='" + jsStr + "'";
-
             webBrowser.ExecScript(js);
         }
-
         #region 执行js 
         /// <summary>
         /// 目前仅支持一层的frame,如果需多层，需要外部调用
@@ -527,9 +450,7 @@ for (var i = 0; i < elementNames.length; i++)
         {
             //HtmlElement commForm = htmlDocument.Forms["commForm"];
             //webBrowser.Document.Window.Frames["main"].Document
-
             HtmlDocument htmlDocument = webBrowser.Document;
-
             if (frameId!= null)
             {
                 HtmlWindow htmlWindow;
@@ -540,7 +461,6 @@ for (var i = 0; i < elementNames.length; i++)
                 }
                 catch (Exception ee)
                 {
-                   
                 }
             }
             else
@@ -548,13 +468,10 @@ for (var i = 0; i < elementNames.length; i++)
                 htmlDocument.ExecScript(jsStr);
             }
         }
-
         public static void ExecScript(this HtmlWindow htmlWindow, string jsStr)
         {
             htmlWindow.Document.ExecScript(jsStr); ;
-
         }
-
         public static void ExecScript(this HtmlDocument htmlDocument, string jsStr)
         {
             IHTMLDocument2 iHTMLDocument2 = (IHTMLDocument2)htmlDocument.DomDocument;
@@ -562,22 +479,16 @@ for (var i = 0; i < elementNames.length; i++)
             iHTMLDocument2.ExecScript(jsStr);
             //CommonCla.WriteLogFile("执行完成");
         }
-
         public static void ExecScript(this IHTMLDocument2 document, string jsStr)
         {
             document.parentWindow.ExecScript(jsStr);
         }
-
         static void ExecScript(this IHTMLWindow2 iHTMLWindow2, string jsStr)
         {
             iHTMLWindow2.execScript(jsStr, "javascript");
         }
-
-
         #endregion
-
         #endregion
-
         #region 删除IE临时文件
         /// <summary> 
         /// 删除临时文件
@@ -587,7 +498,6 @@ for (var i = 0; i < elementNames.length; i++)
         {
             FolderClear(Environment.GetFolderPath(Environment.SpecialFolder.InternetCache), name);
         }
-
         static void FolderClear(string path, string name = "")
         {
             DirectoryInfo diPath = new DirectoryInfo(path);
@@ -600,13 +510,11 @@ for (var i = 0; i < elementNames.length; i++)
                 FolderClear(diSubFolder.FullName, name);
             }
         }
-
         static bool FileDelete(string path, string name = "")
         {
             FileInfo file = new FileInfo(path);
             FileAttributes att = 0;
             bool attModified = false;
-
             try
             {
                 if (string.IsNullOrWhiteSpace(name) || file.Name.Contains(name))
@@ -625,7 +533,6 @@ for (var i = 0; i < elementNames.length; i++)
             }
             return true;
         }
-
         ///// <summary>
         ///// 删除所有临时文件
         ///// </summary>
@@ -634,7 +541,6 @@ for (var i = 0; i < elementNames.length; i++)
         //    //命令行清除
         //    RunCmd("RunDll32.exe InetCpl.cpl,ClearMyTracksByProcess 8");
         //}
-
         //static void RunCmd(string cmd)
         //{
         //    ProcessStartInfo process = new ProcessStartInfo();
@@ -645,14 +551,9 @@ for (var i = 0; i < elementNames.length; i++)
         //    process.Arguments = "/c " + cmd;
         //    Process.Start(process);
         //}
-
-
-
         #endregion
-
         #region cookie
         private const int INTERNET_COOKIE_HTTPONLY = 0x00002000;
-
         [DllImport("wininet.dll", SetLastError = true)]
         private static extern bool InternetGetCookieEx(
             string url,
@@ -661,10 +562,8 @@ for (var i = 0; i < elementNames.length; i++)
             ref int size,
             int flags,
             IntPtr pReserved);
-
         [DllImport("wininet.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool InternetSetCookie(string lpszUrlName, string lbszCookieName, string lpszCookieData);
-
         /// <summary>
         /// 设置cookie
         /// </summary>
@@ -675,25 +574,21 @@ for (var i = 0; i < elementNames.length; i++)
                 InternetSetCookie(url, cookie.Key, cookie.Value);
             }
         }
-
         /// <summary>
         /// 设置cookie
         /// </summary>
         public static void SetCookie(string url, string cookiesString)
         {
             var cookieAarray = cookiesString.Split(';');
-
             foreach (var cookie in cookieAarray)
             {
                 var temp = cookie.Split('=');
-
                 if (temp.Length == 2)
                 {
                     InternetSetCookie(url, temp[0], temp[1]);
                 }
             }
         }
-
         /// <summary>
         /// 获取完整cookie
         /// </summary>

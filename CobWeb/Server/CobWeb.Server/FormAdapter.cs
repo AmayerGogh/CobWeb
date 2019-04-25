@@ -1,4 +1,5 @@
 ﻿using CobWeb.Util;
+using CobWeb.Util.SocketHelper;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -10,8 +11,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
-namespace CobWebAdapter
+namespace CobWeb.Server
 {
     public partial class FormAdapter : Form
     {
@@ -19,9 +19,6 @@ namespace CobWebAdapter
         {
             InitializeComponent();
         }
-
-
-
         private void btn_Excute_Click(object sender, EventArgs e)
         {
             btn_Excute.Enabled = false;
@@ -41,7 +38,6 @@ namespace CobWebAdapter
             dynamic dyn = param.DeserializeObject<ExpandoObject>();
             //dyn读取 &&更改
             param = dyn.SerializeObject(dyn);
-
             string result = SocketAccess.Access<string, string>(
                 cmb_Type.Text,
                 param,
@@ -50,9 +46,6 @@ namespace CobWebAdapter
                 stopkey,
                 int.Parse(txt_prot.Text),
                 checkBox1.Checked);
-
-
-
         }
     }
 }

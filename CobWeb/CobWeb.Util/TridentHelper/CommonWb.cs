@@ -9,7 +9,6 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-
 namespace CobWeb.Util.TridentHelper
 {
     public class CommonWb
@@ -70,7 +69,6 @@ namespace CobWeb.Util.TridentHelper
             FileInfo file = new FileInfo(path);
             FileAttributes att = 0;
             bool attModified = false;
-
             try
             {
                 if (string.IsNullOrWhiteSpace(name) || file.Name.Contains(name))
@@ -92,10 +90,8 @@ namespace CobWeb.Util.TridentHelper
             return true;
         }
         #endregion
-
         #region cookie
         private const int INTERNET_COOKIE_HTTPONLY = 0x00002000;
-
         [DllImport("wininet.dll", SetLastError = true)]
         private static extern bool InternetGetCookieEx(
             string url,
@@ -104,10 +100,8 @@ namespace CobWeb.Util.TridentHelper
             ref int size,
             int flags,
             IntPtr pReserved);
-
         [DllImport("wininet.dll", CharSet = CharSet.Auto, SetLastError = true)]
         private static extern bool InternetSetCookie(string lpszUrlName, string lbszCookieName, string lpszCookieData);
-
         /// <summary>
         /// 设置cookie
         /// </summary>
@@ -118,7 +112,6 @@ namespace CobWeb.Util.TridentHelper
                 InternetSetCookie(url, cookie.Key, cookie.Value);
             }
         }
-
         /// <summary>
         /// 获取完整cookie
         /// </summary>
@@ -143,7 +136,6 @@ namespace CobWeb.Util.TridentHelper
             return sb.ToString();
         }
         #endregion
-
         /// <summary>
         /// 根据name找到元素
         /// </summary>
@@ -158,7 +150,6 @@ namespace CobWeb.Util.TridentHelper
             }
             return null;
         }
-
         /// <summary>
         /// 根据name找到元素
         /// </summary>
@@ -173,7 +164,6 @@ namespace CobWeb.Util.TridentHelper
             }
             return null;
         }
-
         /// <summary>
         /// 设置value值
         /// </summary>
@@ -181,7 +171,6 @@ namespace CobWeb.Util.TridentHelper
         {
             ele.setAttribute("value", value);
         }
-
         /// <summary>
         /// 得到value值
         /// </summary>
@@ -189,7 +178,6 @@ namespace CobWeb.Util.TridentHelper
         {
             return ele.getAttribute("value");
         }
-
         /// <summary>
         /// 触发ondblclick事件
         /// </summary>
@@ -197,7 +185,6 @@ namespace CobWeb.Util.TridentHelper
         {
             (ele as IHTMLElement3).FireEvent("ondblclick");
         }
-
         /// <summary>
         /// 触发onclick事件
         /// </summary>
@@ -205,7 +192,6 @@ namespace CobWeb.Util.TridentHelper
         {
             (ele as IHTMLElement3).FireEvent("onclick");
         }
-
         /// <summary>
         /// 触发onchange事件
         /// </summary>
@@ -213,7 +199,6 @@ namespace CobWeb.Util.TridentHelper
         {
             (ele as IHTMLElement3).FireEvent("onchange");
         }
-
         /// <summary>
         /// 触发onblur事件
         /// </summary>
@@ -221,7 +206,6 @@ namespace CobWeb.Util.TridentHelper
         {
             (ele as IHTMLElement3).FireEvent("onblur");
         }
-
         /// <summary>
         /// 设置值并触发onchange事件
         /// </summary>
@@ -230,7 +214,6 @@ namespace CobWeb.Util.TridentHelper
             SetValue(ele, value);
             OnChange(ele);
         }
-
         /// <summary>
         /// 设置值并触发onblur事件
         /// </summary>
@@ -239,7 +222,6 @@ namespace CobWeb.Util.TridentHelper
             SetValue(ele, value);
             OnBlur(ele);
         }
-
         /// <summary>
         /// 得到下拉框text值
         /// </summary>
@@ -254,7 +236,6 @@ namespace CobWeb.Util.TridentHelper
             }
             return null;
         }
-
         /// <summary>
         /// 得到下拉框value值
         /// </summary>
@@ -269,7 +250,6 @@ namespace CobWeb.Util.TridentHelper
             }
             return null;
         }
-
         /// <summary>
         /// 根据InnerText设置下拉框
         /// </summary>
@@ -289,7 +269,6 @@ namespace CobWeb.Util.TridentHelper
             select.FireEvent("onchange");
             return isOk;
         }
-
         /// <summary>
         /// 根据value设置下拉框
         /// </summary>
@@ -309,7 +288,6 @@ namespace CobWeb.Util.TridentHelper
             select.FireEvent("onchange");
             return isOk;
         }
-
         /// <summary>
         /// 下载图片
         /// 超时间单位:秒
@@ -321,24 +299,19 @@ namespace CobWeb.Util.TridentHelper
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Timeout = 1000 * timeout;
                 request.Headers["Cookie"] = cookie;
-
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream requestStream = response.GetResponseStream();
-
                 if (requestStream != null)
                 {
                     Bitmap sourceBm = new Bitmap(requestStream);
-
                     requestStream.Dispose();
                     response.Dispose();
                     return sourceBm;
                 }
             }
             catch { }
-
             return null;
         }
-
         /// <summary>
         /// 执行js
         /// </summary>
@@ -348,7 +321,6 @@ namespace CobWeb.Util.TridentHelper
             doc.parentWindow.execScript(jsStr, "javascript");
             //CommonCla.WriteLogFile("执行完成");
         }
-
         /// <summary>
         /// 执行js
         /// </summary>
@@ -356,7 +328,6 @@ namespace CobWeb.Util.TridentHelper
         {
             win.document.parentWindow.execScript(jsStr, "javascript");
         }
-
         /// <summary>
         /// 获取checked 属性
         /// </summary>
@@ -373,7 +344,6 @@ namespace CobWeb.Util.TridentHelper
                 return false;
             }
         }
-
         /// <summary>
         /// 设置复选框 选中与否
         /// </summary>
@@ -385,7 +355,6 @@ namespace CobWeb.Util.TridentHelper
             {
                 //不会触发选中事件,可能有问题
                 //((HTMLInputElement)ele).@checked = check;
-
                 if (check)
                 {
                     //没有选中,则选中
@@ -409,7 +378,6 @@ namespace CobWeb.Util.TridentHelper
             {
             }
         }
-
         #region 扩展
         /// <summary>
         /// 获取radio的选中值
@@ -428,11 +396,9 @@ namespace CobWeb.Util.TridentHelper
                         break;
                     }
                 }
-
             }
             return result;
         }
-
         /// <summary>
         /// 根据class找元素
         /// </summary>
@@ -457,7 +423,6 @@ namespace CobWeb.Util.TridentHelper
             }
             return null;
         }
-
         /// <summary>
         /// 根据class找元素
         /// </summary>
@@ -479,11 +444,9 @@ namespace CobWeb.Util.TridentHelper
                         return ele;
                     }
                 }
-
             }
             return null;
         }
-
         /// <summary>
         /// 根据className 找元素列表
         /// </summary>
@@ -509,7 +472,6 @@ namespace CobWeb.Util.TridentHelper
             }
             return eList;
         }
-
         /// <summary>
         /// 根据id找元素
         /// </summary>
@@ -517,7 +479,6 @@ namespace CobWeb.Util.TridentHelper
         {
             foreach (IHTMLElement ele in element.all)
             {
-
                 if (ele.id != null && ele.id == id)
                 {
                     return ele;
@@ -525,7 +486,6 @@ namespace CobWeb.Util.TridentHelper
             }
             return null;
         }
-
         /// <summary>
         /// 根据id找元素
         /// </summary>
@@ -533,7 +493,6 @@ namespace CobWeb.Util.TridentHelper
         {
             foreach (IHTMLElement ele in doc2.parentWindow.document.all)
             {
-
                 if (ele.id != null && ele.id == id)
                 {
                     return ele;
@@ -541,7 +500,6 @@ namespace CobWeb.Util.TridentHelper
             }
             return null;
         }
-
         /// <summary>
         /// 根据属性和属性值找元素
         /// </summary>
@@ -556,9 +514,7 @@ namespace CobWeb.Util.TridentHelper
             }
             return null;
         }
-
         static System.Text.RegularExpressions.Regex TrimSpaceRegex = new System.Text.RegularExpressions.Regex(@"\s+", System.Text.RegularExpressions.RegexOptions.Compiled);
-
         /// <summary>
         /// 根据Value值 找元素 
         /// </summary>
@@ -578,7 +534,6 @@ namespace CobWeb.Util.TridentHelper
             }
             return null;
         }
-
         /// <summary>
         /// 根据Value值 找元素 
         /// </summary>
@@ -598,7 +553,6 @@ namespace CobWeb.Util.TridentHelper
             }
             return null;
         }
-
         /// <summary>
         /// 根据InnerText 找元素 
         /// </summary>
@@ -618,7 +572,6 @@ namespace CobWeb.Util.TridentHelper
             }
             return null;
         }
-
         /// <summary>
         /// 根据InnerText 找元素 
         /// </summary>
@@ -637,7 +590,6 @@ namespace CobWeb.Util.TridentHelper
             }
             return null;
         }
-
         /// <summary>
         /// 根据id返回元素value
         /// </summary>
@@ -652,7 +604,6 @@ namespace CobWeb.Util.TridentHelper
             }
             return null;
         }
-
         /// <summary>
         /// 根据id返回元素value
         /// </summary>
@@ -667,7 +618,6 @@ namespace CobWeb.Util.TridentHelper
             }
             return null;
         }
-
         /// <summary>
         /// 根据name返回元素value
         /// </summary>
@@ -682,7 +632,6 @@ namespace CobWeb.Util.TridentHelper
             }
             return null;
         }
-
         /// <summary>
         /// 根据name返回元素value
         /// </summary>
@@ -697,7 +646,6 @@ namespace CobWeb.Util.TridentHelper
             }
             return null;
         }
-
         /// <summary>
         /// 根据className返回元素value
         /// </summary>
@@ -712,7 +660,6 @@ namespace CobWeb.Util.TridentHelper
             }
             return null;
         }
-
         /// <summary>
         /// 根据className返回元素value
         /// </summary>
@@ -727,7 +674,6 @@ namespace CobWeb.Util.TridentHelper
             }
             return null;
         }
-
         public static Bitmap DownloadBitmap(string url, int timeout = 15, string cookie = "", bool isTest = false)
         {
             try
@@ -735,32 +681,23 @@ namespace CobWeb.Util.TridentHelper
                 HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
                 request.Timeout = 1000 * timeout;
                 request.Headers["Cookie"] = cookie;
-
                 request.UserAgent = "Mozilla/4.0 (compatible; MSIE 7.0; Windows NT 6.1; WOW64; Trident/4.0; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; Media Center PC 6.0; .NET4.0C; .NET4.0E)";
-
                 HttpWebResponse response = (HttpWebResponse)request.GetResponse();
                 Stream requestStream = response.GetResponseStream();
-
                 if (requestStream != null)
                 {
                     Bitmap sourceBm = new Bitmap(requestStream);
-
                     requestStream.Dispose();
                     response.Dispose();
-
                     if (isTest)
                     {
                         var testname = string.Format("test_{0}.png", DateTime.Now.ToString("yyyy-MM-dd-HH-mm-ss"));
-
                         sourceBm.Save("test.png", ImageFormat.Png);
                     }
-
                     return sourceBm;
                 }
             }
             catch (Exception e) { }
-
-
             return null;
         }
         #endregion

@@ -1,4 +1,4 @@
-﻿namespace CobWebAdapter
+﻿namespace CobWeb.DashBoard
 {
     partial class FormDashboard
     {
@@ -6,7 +6,6 @@
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
-
         /// <summary>
         /// Clean up any resources being used.
         /// </summary>
@@ -19,9 +18,7 @@
             }
             base.Dispose(disposing);
         }
-
         #region Windows Form Designer generated code
-
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
@@ -31,21 +28,18 @@
             this.btn_test_debug = new System.Windows.Forms.Button();
             this.btn_bin_debug = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column8 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column9 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column10 = new System.Windows.Forms.DataGridViewButtonColumn();
             this.Column11 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -60,10 +54,10 @@
             this.btn_test_debug.UseVisualStyleBackColor = true;
             this.btn_test_debug.Click += new System.EventHandler(this.btn_test_debug_Click);
             // 
-            // button2
+            // btn_bin_debug
             // 
             this.btn_bin_debug.Location = new System.Drawing.Point(142, 12);
-            this.btn_bin_debug.Name = "button2";
+            this.btn_bin_debug.Name = "btn_bin_debug";
             this.btn_bin_debug.Size = new System.Drawing.Size(124, 67);
             this.btn_bin_debug.TabIndex = 1;
             this.btn_bin_debug.Text = "bin环境";
@@ -80,9 +74,6 @@
             this.Column4,
             this.Column5,
             this.Column6,
-            this.Column7,
-            this.Column8,
-            this.Column9,
             this.Column10,
             this.Column11});
             this.dataGridView1.Location = new System.Drawing.Point(0, 94);
@@ -90,6 +81,43 @@
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.Size = new System.Drawing.Size(944, 218);
             this.dataGridView1.TabIndex = 3;
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.Controls.Add(this.button4);
+            this.flowLayoutPanel1.Controls.Add(this.button5);
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 318);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(839, 219);
+            this.flowLayoutPanel1.TabIndex = 4;
+            // 
+            // button4
+            // 
+            this.button4.Location = new System.Drawing.Point(3, 3);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(113, 70);
+            this.button4.TabIndex = 0;
+            this.button4.Text = "QuotePrice\r\n使用窗口\r\n当前运行时间\r\n00:01:92\r\n";
+            this.button4.TextAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.button4.UseVisualStyleBackColor = true;
+            // 
+            // button5
+            // 
+            this.button5.Location = new System.Drawing.Point(122, 3);
+            this.button5.Name = "button5";
+            this.button5.Size = new System.Drawing.Size(129, 58);
+            this.button5.TabIndex = 1;
+            this.button5.Text = "button5";
+            this.button5.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(272, 12);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(124, 67);
+            this.button6.TabIndex = 5;
+            this.button6.Text = "调用记录";
+            this.button6.UseVisualStyleBackColor = true;
             // 
             // Column1
             // 
@@ -121,21 +149,6 @@
             this.Column6.HeaderText = "在执行";
             this.Column6.Name = "Column6";
             // 
-            // Column7
-            // 
-            this.Column7.HeaderText = "上次入参";
-            this.Column7.Name = "Column7";
-            // 
-            // Column8
-            // 
-            this.Column8.HeaderText = "上次出参";
-            this.Column8.Name = "Column8";
-            // 
-            // Column9
-            // 
-            this.Column9.HeaderText = "上次执行时间";
-            this.Column9.Name = "Column9";
-            // 
             // Column10
             // 
             this.Column10.HeaderText = "激活";
@@ -146,48 +159,11 @@
             this.Column11.HeaderText = "关闭";
             this.Column11.Name = "Column11";
             // 
-            // flowLayoutPanel1
-            // 
-            this.flowLayoutPanel1.Controls.Add(this.button4);
-            this.flowLayoutPanel1.Controls.Add(this.button5);
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 318);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(956, 219);
-            this.flowLayoutPanel1.TabIndex = 4;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(3, 3);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(113, 70);
-            this.button4.TabIndex = 0;
-            this.button4.Text = "QuotePrice\r\n使用窗口\r\n当前运行时间\r\n00:01:92\r\n";
-            this.button4.TextAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.button4.UseVisualStyleBackColor = true;
-            // 
-            // button5
-            // 
-            this.button5.Location = new System.Drawing.Point(122, 3);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(129, 58);
-            this.button5.TabIndex = 1;
-            this.button5.Text = "button5";
-            this.button5.UseVisualStyleBackColor = true;
-            // 
-            // button6
-            // 
-            this.button6.Location = new System.Drawing.Point(272, 12);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(124, 67);
-            this.button6.TabIndex = 5;
-            this.button6.Text = "调用记录";
-            this.button6.UseVisualStyleBackColor = true;
-            // 
             // FormDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(956, 549);
+            this.ClientSize = new System.Drawing.Size(844, 549);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.dataGridView1);
@@ -199,29 +175,23 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
-
         }
-
         #endregion
-
         private System.Windows.Forms.Button btn_test_debug;
         private System.Windows.Forms.Button btn_bin_debug;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
+        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button button6;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column8;
-        private System.Windows.Forms.DataGridViewTextBoxColumn Column9;
         private System.Windows.Forms.DataGridViewButtonColumn Column10;
         private System.Windows.Forms.DataGridViewButtonColumn Column11;
-        private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.Button button6;
     }
 }
 

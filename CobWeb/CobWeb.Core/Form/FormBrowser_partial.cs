@@ -12,23 +12,15 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 namespace CobWeb.Core
 {
     public partial class FormBrowser
     {
-
-
-
-
         /// <summary>
         /// 需要辅助方法执行的代码
         /// </summary>
         List<Action> _assistActions = new List<Action>();
         public new bool IsDisposed = false;
-
-
-
         #region _assistActions
         /// <summary>
         /// 辅助方法,当需要借助主线程进行某种操作时
@@ -49,7 +41,6 @@ namespace CobWeb.Core
                 _assistActions.Add(action);
             }
         }
-
         public void ClearAssistAction()
         {
             lock (_assistActions)
@@ -62,7 +53,6 @@ namespace CobWeb.Core
                     }
                     catch (Exception ex)
                     {
-
                     }
                 }
             }
@@ -97,7 +87,6 @@ namespace CobWeb.Core
                     }
                 }
             }
-
             //webBrowser销毁表示程序退出了
             if (!KernelControl.IsDisposed())
             {
@@ -107,19 +96,14 @@ namespace CobWeb.Core
             {
                 //打个日志
             }
-
-
         }
         #endregion
-
         #region 执行
         /// <summary>
         /// 处理程序,每次须重新创建
         /// </summary>
         IProcessBase _process = null;
-
         #endregion
-
         public void ClearWebBrowser()
         {
             try
@@ -128,21 +112,17 @@ namespace CobWeb.Core
             }
             catch (Exception ex)
             {
-
             }
         }
         public void Stop()
         {
             try
             {
-
             }
             catch (Exception ex)
             {
-
             }
         }
-
         FormLog _formLog;
         FormLog FormLog
         {
@@ -188,16 +168,8 @@ namespace CobWeb.Core
                 _formLog.ExcuteRecord(txt);
             }
         }
-
-
         //public Action<string> _excuteRecord;
-
-
-
-
-
         //对外接口
-
         /// <summary>
         /// 执行事件完成后返回的结果,未完成时为null
         /// </summary>
@@ -217,8 +189,6 @@ namespace CobWeb.Core
         {
             this._result = result;
         }
-
-
         /// <summary>
         /// 标记是否正在执行
         /// </summary>
@@ -227,17 +197,14 @@ namespace CobWeb.Core
         {
             return this._isWorking;
         }
-
         public void SetWorking(IProcessBase process)
         {
             this._isWorking = true;
-
         }
         public void SetWorkingStop()
         {
             this._isWorking = false;
         }
-
         /// <summary>
         /// 是否显示窗口
         /// </summary>
@@ -257,16 +224,12 @@ namespace CobWeb.Core
             }
             try
             {
-
                 this.KernelControl.Navigate(address);
-
             }
             catch (System.UriFormatException)
             {
                 return;
             }
         }
-
     }
-
 }

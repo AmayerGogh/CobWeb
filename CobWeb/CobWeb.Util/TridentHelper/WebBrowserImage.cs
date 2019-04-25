@@ -3,7 +3,6 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Security;
 using System.Windows.Forms;
-
 namespace CobWeb.Util.TridentHelper
 {
     public class WebBrowserImage
@@ -15,11 +14,9 @@ namespace CobWeb.Util.TridentHelper
         {
             webBrowser.Width = width;
             webBrowser.Height = height;
-
             var bitmap = GetWebBrowserImage(webBrowser, width, height);
             bitmap.Save(path);
         }
-
         /// <summary>
         /// WebBrowser快照,记录操作流程中的各阶段
         /// </summary>
@@ -28,17 +25,14 @@ namespace CobWeb.Util.TridentHelper
             // 获取网页高度和宽度,也可以自己设置
             int width = webBrowser.Document.Body.ScrollRectangle.Width;
             int height = webBrowser.Document.Body.ScrollRectangle.Height;
-
             SaveSnapshot(webBrowser, path, width, height);
         }
-
         public static Bitmap GetWebBrowserImage(WebBrowser webBrowser, int width, int height)
         {
             WebControlImage.Snapshot snap = new WebControlImage.Snapshot();
             Bitmap image = snap.TakeSnapshot(webBrowser.ActiveXInstance, new Rectangle(0, 0, width, height));
             return image;
         }
-
         /// <summary> 
         /// WebBrowser获取图形 
         /// </summary> 
@@ -60,7 +54,6 @@ namespace CobWeb.Util.TridentHelper
                     [MarshalAs(UnmanagedType.U2)]
                     public short tdExtDevmodeOffset;
                 }
-
                 [StructLayout(LayoutKind.Sequential)]
                 public class COMRECT
                 {
@@ -71,7 +64,6 @@ namespace CobWeb.Util.TridentHelper
                     public COMRECT()
                     {
                     }
-
                     public COMRECT(Rectangle r)
                     {
                         this.left = r.X;
@@ -79,7 +71,6 @@ namespace CobWeb.Util.TridentHelper
                         this.right = r.Right;
                         this.bottom = r.Bottom;
                     }
-
                     public COMRECT(int left, int top, int right, int bottom)
                     {
                         this.left = left;
@@ -87,19 +78,15 @@ namespace CobWeb.Util.TridentHelper
                         this.right = right;
                         this.bottom = bottom;
                     }
-
                     public static NativeMethods.COMRECT FromXYWH(int x, int y, int width, int height)
                     {
                         return new NativeMethods.COMRECT(x, y, x + width, y + height);
                     }
-
                     public override string ToString()
                     {
                         return string.Concat(new object[] { "Left = ", this.left, " Top ", this.top, " Right = ", this.right, " Bottom = ", this.bottom });
                     }
-
                 }
-
                 [StructLayout(LayoutKind.Sequential)]
                 public sealed class tagLOGPALETTE
                 {
@@ -109,7 +96,6 @@ namespace CobWeb.Util.TridentHelper
                     public short palNumEntries;
                 }
             }
-
             public class Snapshot
             {
                 /// <summary> 
@@ -159,12 +145,10 @@ namespace CobWeb.Util.TridentHelper
                     return pPicture;
                 }
             }
-
             [SuppressUnmanagedCodeSecurity]
             internal static class UnsafeNativeMethods
             {
                 public static Guid IID_IViewObject = new Guid("{0000010d-0000-0000-C000-000000000046}");
-
                 [ComImport, Guid("0000010d-0000-0000-C000-000000000046"), InterfaceType(ComInterfaceType.InterfaceIsIUnknown)]
                 public interface IViewObject
                 {

@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace CobWeb.Util.FlashLog
 {
     public class FlashLogWrite
@@ -15,11 +14,9 @@ namespace CobWeb.Util.FlashLog
         {
             logPathRoot = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Log");
         }
-       
        public void Write(FlashLogMessage msg)
         {
             var level = msg.Level.ToString();
-           
             //switch (msg.Level)
             //{
             //    case FlashLogLevel.Debug:
@@ -91,6 +88,5 @@ namespace CobWeb.Util.FlashLog
                 return logFilePath;
             }
         }
-
     }
 }

@@ -7,7 +7,6 @@ using CobWeb.Core.Model;
 using CobWeb.Core.Process;
 using CobWeb.Util.FlashLog;
 using CobWeb.Core;
-
 namespace CobWeb.AProcess
 {
     public class JsTest : ProcessBaseNotUseBrowser
@@ -22,6 +21,5 @@ namespace CobWeb.AProcess
             var Result = "{\"test\":\"登陆失败\"}";
             return Result;
         }
-
     }
 }

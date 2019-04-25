@@ -4,7 +4,6 @@ using System.Linq;
 using System.Runtime.Caching;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace CobWeb.Util
 {
     public  class MemoryCacheHelper
@@ -16,7 +15,6 @@ namespace CobWeb.Util
         {
             return MemoryCache.Default.Contains(key);
         }
-
         /// <summary>
         /// 移除缓存
         /// </summary>

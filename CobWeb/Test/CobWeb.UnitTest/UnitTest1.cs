@@ -1,7 +1,6 @@
 ﻿using System;
 using CobWeb.Util;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
 namespace CobWeb.UnitTest
 {
     [TestClass]
@@ -10,7 +9,6 @@ namespace CobWeb.UnitTest
         [TestMethod]
         public void TestMethod1()
         {
-
             //StringHelper.WriteIntoMMF()
             //Assert.AreEqual()
             Assert.AreEqual(Test(), "test:1234");
@@ -18,7 +16,6 @@ namespace CobWeb.UnitTest
         string Test()
         {
             MemoryMappedHelper.WriteIntoMMF("ok", "test:1234");
-
             return  MemoryMappedHelper.ReadIntoMMF("ok");
         }
     }

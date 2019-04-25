@@ -1,9 +1,7 @@
-﻿
-using CobWeb.AProcess;
+﻿using CobWeb.AProcess;
 using CobWeb.Browser;
 using CobWeb.Core;
 using CobWeb.Core.Control;
-
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -12,7 +10,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 namespace CobWeb
 {
     static class Program
@@ -23,18 +20,13 @@ namespace CobWeb
         [STAThread]
         static void Main()
         {
-
             //AppDomain.CurrentDomain.AssemblyResolve += Init.OnResolveAssembly;
-
             Init.Step1_Default();
             Init.Step2_GlobalException();
-
-
             var browserType = string.Empty;
             var port = 6666;
             var number = 0;
             FormBrowser formBrowser = null;
-
             string[] cmdArgs = Environment.GetCommandLineArgs();
             if (cmdArgs.Length > 0)
             {
@@ -56,7 +48,6 @@ namespace CobWeb
                     }
                 }
             }
-
             switch (browserType)
             {
                 case "cef":
@@ -72,8 +63,6 @@ namespace CobWeb
                     formBrowser = new CEF_Form(new CefKernelControl("about:blank"));
                     break;
             }
-
-
             ProcessControl.FormBrowser = formBrowser;
             ProcessControl processControl = new ProcessControl()
             {
@@ -81,9 +70,7 @@ namespace CobWeb
                 Port = port
             };
             processControl.StartListen();
-
             Application.Run(formBrowser);
-
         }
     }
 }

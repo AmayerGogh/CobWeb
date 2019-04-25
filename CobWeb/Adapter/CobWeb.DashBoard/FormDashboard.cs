@@ -7,8 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
-namespace CobWebAdapter
+namespace CobWeb.DashBoard
 {
     public partial class FormDashboard : Form
     {
@@ -16,22 +15,18 @@ namespace CobWebAdapter
         {
             InitializeComponent();
         }
-
         private void FormDashboard_Load(object sender, EventArgs e)
         {
-
         }
-
         private void btn_test_debug_Click(object sender, EventArgs e)
         {
-            FormAdapter form = new FormAdapter();
-            form.Show();
+            //FormAdapter form = new FormAdapter();
+            //form.Show();
         }
-
         private void btn_bin_debug_Click(object sender, EventArgs e)
         {
-            FormAdapter form = new FormAdapter();
-            form.Show();
+            //FormAdapter form = new FormAdapter();
+            //form.Show();
         }
     }
 }

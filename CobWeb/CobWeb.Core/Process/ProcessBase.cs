@@ -1,5 +1,4 @@
-﻿
-using CobWeb.Util.FlashLog;
+﻿using CobWeb.Util.FlashLog;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,17 +6,14 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
 namespace CobWeb.Core
 {
-
     public class ProcessBase
     {
         /// <summary>
         /// 标记是否在结束时关闭此窗口
         /// </summary>
         protected bool _isCloseForm = false;
-
         /// <summary>
         /// 标记是否在结束时关闭程序
         /// </summary>
@@ -48,7 +44,6 @@ namespace CobWeb.Core
         {
             SetResult(JsonConvert.SerializeObject(result));
         }
-
         /// <summary>
         /// 设置返回结果,即执行结束
         /// </summary>
@@ -79,7 +74,6 @@ namespace CobWeb.Core
                     {
                         _form.ExcuteRecord(txt);
                     }
-
                     _sb.AppendLine(string.Format(" -->[{0}] [{1},{2}]:{3}",
                         DateTime.Now.ToString("HH:mm:ss.fff"),
                         Thread.CurrentThread.ManagedThreadId.ToString().PadLeft(2, '0'),
@@ -92,7 +86,6 @@ namespace CobWeb.Core
             {
                 new FlashLogger("流程").Fatal("ProcessBase.RecordLog() 出现错误:" + ex.ToString());
             }
-
             return false;
         }
         internal void End(bool isWorkGoOn = false)
@@ -100,7 +93,6 @@ namespace CobWeb.Core
             //预加载
             if (isWorkGoOn)
             {
-
             }
             else
             {
@@ -108,14 +100,11 @@ namespace CobWeb.Core
                 lock (_objLock)
                 {
                     _isQuit = true;
-
                     if (_form == null)
                         return;
-
                     //记录完整操作流程日志
                     Log("end");
                     _sb.AppendLine(_form.GetResult());
-
                     if (!_isCloseForm)
                     {
                         _form.SetWorkingStop();
@@ -129,8 +118,6 @@ namespace CobWeb.Core
                     _form = null;
                 }
             }
-
         }
     }
-
 }

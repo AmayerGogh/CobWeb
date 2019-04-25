@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebKit;
-
 namespace CobWeb.Browser
 {
    public class CEF_Form: FormBrowser

@@ -12,47 +12,34 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
 namespace CobWeb.AProcess
 {
     public  class ProcessControl
     {
         public  ProcessControl()
         {
-                     
         }
         public void Init()
         {
-
         }
-
         public static FormBrowser FormBrowser;
-
         /// <summary>
         /// 端口号
         /// </summary>
         public  int Port { get; set; }
-
         /// <summary>
         /// 进程编号
         /// </summary>
         public  int Number { get; set; }
-
         /// <summary>
         /// 初始化所属MacUrl
         /// </summary>
         public  string MacUrl { get; set; }
-
         public string KernelType { get; set; }
         //step
-
-
         public void Step1_GetSetting()
         {
-           
         }
-
-
         Socket _serverSocket;
       public  void StartListen()
         {
@@ -84,19 +71,16 @@ namespace CobWeb.AProcess
                                 ExcuteRecord("接收到的信息");
                                 ExcuteRecord(recvStr);
                                 var result = Excute(recvStr);
-
                                 SocketBasic.Send(socket, result, 3);
                             }
                             catch (Exception ex)
                             {
-
                             }
                             finally
                             {
                                 if (socket != null)
                                     socket.Dispose();
                             }
-
                         }, cSocket);
                     }
                     catch (Exception ex)
@@ -106,7 +90,6 @@ namespace CobWeb.AProcess
                 }
             });
         }
-
         readonly Object _objLock = new Object();
         string Excute(string dataParam)
         {
@@ -114,7 +97,6 @@ namespace CobWeb.AProcess
             {
                 var paramModel = JsonConvert.DeserializeObject<ParamModel>(dataParam);
                 ExcuteRecord(string.Format("请求接口:{0} 超时时间:{1}秒 使用窗口:{2}", paramModel.Method, paramModel.Timeout, paramModel.IsUseForm));
-
                 //是否使用窗口
                 if (paramModel.IsUseForm)
                 {
@@ -160,7 +142,6 @@ namespace CobWeb.AProcess
                 });
             }
         }
-
         string ProcessAndResult(string dataParam, ParamModel paramModel)
         {
             var resultModel = new ResultModel();
@@ -170,7 +151,6 @@ namespace CobWeb.AProcess
             {
                 //设置并执行相应操作，核心方法
                 SetActionType(paramModel);
-
                 try
                 {
                     //得到执行结果
@@ -184,7 +164,6 @@ namespace CobWeb.AProcess
                                 resultModel.Result = ArtificialCode.A_RequestNormalBreak.ToString();
                                 break;
                             }
-
                             if (FormBrowser.IsDisposed)
                                 throw new Exception(ArtificialCode.A_RequestAccidentBreak.ToString());
                             Thread.Sleep(100);
@@ -195,7 +174,6 @@ namespace CobWeb.AProcess
                             break;
                         }
                     }
-
                     if (resultModel.Result == null)
                         throw new Exception(ArtificialCode.A_TimeOutResult.ToString());
                 }
@@ -230,9 +208,7 @@ namespace CobWeb.AProcess
                     }
                 });
             }
-
             return JsonConvert.SerializeObject(resultModel);
-
         }
         #region 执行
         /// <summary>
@@ -244,10 +220,8 @@ namespace CobWeb.AProcess
         /// </summary>
         public void SetActionType(ParamModel paramModel)
         {
-         
             //赋值为null
            // this._result = null;
-
             //得到处理程序,若有异常直接抛出
             _process = ProcessFactory.GetProcessByMethod(ProcessControl.FormBrowser, paramModel);
             FormBrowser.SetWorking(_process);
@@ -272,8 +246,6 @@ namespace CobWeb.AProcess
         {
             FormBrowser.ExcuteRecord(txt);            
         }
-
-
         //监听
     }
 }

@@ -6,14 +6,17 @@ core 包含业务的封装             WebKitBrowser内核    TridentBrowser内核     CefB
 							   FormBrowswer   IFormBase把这个干掉
 							   ProcessUserBrowser
 util 常用工具 不包含业务     
-
-
-
-
-
-
 cef包
 将cef的包放入到bin 下  包放在了微云中
-
 webkit 
 将所有放到bin下 
+架构
+Server   Server   Server  Server ....
+       ||
+	  webapi
+	   ||
+      Adapter 层
+	   ||
+	  socket
+	   ||
+Browser  Browser  Browser  Browser ....

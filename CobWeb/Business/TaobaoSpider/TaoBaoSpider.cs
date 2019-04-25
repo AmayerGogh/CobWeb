@@ -7,7 +7,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace TaobaoSpider
 {
     public class TaoBaoSpider : ProcessBaseUseBrowser
@@ -33,7 +32,6 @@ namespace TaobaoSpider
         {
             LoginProcessEndInvoke(new LoginResult() { IsSuccess = true });
         }
-
         public override void StartRequest()
         {
             _form.ExcuteRecord("start");

@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace CobWeb.AProcess
 {
     public class GetVersion : ProcessBaseUseBrowser
@@ -30,19 +29,16 @@ namespace CobWeb.AProcess
             _request = paramModel;
             _form = form as IEForm;
             var baseform = base.processBase._form;
-
         }
         public override void Login()
         {
             LoginProcessEndInvoke(new LoginResult() { IsSuccess = true });
         }
-
         public override void StartRequest()
         {
             _form.ExcuteRecord("start");
             _form.browser.Navigate("http://ithome.com");
             TimerHelp_Start(o1, null, 300);
-
         }
         void o1(TimerHelp timer, object param1, bool isCancel)
         {
@@ -76,6 +72,5 @@ namespace CobWeb.AProcess
                 });
             }
         }
-
     }
 }

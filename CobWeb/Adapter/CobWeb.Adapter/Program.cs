@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CobWebAdapter
+namespace CobWebServer
 {
     static class Program
     {
@@ -17,7 +17,7 @@ namespace CobWebAdapter
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new FormDashboard());
+            Application.Run(new FormAdapter());
             var pro = Process.GetCurrentProcess();
             //pro.ProcessName = "1"; 
         }

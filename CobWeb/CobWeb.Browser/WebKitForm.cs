@@ -6,17 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WebKit;
-
 namespace CobWeb.Browser
 {
     public class WebKitForm: FormBrowser
     {
-       
-         
-        
         public WebKitForm(WebKitKernelControl  browser) : base(browser)
         {
-
              panel1.Controls.Add(browser);
              browser.Location = new System.Drawing.Point(0, 0);
              browser.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
@@ -26,7 +21,5 @@ namespace CobWeb.Browser
              browser.TabIndex = 1;
              browser.Navigate("http://www.baidu.com");
         }
-
-
     }
 }

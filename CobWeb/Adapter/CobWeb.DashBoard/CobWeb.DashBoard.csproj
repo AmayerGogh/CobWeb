@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{5AD08285-C1E2-4CDD-BFFD-A7FE7259FBE9}</ProjectGuid>
+    <ProjectGuid>{EAB857AF-7277-43B2-A5C5-BA621C7727B3}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>CobWebAdapter</RootNamespace>
-    <AssemblyName>CobWebAdapter</AssemblyName>
+    <RootNamespace>CobWeb.DashBoard</RootNamespace>
+    <AssemblyName>CobWeb.DashBoard</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -46,23 +46,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormAdapter.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormAdapter.Designer.cs">
-      <DependentUpon>FormAdapter.cs</DependentUpon>
-    </Compile>
     <Compile Include="FormDashboard.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FormDashboard.Designer.cs">
       <DependentUpon>FormDashboard.cs</DependentUpon>
     </Compile>
+    <Compile Include="MyHttpServer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <EmbeddedResource Include="FormAdapter.resx">
-      <DependentUpon>FormAdapter.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="FormDashboard.resx">
       <DependentUpon>FormDashboard.cs</DependentUpon>
     </EmbeddedResource>
@@ -89,8 +81,8 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CobWeb.Util\CobWeb.Util.csproj">
-      <Project>{1bd9ffd9-f0f6-479e-95a0-8f5f3e303dac}</Project>
+    <ProjectReference Include="..\..\CobWeb.Util\CobWeb.Util.csproj">
+      <Project>{1BD9FFD9-F0F6-479E-95A0-8F5F3E303DAC}</Project>
       <Name>CobWeb.Util</Name>
     </ProjectReference>
   </ItemGroup>

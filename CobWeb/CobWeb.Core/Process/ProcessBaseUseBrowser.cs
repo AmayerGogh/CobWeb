@@ -1,5 +1,4 @@
 ﻿using CobWeb.Core.Model;
-
 using CobWeb.Util;
 using CobWeb.Util.FlashLog;
 using System;
@@ -9,18 +8,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using static CobWeb.Util.TimerHelp;
-
 namespace CobWeb.Core
 {
     public abstract class ProcessBaseUseBrowser : IProcessBase
     {
-
         /// <summary>
         /// 当前加载数据前的时间戳
         /// </summary>
         protected long startTime = 0;
         protected ProcessBase processBase;
-
         protected FlashLogger _log;
         /// <summary>
         /// 等待的默认时间,单位:秒
@@ -32,7 +28,6 @@ namespace CobWeb.Core
             _log = log;
             processBase = new ProcessBase(form,_log);            
         }
-
         public virtual void Begin()
         {
             LoginProcessEndHandler += LoginProcessEnd;
@@ -82,10 +77,6 @@ namespace CobWeb.Core
             LoginProcessEndHandler.Invoke(loginResult);
         }
         public event Action<LoginResult> LoginProcessEndHandler;
-
-
-
-
         //public MyWebBrowser Browser
         //{
         //    get
@@ -105,12 +96,9 @@ namespace CobWeb.Core
                     //_form. RecordLog("IsQuit() 退出：" + excuteCompleted?.Method?.Name);
                     return;
                 }
-
                 excuteCompleted(x, y, z);
-
             }, param, times, intervalTimes);
         }
-
         private bool IsQuit()
         {
             return processBase._isQuit;

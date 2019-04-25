@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
 namespace CobWeb.Util
 {
     public class TimerHelp
@@ -20,7 +19,6 @@ namespace CobWeb.Util
             this.Times = times;
             this.IntervalTimes = intervalTimes;
         }
-
         /// <summary>
         /// 指示定时时间，以毫秒为单位。
         /// </summary>
@@ -36,7 +34,6 @@ namespace CobWeb.Util
             }
         }
         private int _times;
-
         /// <summary>
         /// 指示定时之中的间歇时间，用于检查是否取消执行。
         /// </summary>
@@ -52,7 +49,6 @@ namespace CobWeb.Util
             }
         }
         private int _intervalTimes;
-
         private BackgroundWorker BackgroundWork
         {
             get
@@ -65,7 +61,6 @@ namespace CobWeb.Util
             }
         }
         private BackgroundWorker _backgroundWork;
-
         private object Param
         {
             get
@@ -78,7 +73,6 @@ namespace CobWeb.Util
             }
         }
         private object _param;
-
         /// <summary>
         /// 指示定时器是否处于运行状态
         /// </summary>
@@ -90,7 +84,6 @@ namespace CobWeb.Util
             }
         }
         private bool _excuting;
-
         /// <summary>
         /// 启动定时器，如果定时器已经启动，则引发异常。
         /// </summary>
@@ -106,7 +99,6 @@ namespace CobWeb.Util
             BackgroundWork.RunWorkerCompleted += new RunWorkerCompletedEventHandler(b_RunWorkerCompleted);
             BackgroundWork.RunWorkerAsync(this);
         }
-
         /// <summary>
         /// 请求中止执行，如果定时器尚未启动，则引发异常。
         /// </summary>
@@ -116,12 +108,10 @@ namespace CobWeb.Util
             this.IsCancle = isCancle;
             BackgroundWork.CancelAsync();
         }
-
         /// <summary>
         /// 达到定时事件代理
         /// </summary>
         public delegate void ExcuteCompletedAgency(TimerHelp timer, object param, bool isCancel);
-
         private bool IsCancle
         {
             get
@@ -134,12 +124,10 @@ namespace CobWeb.Util
             }
         }
         private bool _isCancle;
-
         /// <summary>
         /// 达到定时事件
         /// </summary>
         public event ExcuteCompletedAgency ExcuteCompleted;
-
         void b_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Error != null) throw e.Error;
@@ -151,7 +139,6 @@ namespace CobWeb.Util
             _excuting = false;
             BackgroundWork.Dispose();
         }
-
         void b_DoWork(object sender, DoWorkEventArgs e)
         {
             var o = e.Argument as TimerHelp;
@@ -164,7 +151,6 @@ namespace CobWeb.Util
                 x += o.IntervalTimes;
             }
         }
-
         /// <summary>
         /// 等待一段时间后,再当前线程执行
         /// </summary>

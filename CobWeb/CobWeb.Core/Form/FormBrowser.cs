@@ -14,12 +14,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 namespace CobWeb.Core
 {
     public partial class FormBrowser : Form
     {
-        
         /// <summary>
         /// 
         /// </summary>
@@ -36,7 +34,6 @@ namespace CobWeb.Core
             StartAssist();
             this.KernelControl = kernelControl;
         }
-
         private void InitializeComponent()
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
@@ -142,20 +139,13 @@ namespace CobWeb.Core
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
-        
-
         public IKernelControl KernelControl { get; set; }
-
         private void FormBrowser_Load(object sender, EventArgs e)
         {
             //Navigate(@"www.baidu.com");
             //this.panel1.Controls.Add(browser);
-
         }
-
-     
         private void Browser_TitleChanged(object sender, TitleChangedEventArgs e)
         {
             //this.Text =this.browser
@@ -164,12 +154,10 @@ namespace CobWeb.Core
         {
             KernelControl.Refresh();
         }
-
         private void 返回ToolStripMenuItem_Click(object sender, EventArgs e)
         {
            // this.browser.Undo();
         }
-
         private void 前进ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             //this.browser.Forward();
@@ -185,13 +173,10 @@ namespace CobWeb.Core
                 Navigate(toolStripTextBox1.Text);
             }
         }
-
-        
         protected override void OnClosing(CancelEventArgs e)
         {
             base.OnClosing(e);
         }
-
         private void 通信ToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowLogForm();
@@ -200,13 +185,10 @@ namespace CobWeb.Core
         {
             //browser.ShowDevTools();
         }
-
-
         void BrowserInit()
         {
             //this.browser = new MyWebKitBrowser()
             //{
-
             //};
             //this.browser.Location = new System.Drawing.Point(0, 0);
             //this.browser.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
@@ -215,35 +197,25 @@ namespace CobWeb.Core
             //this.browser.Size = new System.Drawing.Size(963, 519);
             //this.browser.TabIndex = 1;
             //this.browser.Navigate("http://www.baidu.com");
-
             //this.browser.StartNewWindow += Browser_StartNewWindow;
             //this.browser.TitleChanged += Browser_TitleChanged; //new EventHandler<TitleChangedEventArgs> 
             //this.browser.FrameLoadEnd += Browser_FrameLoadEnd;
             //this.browser.FrameLoadStart += Browser_FrameLoadStart;
-
             //this.browser.LoadHandler = new LoadHandler();
             //if (CefSharpSettings.ShutdownOnExit)
             //{
             //    Application.ApplicationExit += OnApplicationExit;
             //}
-            
         }
-
         //private void OnApplicationExit(object sender, EventArgs e)
         //{
         //   // Cef.Shutdown();
         //}
-
-
         //private void FormBrowser_FormClosed(object sender, FormClosedEventArgs e)
         //{
         //    //IsDisposed = true;
         //    //ClearWebBrowser();
         //    Dispose();
         //}
-
-     
-       
     }
-
 }

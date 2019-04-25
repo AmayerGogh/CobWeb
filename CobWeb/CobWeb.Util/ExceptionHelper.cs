@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace CobWeb.Util
 {
     public class ExceptionHelper
@@ -18,7 +17,6 @@ namespace CobWeb.Util
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine("【begin】 ****************************");
-
             sb.AppendLine("【出现时间】：" + DateTime.Now.ToString());
             if (ex != null)
             {
@@ -31,10 +29,8 @@ namespace CobWeb.Util
             {
                 sb.AppendLine("【未处理异常】：" + backStr);
             }
-
             sb.AppendLine("【end】 *****************************");
             return sb.ToString();
         }
     }
-
 }

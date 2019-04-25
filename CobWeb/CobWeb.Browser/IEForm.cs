@@ -8,8 +8,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WebKit;
-
-
 namespace CobWeb.Browser
 {
     public class IEForm : FormBrowser
@@ -22,7 +20,6 @@ namespace CobWeb.Browser
         public IEForm(TridentKernelControl browser, bool isShow = true) : base(browser, isShow)
         {                   
             this.browser = browser;
-         
             this.browser.Location = new System.Drawing.Point(0, 0);
             this.browser.Margin = new System.Windows.Forms.Padding(0, 0, 0, 0);
             this.browser.MinimumSize = new System.Drawing.Size(20, 20);
@@ -30,15 +27,12 @@ namespace CobWeb.Browser
             this.browser.Size = new System.Drawing.Size(963, 519);
             this.browser.TabIndex = 1;
             this.browser.Navigate("http://www.baidu.com");
-
             this.browser.DocumentCompleted += webBrowser_DocumentCompleted;
             this.browser.WBDocHostShowUIShowMessage += webBrowser_WBDocHostShowUIShowMessage;
             this.browser.NewWindow += new System.ComponentModel.CancelEventHandler(this.webBrowser_NewWindow);
             this.browser.Dock = DockStyle.Fill;
             panel1.Controls.Add(this.browser);
-
             ExcuteRecord("加载完成了");
-           
         }
         void webBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {

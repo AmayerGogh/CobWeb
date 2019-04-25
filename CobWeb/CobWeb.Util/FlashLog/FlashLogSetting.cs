@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace CobWeb.Util.FlashLog
 {
     public static class FlashLogSetting
@@ -13,7 +12,6 @@ namespace CobWeb.Util.FlashLog
         /// </summary>
         public  static int Max_LogSize = 1024 * 10;
     }
-
     /// <summary>
     /// 日志等级
     /// </summary>
@@ -37,8 +35,5 @@ namespace CobWeb.Util.FlashLog
         public string Message { get; set; }
         public FlashLogLevel Level { get; set; }
         public Exception Exception { get; set; }
-
     }
-
-
 }

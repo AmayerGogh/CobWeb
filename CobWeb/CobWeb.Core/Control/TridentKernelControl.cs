@@ -6,8 +6,6 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
-
 namespace CobWeb.Core.Control
 {
     public class TridentKernelControl : WebBrowser, IKernelControl
@@ -22,7 +20,6 @@ namespace CobWeb.Core.Control
             AllowWebBrowserDrop = false; //不允许拖拽导航  
             IsWebBrowserContextMenuEnabled = true;
         }
-      
         public IKernelControl GetBrowser()
         {
             return null;
@@ -31,12 +28,10 @@ namespace CobWeb.Core.Control
         {
             return new ExtendedWebBrowserSite(this);
         }
-
         bool IKernelControl.IsDisposed()
         {
             return false;
         }
-
         public delegate void DocHostShowUIShowMessageEventHandler(object sender, ExtendedBrowserMessageEventArgs e);
         public event DocHostShowUIShowMessageEventHandler WBDocHostShowUIShowMessage = null;
         class ExtendedWebBrowserSite : WebBrowser.WebBrowserSite, UnsafeNativeMethods.IDocHostShowUI
@@ -47,7 +42,6 @@ namespace CobWeb.Core.Control
             {
                 _Browser = host;
             }
-
             int UnsafeNativeMethods.IDocHostShowUI.ShowMessage(IntPtr hwnd, string lpstrText, string lpstrCaption, uint dwType, string lpstrHelpFile, uint dwHelpContext, ref int lpResult)
             {
                 int iRet = 1; //Hresults.S_FALSE
@@ -63,14 +57,12 @@ namespace CobWeb.Core.Control
                 }
                 return iRet;
             }
-
             int UnsafeNativeMethods.IDocHostShowUI.ShowHelp(IntPtr hwnd, string pszHelpFile, uint uCommand, uint dwData, UnsafeNativeMethods.tagPOINT ptMouse, object pDispatchObjectHit)
             {
                 return unchecked((int)0x80004001); //Hresults.E_NOTIMPL
             }
         }
     }
-
     #region 拦截弹出窗口
     public class UnsafeNativeMethods
     {

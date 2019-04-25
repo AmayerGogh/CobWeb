@@ -9,13 +9,10 @@ using System.Runtime.Caching;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
 namespace CobWeb.Util
 {
     public class CommonCla
     {
-
-
         /// <summary>  
         /// 获取枚举值的描述文本  
         /// </summary>  
@@ -25,7 +22,6 @@ namespace CobWeb.Util
             DescriptionAttribute[] attributes =
                   (DescriptionAttribute[])fi.GetCustomAttributes(
                   typeof(DescriptionAttribute), false);
-
             return (attributes.Length > 0) ? attributes[0].Description : value.ToString();
         }
         /// <summary>
@@ -55,14 +51,12 @@ namespace CobWeb.Util
                 return str;
             }
         }
-
         /// <summary>
         /// 获取该接口的所有实现类
         /// </summary>
         public static List<Type> FindAllClassByInterface<T>()
         {
             var types = new List<Type>();
-
             foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
                 foreach (var type in assembly.GetTypes())
@@ -77,10 +71,8 @@ namespace CobWeb.Util
                     }
                 }
             }
-
             return types;
         }
-
         /// <summary>
         /// 是否已超时
         /// </summary>
@@ -96,8 +88,6 @@ namespace CobWeb.Util
             }
             return false;
         }
-
-       
         public static int ProcessId
         {
             get
@@ -110,7 +100,6 @@ namespace CobWeb.Util
             }
         }
         static int _processId = 0;
-
         /// <summary>
         /// 
         /// </summary>
@@ -125,7 +114,6 @@ namespace CobWeb.Util
                 {
                     Directory.CreateDirectory(dir);
                 }
-
                 using (TextWriter tWriter = new StreamWriter(Path.Combine(dir, DateTime.Now.ToString("yyyy-MM-dd HH") + ".txt"), true))
                 {
                     var str = string.Format("[{0}] P{1} T{2}{3}:{4}", DateTime.Now.ToString("HH:mm:ss.fff"),
