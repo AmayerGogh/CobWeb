@@ -7,11 +7,13 @@ using CobWeb.Core.Model;
 using CobWeb.Core.Process;
 using CobWeb.Util.FlashLog;
 using CobWeb.Core;
+using CobWeb.Util.Model;
+
 namespace CobWeb.AProcess
 {
     public class JsTest : ProcessBaseNotUseBrowser
     {
-        public JsTest(ParamModel paramModel) : base(paramModel)
+        public JsTest(SocketRequestModel paramModel) : base(paramModel)
         {
             _log = new FlashLogger("JsTest");
         }

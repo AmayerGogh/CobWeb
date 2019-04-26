@@ -88,7 +88,7 @@ namespace CobWeb.Util.SocketHelper
                 SocketBasic.Connect(socket, ipe, timeout / 2);
                 if (!socket.Connected)
                     throw new Exception("socket 连接失败");
-                var paramModel = new ArtificialParamModel();
+                var paramModel = new SocketRequestModel();
                 paramModel.Method = method;
                 paramModel.IsUseForm = isUseForm;
                 paramModel.Param = param;
@@ -106,8 +106,8 @@ namespace CobWeb.Util.SocketHelper
                 {
                     throw new Exception("socket接收失败");
                 }
-                var resultModel = result.DeserializeObject<ArtificialResultModel>();
-                if (!resultModel.IsSuccess)
+                var resultModel = result.DeserializeObject<SocketResponseModel>();
+                if (resultModel.StateCode !=0)
                     throw new Exception(resultModel.Result);
                 try
                 {

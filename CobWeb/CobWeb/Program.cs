@@ -70,6 +70,7 @@ namespace CobWeb
                 Port = port
             };
             processControl.StartListen();
+            var pro = Process.GetCurrentProcess();
             Application.Run(formBrowser);
         }
     }

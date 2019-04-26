@@ -17,6 +17,7 @@ namespace CobWeb.DashBoard
         }
         private void FormDashboard_Load(object sender, EventArgs e)
         {
+            Refesh_dataGridView1();
         }
         private void btn_test_debug_Click(object sender, EventArgs e)
         {

@@ -36,10 +36,9 @@
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column10 = new System.Windows.Forms.DataGridViewButtonColumn();
-            this.Column11 = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -72,14 +71,13 @@
             this.Column2,
             this.Column3,
             this.Column4,
+            this.Column7,
             this.Column5,
-            this.Column6,
-            this.Column10,
-            this.Column11});
+            this.Column6});
             this.dataGridView1.Location = new System.Drawing.Point(0, 94);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.RowTemplate.Height = 23;
-            this.dataGridView1.Size = new System.Drawing.Size(944, 218);
+            this.dataGridView1.Size = new System.Drawing.Size(943, 218);
             this.dataGridView1.TabIndex = 3;
             // 
             // flowLayoutPanel1
@@ -128,6 +126,7 @@
             // 
             this.Column2.HeaderText = "参数";
             this.Column2.Name = "Column2";
+            this.Column2.Width = 300;
             // 
             // Column3
             // 
@@ -139,6 +138,11 @@
             this.Column4.HeaderText = "CPU占用";
             this.Column4.Name = "Column4";
             // 
+            // Column7
+            // 
+            this.Column7.HeaderText = "线程数";
+            this.Column7.Name = "Column7";
+            // 
             // Column5
             // 
             this.Column5.HeaderText = "启动时间";
@@ -149,21 +153,11 @@
             this.Column6.HeaderText = "在执行";
             this.Column6.Name = "Column6";
             // 
-            // Column10
-            // 
-            this.Column10.HeaderText = "激活";
-            this.Column10.Name = "Column10";
-            // 
-            // Column11
-            // 
-            this.Column11.HeaderText = "关闭";
-            this.Column11.Name = "Column11";
-            // 
             // FormDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(844, 549);
+            this.ClientSize = new System.Drawing.Size(947, 563);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.dataGridView1);
@@ -175,6 +169,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
             this.ResumeLayout(false);
+
         }
         #endregion
         private System.Windows.Forms.Button btn_test_debug;
@@ -188,10 +183,9 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column2;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column7;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
-        private System.Windows.Forms.DataGridViewButtonColumn Column10;
-        private System.Windows.Forms.DataGridViewButtonColumn Column11;
     }
 }
 

@@ -4,9 +4,16 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-namespace CobWeb.Core.Model
+namespace CobWeb.Util.Model
 {
-    public enum ArtificialCode
+    public class SocketResponseModel
+    {       
+        public SocketResponseCode StateCode { get; set; }
+        public string ErrMsg { get; set; }
+        public string Result { get; set; }
+    }
+
+    public enum SocketResponseCode
     {
         [Description("未知异常")]
         A_UnknownException = -99999,
@@ -24,6 +31,10 @@ namespace CobWeb.Core.Model
         A_RequestAccidentBreak = -99993,
         A_RequestNormalBreak = -99992,
         [Description("内核")]
-        A_KernelError =-99990
+        A_KernelError = -99990,
+
+
+        成功 = 0,
+
     }
 }

@@ -1,6 +1,7 @@
 ﻿using CobWeb.Core.Model;
 using CobWeb.Util;
 using CobWeb.Util.FlashLog;
+using CobWeb.Util.Model;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -23,7 +24,7 @@ namespace CobWeb.Core
         /// </summary>
         public int timeout = 30;
         public bool IsWorkGoOn { get; set; }
-        public ProcessBaseUseBrowser(FormBrowser form, ParamModel paramModel, FlashLogger log)
+        public ProcessBaseUseBrowser(FormBrowser form, SocketRequestModel paramModel, FlashLogger log)
         {
             _log = log;
             processBase = new ProcessBase(form,_log);            
@@ -65,9 +66,9 @@ namespace CobWeb.Core
             }
             else
             {
-                processBase.SetResult(new ResultModel()
+                processBase.SetResult(new SocketResponseModel()
                 {
-                    IsSuccess = false,
+                    StateCode = 0,
                     Result = "{\"test\":\"登陆失败\"}"
                 });
             }

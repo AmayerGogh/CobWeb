@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 namespace CobWeb.Util.Model
 {
-    public class ArtificialParamModel
+    public class SocketRequestModel
     {
         /// <summary>
         /// 访问接口
@@ -33,5 +33,22 @@ namespace CobWeb.Util.Model
         /// 是否使用窗口
         /// </summary>
         public bool IsUseForm { get; set; }
+        /// <summary>
+        /// 浏览器内核
+        /// </summary>
+        public string KernelType { get; set; }
+        /// <summary>
+        /// 需要动态加载
+        /// </summary>
+        public bool InAssembly { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public string FileName { get; set; }
+
+        /// <summary>
+        /// 标志头
+        /// </summary>
+        public string Header { get; set; }
     }
 }

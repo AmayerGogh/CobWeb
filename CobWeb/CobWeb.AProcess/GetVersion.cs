@@ -3,6 +3,7 @@ using CobWeb.Core;
 using CobWeb.Core.Model;
 using CobWeb.Util;
 using CobWeb.Util.FlashLog;
+using CobWeb.Util.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,7 @@ namespace CobWeb.AProcess
     {
         //WebKitForm(new WebKitKernelControl());
         IEForm _form;
-        ParamModel _request;
+        SocketRequestModel _request;
         /// <summary>
         /// 
         /// baseform.Equals(_form); 输出true
@@ -23,7 +24,7 @@ namespace CobWeb.AProcess
         /// </summary>
         /// <param name="form"></param>
         /// <param name="paramModel"></param>
-        public GetVersion(FormBrowser form, ParamModel paramModel)
+        public GetVersion(FormBrowser form, SocketRequestModel paramModel)
             : base(form, paramModel, new FlashLogger("GetVersion"))
         {
             _request = paramModel;
@@ -65,9 +66,9 @@ namespace CobWeb.AProcess
             else
             {
                 //Browser.Document.GetElementByAttribute
-                processBase.SetResult(new ResultModel()
-                {
-                    IsSuccess = false,
+                processBase.SetResult(new SocketResponseModel()
+                {                    
+                    StateCode = 0,
                     Result = "{\"test\":\"登陆失败\"}"
                 });
             }

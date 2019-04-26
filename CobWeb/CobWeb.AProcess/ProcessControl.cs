@@ -2,6 +2,7 @@
 using CobWeb.Core.Model;
 using CobWeb.Core.Process;
 using CobWeb.Util;
+using CobWeb.Util.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -95,17 +96,17 @@ namespace CobWeb.AProcess
         {
             try
             {
-                var paramModel = JsonConvert.DeserializeObject<ParamModel>(dataParam);
+                var paramModel = JsonConvert.DeserializeObject<SocketRequestModel>(dataParam);
                 ExcuteRecord(string.Format("请求接口:{0} 超时时间:{1}秒 使用窗口:{2}", paramModel.Method, paramModel.Timeout, paramModel.IsUseForm));
                 //是否使用窗口
                 if (paramModel.IsUseForm)
                 {
                     if (paramModel.KernelType != null && paramModel.KernelType != KernelType)
                     {
-                        return JsonConvert.SerializeObject(new ResultModel()
-                        {
-                            IsSuccess = false,
-                            Result = ArtificialCode.A_KernelError.ToString()
+                        return JsonConvert.SerializeObject(new SocketResponseModel()
+                        {                            
+                            StateCode = 0,
+                            Result = SocketResponseCode.A_KernelError.ToString()
                         });
                     }
                     lock (_objLock)
@@ -113,10 +114,10 @@ namespace CobWeb.AProcess
                         //如果还在执行则直接返回,这个很重要
                         if (FormBrowser.IsWorking())
                         {
-                            return JsonConvert.SerializeObject(new ResultModel()
+                            return JsonConvert.SerializeObject(new SocketResponseModel()
                             {
-                                IsSuccess = false,
-                                Result = ArtificialCode.A_ChangeProcess.ToString()
+                                StateCode = 0,
+                                Result = SocketResponseCode.A_ChangeProcess.ToString()
                             });
                         }                       
                     }
@@ -125,9 +126,9 @@ namespace CobWeb.AProcess
                 else
                 {
                     var process = ProcessFactory.GetProcessByMethod(paramModel);
-                    return JsonConvert.SerializeObject(new ResultModel()
+                    return JsonConvert.SerializeObject(new SocketResponseModel()
                     {
-                        IsSuccess = true,
+                        StateCode = 0,
                         Result = process.Excute(dataParam)
                     });
                 }
@@ -135,17 +136,17 @@ namespace CobWeb.AProcess
             catch (Exception ex)
             {
                 //_log.FatalFormat("Excute()\r\n{0}", ex.Message);
-                return JsonConvert.SerializeObject(new ResultModel()
+                return JsonConvert.SerializeObject(new SocketResponseModel()
                 {
-                    IsSuccess = false,
+                    StateCode = 0,
                     Result = ex.Message
                 });
             }
         }
-        string ProcessAndResult(string dataParam, ParamModel paramModel)
+        string ProcessAndResult(string dataParam, SocketRequestModel paramModel)
         {
-            var resultModel = new ResultModel();
-            resultModel.IsSuccess = true;
+            var resultModel = new SocketResponseModel();
+            resultModel.StateCode = 0;
             resultModel.Result = "666";
             try
             {
@@ -161,21 +162,21 @@ namespace CobWeb.AProcess
                         {
                             if (MonitorStopProcess(paramModel.StopKey))
                             {
-                                resultModel.Result = ArtificialCode.A_RequestNormalBreak.ToString();
+                                resultModel.Result = SocketResponseCode.A_RequestNormalBreak.ToString();
                                 break;
                             }
                             if (FormBrowser.IsDisposed)
-                                throw new Exception(ArtificialCode.A_RequestAccidentBreak.ToString());
+                                throw new Exception(SocketResponseCode.A_RequestAccidentBreak.ToString());
                             Thread.Sleep(100);
                         }
                         else
-                        {
-                            resultModel.IsSuccess = true;
+                        {                            
+                            resultModel.StateCode = 0;
                             break;
                         }
                     }
                     if (resultModel.Result == null)
-                        throw new Exception(ArtificialCode.A_TimeOutResult.ToString());
+                        throw new Exception(SocketResponseCode.A_TimeOutResult.ToString());
                 }
                 catch (Exception ex)//获取结果发生错误
                 {
@@ -218,7 +219,7 @@ namespace CobWeb.AProcess
         /// <summary>
         /// 设置操作类型,也即设置处理事件
         /// </summary>
-        public void SetActionType(ParamModel paramModel)
+        public void SetActionType(SocketRequestModel paramModel)
         {
             //赋值为null
            // this._result = null;

@@ -1,6 +1,7 @@
 ﻿using CobWeb.AProcess;
 using CobWeb.Core.Model;
 using CobWeb.Core.Process;
+using CobWeb.Util.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -38,7 +39,7 @@ namespace CobWeb.Core.Process
             //    }
             //}
         }
-        public static IProcessBase GetProcessByMethod(FormBrowser formBrowser, ParamModel paramModel)
+        public static IProcessBase GetProcessByMethod(FormBrowser formBrowser, SocketRequestModel paramModel)
         {
             paramModel.InAssembly = true;
             paramModel.FileName = "TaobaoSpider.dll";
@@ -59,10 +60,10 @@ namespace CobWeb.Core.Process
         //        form, paramModel);
         //    return process;
         //}
-        public static IProcessBase2 GetProcessByMethod(ParamModel paramModel)
+        public static IProcessBase2 GetProcessByMethod(SocketRequestModel paramModel)
         {
             if (!ProcessBase2Dic.ContainsKey(paramModel.Method))
-                throw new Exception(ArtificialCode.A_UnknownMethod.ToString());
+                throw new Exception(SocketResponseCode.A_UnknownMethod.ToString());
             var process = (IProcessBase2)Activator.CreateInstance(ProcessBase2Dic[paramModel.Method]);
             return process;
         }
@@ -72,7 +73,7 @@ namespace CobWeb.Core.Process
         //    IsUseForm = true,
         //    Method = "TaoBaoSpider"
         //};
-        public static IProcessBase GetProcessInAssembly(FormBrowser formBrowser, ParamModel paramModel)
+        public static IProcessBase GetProcessInAssembly(FormBrowser formBrowser, SocketRequestModel paramModel)
         {
             if (!dictionary.ContainsKey(paramModel.Method))
             {

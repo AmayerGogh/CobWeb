@@ -79,8 +79,8 @@
     <Compile Include="LocalHelper\MonitorConfig.cs" />
     <Compile Include="MemoryCacheHelper.cs" />
     <Compile Include="MemoryMappedHelper.cs" />
-    <Compile Include="Model\ArtificialParamModel.cs" />
-    <Compile Include="Model\ArtificialResultModel.cs" />
+    <Compile Include="Model\SocketRequestModel.cs" />
+    <Compile Include="Model\SocketResponseModel.cs" />
     <Compile Include="NamedPipe\NamedPipeHelper.cs" />
     <Compile Include="NamedPipe\PipeHelp.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

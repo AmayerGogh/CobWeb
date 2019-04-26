@@ -2,6 +2,7 @@
 using CobWeb.Core;
 using CobWeb.Core.Model;
 using CobWeb.Util.FlashLog;
+using CobWeb.Util.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace TaobaoSpider
     {
         //WebKitForm(new WebKitKernelControl());
         IEForm _form;
-        ParamModel _request;
+        SocketRequestModel _request;
         /// <summary>
         /// 
         /// baseform.Equals(_form); 输出true
@@ -21,7 +22,7 @@ namespace TaobaoSpider
         /// </summary>
         /// <param name="form"></param>
         /// <param name="paramModel"></param>
-        public TaoBaoSpider(FormBrowser form, ParamModel paramModel)
+        public TaoBaoSpider(FormBrowser form, SocketRequestModel paramModel)
             : base(form, paramModel, new FlashLogger("GetVersion"))
         {
             _request = paramModel;

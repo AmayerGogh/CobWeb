@@ -22,13 +22,13 @@ namespace CobWeb.DashBoard
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
-            Process[] ps = Process.GetProcessesByName("CobWeb");
+            
 
 
             
-            var path = Path.GetFullPath(cobwebPath);
+            //var path = Path.GetFullPath(cobwebPath);
 
-            var process = Process.Start(path + "CobWeb.exe");
+            //var process = Process.Start(path + "CobWeb.exe");
             
             httpPostRequest.Prefixes.Add("http://127.0.0.1:30000/");
             httpPostRequest.Start();
