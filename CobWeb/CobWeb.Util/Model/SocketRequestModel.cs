@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -49,6 +50,22 @@ namespace CobWeb.Util.Model
         /// <summary>
         /// 标志头
         /// </summary>
-        public string Header { get; set; }
+        public SocketRequestCode Header { get; set; }
+    }
+
+    public enum SocketRequestCode
+    {
+        [Description("使用窗口的爬虫")]
+        UserFormSpider = 1,
+        [Description("不使用窗口的爬虫")]
+        NoUserFormSpider = 2,
+        [Description("步骤查询")]
+        Step = 3,
+        [Description("窗口是否在工作")]
+        IsWorking = 4,
+        [Description("基本信息")]
+        Info = 5,
+        [Description("执行指令")]
+        Command = 6,
     }
 }

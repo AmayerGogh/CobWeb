@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Management;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -12,7 +13,12 @@ namespace CobWeb.DashBoard
 {
     public partial class FormDashboard
     {
+        /// <summary>
+        /// 当前的 进程对应类
+        /// </summary>
         static List<CobWeb_ProcessList> CobWeb_ProcessList = new List<CobWeb_ProcessList>();
+
+        static List<Socket> sockets = new List<Socket>();
         void Refesh_dataGridView1()
         {
             Task.Run(() =>
