@@ -56,6 +56,14 @@ namespace CobWeb.Util
         // Token: 0x06000016 RID: 22 RVA: 0x00002BC0 File Offset: 0x00000DC0
         public static string Receive(Socket socket, int timeout = 0, int receiveTimeout = 60)
         {
+            if (socket==null)
+            {
+                return null;
+            }
+            if (!socket.Connected)
+            {
+                return null;
+            }
             long ticks = DateTime.Now.Ticks;
             socket.ReceiveTimeout = timeout * 1000;
             List<byte> list = new List<byte>();
@@ -80,7 +88,8 @@ namespace CobWeb.Util
                 }
                 if (list.Count == 0)
                 {
-                    goto Block_3;
+                    continue;
+                    //goto Block_3;
                 }
                 if (timeout > 0)
                 {

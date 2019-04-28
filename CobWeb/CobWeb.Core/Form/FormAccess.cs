@@ -25,12 +25,7 @@ namespace CobWeb.Core
         
             //MessageBox.Show(cc);
             //btn_Excute.Enabled = false;
-            var stopwatch = Stopwatch.StartNew();
-            Task.Run(() =>
-            {
-                Excute(stopwatch);
-                //btn_Excute.Enabled = true;
-            });
+           
         }
 
         bool ParamValid()

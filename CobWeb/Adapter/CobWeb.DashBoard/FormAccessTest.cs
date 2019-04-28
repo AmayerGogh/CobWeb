@@ -2,6 +2,7 @@
 using CobWeb.Util;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
@@ -17,6 +18,7 @@ namespace CobWeb.DashBoard
         Socket socket;
         public FormAccessTest()
         {
+            InitializeComponent();
             this.btn_Excute.Click += new System.EventHandler(this.btn_Excute_Click);
            
             
@@ -39,6 +41,10 @@ namespace CobWeb.DashBoard
             this.btn_Connection = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
+            // btn_Excute
+            // 
+        
+            // 
             // btn_Connection
             // 
             this.btn_Connection.Location = new System.Drawing.Point(768, 44);
@@ -55,6 +61,7 @@ namespace CobWeb.DashBoard
             this.ClientSize = new System.Drawing.Size(1031, 626);
             this.Controls.Add(this.btn_Connection);
             this.Name = "FormAccessTest";
+            this.Controls.SetChildIndex(this.txt_port, 0);
             this.Controls.SetChildIndex(this.btn_Excute, 0);
             this.Controls.SetChildIndex(this.btn_Connection, 0);
             this.ResumeLayout(false);
@@ -65,15 +72,46 @@ namespace CobWeb.DashBoard
         //todo
         private void Btn_Connection_Click(object sender, EventArgs e)
         {
+            btn_Connection.Enabled = false;
             IPEndPoint ipe;
             int port = 6666;
             int.TryParse(txt_port.Text, out port);
-            socket = SocketBasic.GetSocket(out ipe, port, "127.0.0.1");
-            SocketBasic.Connect(socket, ipe, 10);
+            IPAddress ipAddress =null;
+            IPHostEntry ipHost = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (IPAddress ipAddr in ipHost.AddressList)
+            {
+                if (ipAddr.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    ipAddress = ipAddr;
+                }
+            }
+          
+            //创建监听Socket
+            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+            //邦定IP
+            IPEndPoint ipLocal = new IPEndPoint(ipAddress,port);
+            socket.Bind(ipLocal);
+
+            //开始监听
+            socket.Listen(4);
+
+           
+            btn_Connection.Text = "通信已建立";
+
+
             Task.Run(() =>
             {
-                SocketBasic.Receive(socket);
+                while (true)
+                {
+                    var c=  SocketBasic.Receive(socket);
+                }
+               
             });
         }
+
+
+
+      
     }
 }

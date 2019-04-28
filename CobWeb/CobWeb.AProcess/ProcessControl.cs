@@ -94,6 +94,12 @@ namespace CobWeb.AProcess
         readonly Object _objLock = new Object();
         string Excute(string dataParam)
         {
+            Thread.Sleep(new Random().Next(1000, 10000));
+            return JsonConvert.SerializeObject(new SocketResponseModel()
+            {
+                StateCode = 0,
+                Result = "nonono"
+            });
             try
             {
                 var paramModel = JsonConvert.DeserializeObject<SocketRequestModel>(dataParam);
