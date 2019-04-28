@@ -41,11 +41,11 @@ namespace CobWeb.Core.Process
         }
         public static IProcessBase GetProcessByMethod(FormBrowser formBrowser, SocketRequestModel paramModel)
         {
-            paramModel.InAssembly = true;
+          
             paramModel.FileName = "TaobaoSpider.dll";
             paramModel.IsUseForm = true;
             paramModel.Method = "TaoBaoSpider";
-            if (paramModel.InAssembly)
+            if (string.IsNullOrEmpty(paramModel.FileName))
             {
                 return GetProcessInAssembly(formBrowser, paramModel);
             }

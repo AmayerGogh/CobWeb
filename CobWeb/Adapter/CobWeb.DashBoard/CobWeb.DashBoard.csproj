@@ -47,6 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormAccessTest.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="FormDashboard.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -86,6 +89,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CobWeb.Core\CobWeb.Core.csproj">
+      <Project>{70495056-0B80-490D-B268-6396A2563404}</Project>
+      <Name>CobWeb.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\CobWeb.Util\CobWeb.Util.csproj">
       <Project>{1BD9FFD9-F0F6-479E-95A0-8F5F3E303DAC}</Project>
       <Name>CobWeb.Util</Name>

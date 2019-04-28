@@ -94,7 +94,7 @@ namespace CobWeb.Util.SocketHelper
                 paramModel.Param = param;
                 paramModel.Timeout = timeout;
                 paramModel.StartTime = starttime;
-                paramModel.StopKey = !string.IsNullOrWhiteSpace(stopkey) ? stopkey : Guid.NewGuid().ToString();
+                paramModel.Key = !string.IsNullOrWhiteSpace(stopkey) ? stopkey : Guid.NewGuid().ToString();
                 string dataParam = paramModel.SerializeObject();
                 string result = string.Empty;
                 try

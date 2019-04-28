@@ -160,7 +160,7 @@ namespace CobWeb.AProcess
                         resultModel.Result = FormBrowser.GetResult();
                         if (resultModel.Result == null)
                         {
-                            if (MonitorStopProcess(paramModel.StopKey))
+                            if (MonitorStopProcess(paramModel.Key))
                             {
                                 resultModel.Result = SocketResponseCode.A_RequestNormalBreak.ToString();
                                 break;

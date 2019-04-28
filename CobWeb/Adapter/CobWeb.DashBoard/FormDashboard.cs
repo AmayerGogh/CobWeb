@@ -21,8 +21,8 @@ namespace CobWeb.DashBoard
         }
         private void btn_test_debug_Click(object sender, EventArgs e)
         {
-            //FormAdapter form = new FormAdapter();
-            //form.Show();
+            FormAccessTest form = new FormAccessTest();
+            form.Show();
         }
         private void btn_bin_debug_Click(object sender, EventArgs e)
         {

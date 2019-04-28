@@ -8,10 +8,8 @@ namespace CobWeb.Util.Model
 {
     public class SocketRequestModel
     {
-        /// <summary>
-        /// 访问接口
-        /// </summary>
-        public string Method { get; set; }
+     
+        public string Port { get; set; }
         /// <summary>
         /// 请求参数
         /// </summary>
@@ -29,7 +27,7 @@ namespace CobWeb.Util.Model
         /// 唯一标识的key
         /// 用于必要时的中止
         /// </summary>
-        public string StopKey { get; set; }
+        public string Key { get; set; }
         /// <summary>
         /// 是否使用窗口
         /// </summary>
@@ -38,14 +36,15 @@ namespace CobWeb.Util.Model
         /// 浏览器内核
         /// </summary>
         public string KernelType { get; set; }
+        
         /// <summary>
-        /// 需要动态加载
-        /// </summary>
-        public bool InAssembly { get; set; }
-        /// <summary>
-        /// 
+        /// 包名
         /// </summary>
         public string FileName { get; set; }
+        /// <summary>
+        /// 访问接口
+        /// </summary>
+        public string Method { get; set; }
 
         /// <summary>
         /// 标志头
