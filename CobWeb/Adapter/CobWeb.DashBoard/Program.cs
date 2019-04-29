@@ -144,7 +144,8 @@ namespace CobWeb.DashBoard
                 threadsub.Start(requestContext);
             }
         }
-
+        //todo
+        //http://www.cnblogs.com/ysyn/p/3399351.html
         static void SetResponse(HttpListenerResponse response,int statusCode, object obj)
         {
             response.StatusCode = statusCode;

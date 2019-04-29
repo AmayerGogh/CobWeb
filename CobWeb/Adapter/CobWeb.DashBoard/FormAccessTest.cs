@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -83,6 +84,7 @@ namespace CobWeb.DashBoard
                 if (ipAddr.AddressFamily == AddressFamily.InterNetwork)
                 {
                     ipAddress = ipAddr;
+                    break;
                 }
             }
           
@@ -92,24 +94,45 @@ namespace CobWeb.DashBoard
             //邦定IP
             IPEndPoint ipLocal = new IPEndPoint(ipAddress,port);
             socket.Bind(ipLocal);
-
             //开始监听
             socket.Listen(4);
-
-           
             btn_Connection.Text = "通信已建立";
 
+            //socket.BeginAccept( )
 
-            Task.Run(() =>
-            {
-                while (true)
-                {
-                    var c=  SocketBasic.Receive(socket);
-                }
+            //Task.Run(() =>
+            //{
+            //    while (true)
+            //    {
+
+
+            //        var data = new byte[8000];
+            //        var recv = socket.Receive(data);
+            //        Console.WriteLine("接收到的信息长度为" + recv);
+            //        //if (recv == 0)//当信息长度为0，说明客户端连接断开
+            //        //    break;
+            //        //return Encoding.UTF8.GetString(data, 0, recv);
+            //        //var c=  SocketBasic.Receive(socket);
+            //    }
                
-            });
+            //});
         }
+        int clientCount = 0;
+        //void OnClientConnect(IAsyncResult asyn)
+        //{
+        //    try
+        //    {
+        //        // 创建一个新的 Socket 
+        //        Socket workerSocket = socket.EndAccept(asyn);
+        //        // 递增客户端数目
+        //        Interlocked.Increment(ref clientCount);
+        //    }
+        //    catch (Exception)
+        //    {
 
+        //        throw;
+        //    }
+        //}
 
 
       

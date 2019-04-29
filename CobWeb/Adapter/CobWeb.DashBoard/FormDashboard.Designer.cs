@@ -28,10 +28,6 @@
             this.btn_test_debug = new System.Windows.Forms.Button();
             this.btn_bin_debug = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -39,6 +35,10 @@
             this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button5 = new System.Windows.Forms.Button();
+            this.button6 = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -59,7 +59,7 @@
             this.btn_bin_debug.Name = "btn_bin_debug";
             this.btn_bin_debug.Size = new System.Drawing.Size(124, 67);
             this.btn_bin_debug.TabIndex = 1;
-            this.btn_bin_debug.Text = "bin环境";
+            this.btn_bin_debug.Text = "开启窗口";
             this.btn_bin_debug.UseVisualStyleBackColor = true;
             this.btn_bin_debug.Click += new System.EventHandler(this.btn_bin_debug_Click);
             // 
@@ -79,6 +79,42 @@
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.Size = new System.Drawing.Size(943, 218);
             this.dataGridView1.TabIndex = 3;
+            // 
+            // Column1
+            // 
+            this.Column1.HeaderText = "进程Id";
+            this.Column1.Name = "Column1";
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "参数";
+            this.Column2.Name = "Column2";
+            this.Column2.Width = 300;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "内存占用";
+            this.Column3.Name = "Column3";
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "CPU占用";
+            this.Column4.Name = "Column4";
+            // 
+            // Column7
+            // 
+            this.Column7.HeaderText = "线程数";
+            this.Column7.Name = "Column7";
+            // 
+            // Column5
+            // 
+            this.Column5.HeaderText = "启动时间";
+            this.Column5.Name = "Column5";
+            // 
+            // Column6
+            // 
+            this.Column6.HeaderText = "在执行";
+            this.Column6.Name = "Column6";
             // 
             // flowLayoutPanel1
             // 
@@ -116,42 +152,6 @@
             this.button6.TabIndex = 5;
             this.button6.Text = "调用记录";
             this.button6.UseVisualStyleBackColor = true;
-            // 
-            // Column1
-            // 
-            this.Column1.HeaderText = "进程Id";
-            this.Column1.Name = "Column1";
-            // 
-            // Column2
-            // 
-            this.Column2.HeaderText = "参数";
-            this.Column2.Name = "Column2";
-            this.Column2.Width = 300;
-            // 
-            // Column3
-            // 
-            this.Column3.HeaderText = "内存占用";
-            this.Column3.Name = "Column3";
-            // 
-            // Column4
-            // 
-            this.Column4.HeaderText = "CPU占用";
-            this.Column4.Name = "Column4";
-            // 
-            // Column7
-            // 
-            this.Column7.HeaderText = "线程数";
-            this.Column7.Name = "Column7";
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = "启动时间";
-            this.Column5.Name = "Column5";
-            // 
-            // Column6
-            // 
-            this.Column6.HeaderText = "在执行";
-            this.Column6.Name = "Column6";
             // 
             // FormDashboard
             // 
