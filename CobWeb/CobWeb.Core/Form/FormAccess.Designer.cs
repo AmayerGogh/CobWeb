@@ -303,8 +303,8 @@
         private System.Windows.Forms.NumericUpDown numeric_Timeout;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.RichTextBox rtxt_send;
-        private System.Windows.Forms.RichTextBox rtxt_revice;
+        public System.Windows.Forms.RichTextBox rtxt_send;
+        public System.Windows.Forms.RichTextBox rtxt_revice;
         private System.Windows.Forms.TextBox txt_stopkey;
         private System.Windows.Forms.Label label5;
         public System.Windows.Forms.TextBox txt_port;
