@@ -43,11 +43,13 @@ namespace CobWeb.DashBoard
         private static HttpListener httpPostRequest = new HttpListener();
         public static string cobwebPath = @"..\..\..\..\CobWeb\bin\Debug\";
 
+        public static Dictionary<int, HttpListenerContext> HttpContext = new Dictionary<int, HttpListenerContext>(); 
         private static void httpPostRequestHandle()
         {
             while (true)
             {
                 HttpListenerContext requestContext = httpPostRequest.GetContext();
+               
                 Thread threadsub = new Thread(new ParameterizedThreadStart((requestcontext) =>
                 {
                     var context = (HttpListenerContext)requestcontext;
@@ -66,12 +68,15 @@ namespace CobWeb.DashBoard
                         {
                             requestBody = reader.ReadToEnd();
                         }
-                        Task.Run(() =>
-                        {
 
-                        });
+                       Action<HttpListenerContext> action = m =>
+                       {
+                           SetResponse(context.Response, 200, new { data = "ok", msg = requestBody });
+                       };
 
-                        SetResponse(context.Response, 200, new { data = "ok", msg = requestBody });
+                        action.Invoke(context);
+
+                       
                     }
                     catch (Exception e)
                     {

@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EAB857AF-7277-43B2-A5C5-BA621C7727B3}</ProjectGuid>
+    <ProjectGuid>{72356A29-9407-4F47-9032-ABCF772A5CBB}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>CobWeb.DashBoard</RootNamespace>
-    <AssemblyName>CobWeb.DashBoard</AssemblyName>
+    <RootNamespace>VritualCobWeb</RootNamespace>
+    <AssemblyName>VritualCobWeb</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -33,13 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <HintPath>..\..\packages\log4net.2.0.3\lib\net40-full\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -51,31 +46,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FormAccessTest.cs">
+    <Compile Include="FormVirtualWeb.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FormDashboard.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FormDashboard.Designer.cs">
-      <DependentUpon>FormDashboard.cs</DependentUpon>
-    </Compile>
-    <Compile Include="FormDashboard_partial.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="SocketC.cs" />
-    <Compile Include="MyHttpServer.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SocketS.cs" />
-    <Compile Include="SocketS2.cs" />
-    <Compile Include="SuperSockerHelper.cs" />
-    <EmbeddedResource Include="FormAccessTest.resx">
-      <DependentUpon>FormAccessTest.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FormDashboard.resx">
-      <DependentUpon>FormDashboard.cs</DependentUpon>
-    </EmbeddedResource>
+    <Compile Include="SocketC.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -85,9 +61,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="Config\log4net.config" />
-    <None Include="Config\log4net.unix.config" />
-    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -100,16 +73,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\CobWeb.Core\CobWeb.Core.csproj">
-      <Project>{70495056-0B80-490D-B268-6396A2563404}</Project>
-      <Name>CobWeb.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\CobWeb.Util\CobWeb.Util.csproj">
-      <Project>{1BD9FFD9-F0F6-479E-95A0-8F5F3E303DAC}</Project>
-      <Name>CobWeb.Util</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

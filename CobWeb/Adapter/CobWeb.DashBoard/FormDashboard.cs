@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -15,6 +16,12 @@ namespace CobWeb.DashBoard
 {
     public partial class FormDashboard : Form
     {
+        public delegate void SetListBoxCallBack(string str);
+        public SetListBoxCallBack setlistboxcallback;
+        //最大连接数  和 缓存数
+        private SocketManager iocp = new SocketManager(2, 1024);
+
+        IOCPServer server;
         public FormDashboard()
         {
             InitializeComponent();
@@ -24,7 +31,13 @@ namespace CobWeb.DashBoard
         private void FormDashboard_Load(object sender, EventArgs e)
         {
             Refesh_dataGridView1();
-            StartSocket();
+            //StartSocket();
+            //StartSuperSocket();
+            //iocp.Init();
+            //iocp.Start("127.0.0.1", 6666);
+            server = new IOCPServer(6666, 1024,this);
+            server.Start();
+            //server.
         }
         private void btn_test_debug_Click(object sender, EventArgs e)
         {
@@ -43,8 +56,8 @@ namespace CobWeb.DashBoard
 
         private void btn_socketStart_Click(object sender, EventArgs e)
         {
-            FormVritualWeb formVritualWeb = new FormVritualWeb();
-            formVritualWeb.Show();
+            //FormVritualWeb formVritualWeb = new FormVritualWeb();
+            //formVritualWeb.Show();
         }
 
         Socket socketListen;//用于监听的socket
@@ -59,9 +72,10 @@ namespace CobWeb.DashBoard
             //绑定端口和IP
             socketListen.Bind(ipe);
             //设置监听
-            socketListen.Listen(10);
+            socketListen.Listen(1);
             //连接客户端
             AsyncConnect(socketListen);
+
         }
         /// <summary>
         /// 连接到客户端
@@ -99,28 +113,33 @@ namespace CobWeb.DashBoard
         private void AsyncReceive(Socket socket)
         {
             byte[] data = new byte[1024];
+            IAsyncResult resu = null;
             try
             {
                 //开始接收消息
-                socket.BeginReceive(data, 0, data.Length, SocketFlags.None,
-                asyncResult =>
-                {
-                    try
-                    {
-                        int length = socket.EndReceive(asyncResult);
-                        setText(Encoding.UTF8.GetString(data));
-                    }
-                    catch (Exception)
-                    {
-                        AsyncReceive(socket);
-                    }
+                resu = socket.BeginReceive(data, 0, data.Length, SocketFlags.None,
+                 asyncResult =>
+                 {
+                     try
+                     {
+                         int length = socket.EndReceive(asyncResult);
+                         SetText(Encoding.UTF8.GetString(data));
+                     }
+                     catch (Exception)
+                     {
+                         AsyncReceive(socket);
+                     }
 
-                    AsyncReceive(socket);
-                }, null);
+                     AsyncReceive(socket);
+                 }, null);
 
             }
             catch (Exception ex)
             {
+            }
+            finally
+            {
+                resu = null;
             }
         }
         /// <summary>
@@ -133,14 +152,15 @@ namespace CobWeb.DashBoard
             if (client == null || message == string.Empty) return;
             //数据转码
             byte[] data = Encoding.UTF8.GetBytes(message);
+            IAsyncResult resu = null;
             try
             {
                 //开始发送消息
-                client.BeginSend(data, 0, data.Length, SocketFlags.None, asyncResult =>
-                {
+                resu = client.BeginSend(data, 0, data.Length, SocketFlags.None, asyncResult =>
+                  {
                     //完成消息发送
                     int length = client.EndSend(asyncResult);
-                }, null);
+                  }, null);
             }
             catch (Exception ex)
             {
@@ -149,12 +169,17 @@ namespace CobWeb.DashBoard
                 dicClient.Remove(deleteClient);
                 comboBox1.Items.Remove(deleteClient);
             }
+            finally
+            {
+                resu = null;
+            }
         }
-        private void setText(string str)
+
+        public void SetText(string str)
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new MethodInvoker(() => setText(str)));
+                this.Invoke(new MethodInvoker(() => SetText(str)));
             }
             else
             {
@@ -169,16 +194,22 @@ namespace CobWeb.DashBoard
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-            if (comboBox1.SelectedIndex == -1)
-            {
-                AsyncSend(socketConnect, textBox2.Text);
-            }
-            else
-            {
-                AsyncSend(dicClient[comboBox1.SelectedItem.ToString()], textBox2.Text);
-            }
+            //if (comboBox1.SelectedIndex == -1)
+            //{
+            //    AsyncSend(socketConnect, textBox2.Text);
+            //}
+            //else
+            //{
+            //    AsyncSend(dicClient[comboBox1.SelectedItem.ToString()], textBox2.Text);
+            //}
+            server.Send(textBox2.Text);
            
+
+
+
         }
+
+     
     }
 
 }

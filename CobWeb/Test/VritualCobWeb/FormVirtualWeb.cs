@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace CobWeb.DashBoard
+namespace VritualCobWeb
 {
-   public  class FormVritualWeb:Form
+    public class FormVirtualWeb : Form
     {
         private TextBox txt_send;
         private TextBox txt_recive;
@@ -18,7 +18,7 @@ namespace CobWeb.DashBoard
         private Button btn_Con;
         private Button button1;
 
-        public FormVritualWeb()
+        public FormVirtualWeb()
         {
             InitializeComponent();
         }
@@ -103,12 +103,22 @@ namespace CobWeb.DashBoard
 
         private void btn_Con_Click(object sender, EventArgs e)
         {
+            //原来的
             AsyncConnect();
+           // AsyncConnect2();
+        }
+        public void AsyncConnect2()
+        {
+
+
+            IPEndPoint ipe = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 6666);
+            c = new IOCPClient(ipe, this);
+            c.Connect();
+            c.Send("我已经连接");
         }
 
 
-     
-
+        IOCPClient c;
         Socket client;
         /// <summary>
         /// 连接到服务器
@@ -181,7 +191,7 @@ namespace CobWeb.DashBoard
                     try
                     {
                         int length = socket.EndReceive(asyncResult);
-                        setText(Encoding.UTF8.GetString(data));
+                        SetText(Encoding.UTF8.GetString(data));
                     }
                     catch (Exception)
                     {
@@ -197,11 +207,11 @@ namespace CobWeb.DashBoard
             }
         }
 
-        private void setText(string str)
+        public void SetText(string str)
         {
             if (this.InvokeRequired)
             {
-                this.Invoke(new MethodInvoker(() => setText(str)));
+                this.Invoke(new MethodInvoker(() => SetText(str)));
             }
             else
             {
@@ -210,11 +220,12 @@ namespace CobWeb.DashBoard
             }
         }
 
-      
+
 
         private void button1_Click(object sender, EventArgs e)
         {
-            AsyncSend(client, txt_send.Text);
+             AsyncSend(client, txt_send.Text);
+            //c.Send(txt_send.Text);
         }
     }
 }
