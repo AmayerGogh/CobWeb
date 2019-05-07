@@ -63,7 +63,7 @@ namespace CobWeb.DashBoard
         Socket socketListen;//用于监听的socket
         Socket socketConnect;//用于通信的socket
         string RemoteEndPoint;     //客户端的网络节点  
-        Dictionary<string, Socket> dicClient = new Dictionary<string, Socket>();//连接的客户端集合
+        public Dictionary<string, Socket> dicClient = new Dictionary<string, Socket>();//连接的客户端集合
         public void StartSocket()
         {
             //创建套接字
@@ -194,17 +194,15 @@ namespace CobWeb.DashBoard
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-            //if (comboBox1.SelectedIndex == -1)
-            //{
-            //    AsyncSend(socketConnect, textBox2.Text);
-            //}
-            //else
-            //{
-            //    AsyncSend(dicClient[comboBox1.SelectedItem.ToString()], textBox2.Text);
-            //}
-            server.Send(textBox2.Text);
+            if (comboBox1.SelectedIndex != -1)
+            {
+                var sock =  dicClient[comboBox1.SelectedItem.ToString()];
+                server.Send(textBox2.Text, sock);
+            }
            
 
+
+          
 
 
         }

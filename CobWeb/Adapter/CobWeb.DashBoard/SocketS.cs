@@ -264,6 +264,9 @@ namespace CobWeb.DashBoard
                         SocketAsyncEventArgs asyniar = _objectPool.Pop();
                         asyniar.UserToken = s;
 
+                        var RemoteEndPoint = s.RemoteEndPoint.ToString();
+                        _baseForm. dicClient.Add(RemoteEndPoint, s);//添加至客户端集合
+                        _baseForm.comboBox1.Items.Add(RemoteEndPoint);//添加客户端端口号
                         SetResponse(String.Format("客户 {0} 连入, 共有 {1} 个连接。", s.RemoteEndPoint.ToString(), _clientCount));
 
                         if (!s.ReceiveAsync(asyniar))//投递接收请求
@@ -285,13 +288,12 @@ namespace CobWeb.DashBoard
         #endregion
 
         #region 发送数据
-        public void Send(string msg)
+        public void Send(string msg,Socket socket)
         {
             var data = Encoding.UTF8.GetBytes(msg);
             // Send(SocketAsyncEventArgs e, byte[] data)
-           
-             var c = _objectPool.Pop();
-            Send(c, data);
+                      
+            Send(socket,data,0,data.Length,100);
         }
         //_objectPool
         /// <summary>
@@ -409,7 +411,7 @@ namespace CobWeb.DashBoard
                         byte[] data = new byte[e.BytesTransferred];
                         Array.Copy(e.Buffer, e.Offset, data, 0, data.Length);//从e.Buffer块中复制数据出来，保证它可重用
 
-                        string info = Encoding.Default.GetString(data);
+                        string info = Encoding.UTF8.GetString(data);
                         SetResponse(String.Format("收到 {0} 数据为 {1}", s.RemoteEndPoint.ToString(), info));
                         //TODO 处理数据
 
