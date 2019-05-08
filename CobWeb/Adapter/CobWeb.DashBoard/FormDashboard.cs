@@ -56,8 +56,8 @@ namespace CobWeb.DashBoard
 
         private void btn_socketStart_Click(object sender, EventArgs e)
         {
-            //FormVritualWeb formVritualWeb = new FormVritualWeb();
-            //formVritualWeb.Show();
+            FormVirtualWeb formVritualWeb = new FormVirtualWeb();
+            formVritualWeb.Show();
         }
 
         Socket socketListen;//用于监听的socket

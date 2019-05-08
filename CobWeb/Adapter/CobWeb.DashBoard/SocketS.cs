@@ -143,7 +143,20 @@ namespace CobWeb.DashBoard
             {
                 //Pre-allocate a set of reusable SocketAsyncEventArgs
                 readWriteEventArg = new SocketAsyncEventArgs();
-                readWriteEventArg.Completed += new EventHandler<SocketAsyncEventArgs>(OnIOCompleted);
+                readWriteEventArg.Completed += new EventHandler<SocketAsyncEventArgs>((sender,e)=> {                      
+                    // Determine which type of operation just completed and call the associated handler.
+                    switch (e.LastOperation)
+                    {
+                        case SocketAsyncOperation.Accept:
+                            ProcessAccept(e);
+                            break;
+                        case SocketAsyncOperation.Receive:
+                            ProcessReceive(e);
+                            break;
+                        default:
+                            throw new ArgumentException("The last operation completed on the socket was not a receive or send");
+                    }
+                });
                 readWriteEventArg.UserToken = null;
 
                 // assign a byte buffer from the buffer pool to the SocketAsyncEventArg object
@@ -220,7 +233,10 @@ namespace CobWeb.DashBoard
             if (asyniar == null)
             {
                 asyniar = new SocketAsyncEventArgs();
-                asyniar.Completed += new EventHandler<SocketAsyncEventArgs>(OnAcceptCompleted);
+                //accept 操作完成时回调函数
+                asyniar.Completed += new EventHandler<SocketAsyncEventArgs>((sender,e)=> {
+                    ProcessAccept(e);
+                });
             }
             else
             {
@@ -236,23 +252,15 @@ namespace CobWeb.DashBoard
             }
         }
 
-        /// <summary>
-        /// accept 操作完成时回调函数
-        /// </summary>
-        /// <param name="sender">Object who raised the event.</param>
-        /// <param name="e">SocketAsyncEventArg associated with the completed accept operation.</param>
-        private void OnAcceptCompleted(object sender, SocketAsyncEventArgs e)
-        {
-            ProcessAccept(e);
-        }
+      
 
         /// <summary>
-        /// 监听Socket接受处理
+        /// 监听Socket接受处理 接受到了一个连接请求
         /// </summary>
         /// <param name="e">SocketAsyncEventArg associated with the completed accept operation.</param>
         private void ProcessAccept(SocketAsyncEventArgs e)
         {
-            if (e.SocketError == SocketError.Success)
+            if (e.SocketError == SocketError.Success)//
             {
                 Socket s = e.AcceptSocket;//和客户端关联的socket
                 if (s.Connected)
@@ -269,7 +277,7 @@ namespace CobWeb.DashBoard
                         _baseForm.comboBox1.Items.Add(RemoteEndPoint);//添加客户端端口号
                         SetResponse(String.Format("客户 {0} 连入, 共有 {1} 个连接。", s.RemoteEndPoint.ToString(), _clientCount));
 
-                        if (!s.ReceiveAsync(asyniar))//投递接收请求
+                        if (!s.ReceiveAsync(asyniar))//投递接收请求 表明当前操作是否有等待I/O的情况
                         {
                             ProcessReceive(asyniar);
                         }
@@ -433,30 +441,6 @@ namespace CobWeb.DashBoard
 
         #endregion
 
-        #region 回调函数
-
-        /// <summary>
-        /// 当Socket上的发送或接收请求被完成时，调用此函数
-        /// </summary>
-        /// <param name="sender">激发事件的对象</param>
-        /// <param name="e">与发送或接收完成操作相关联的SocketAsyncEventArg对象</param>
-        private void OnIOCompleted(object sender, SocketAsyncEventArgs e)
-        {
-            // Determine which type of operation just completed and call the associated handler.
-            switch (e.LastOperation)
-            {
-                case SocketAsyncOperation.Accept:
-                    ProcessAccept(e);
-                    break;
-                case SocketAsyncOperation.Receive:
-                    ProcessReceive(e);
-                    break;
-                default:
-                    throw new ArgumentException("The last operation completed on the socket was not a receive or send");
-            }
-        }
-
-        #endregion
 
         #region Close
         /// <summary>
