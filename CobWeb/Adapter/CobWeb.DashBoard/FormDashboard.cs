@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 namespace CobWeb.DashBoard
@@ -18,26 +19,23 @@ namespace CobWeb.DashBoard
     {
         public delegate void SetListBoxCallBack(string str);
         public SetListBoxCallBack setlistboxcallback;
-        //最大连接数  和 缓存数
-        private SocketManager iocp = new SocketManager(2, 1024);
-
-        IOCPServer server;
+       
         public FormDashboard()
-        {
+        {           
             InitializeComponent();
             Control.CheckForIllegalCrossThreadCalls = false;
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            Step1_Init();
+            Step2_InnerListen();
+            Step3_OutListen();
+         
         }
         private void FormDashboard_Load(object sender, EventArgs e)
         {
-            Refesh_dataGridView1();
-            //StartSocket();
-            //StartSuperSocket();
+
             //iocp.Init();
             //iocp.Start("127.0.0.1", 6666);
-            server = new IOCPServer(6666, 1024,this);
-            server.Start();
-            //server.
+            Step4_TimerStart();
         }
         private void btn_test_debug_Click(object sender, EventArgs e)
         {

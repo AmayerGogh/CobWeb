@@ -9,6 +9,10 @@ using System.Windows.Forms;
 
 namespace CobWeb.DashBoard
 {
+    /*
+     * msdn
+     https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socketasynceventargs?redirectedfrom=MSDN&view=netframework-4.8
+         */
     /// <summary>
     /// IOCP SOCKET服务器
     /// </summary>
@@ -276,7 +280,7 @@ namespace CobWeb.DashBoard
                         _baseForm. dicClient.Add(RemoteEndPoint, s);//添加至客户端集合
                         _baseForm.comboBox1.Items.Add(RemoteEndPoint);//添加客户端端口号
                         SetResponse(String.Format("客户 {0} 连入, 共有 {1} 个连接。", s.RemoteEndPoint.ToString(), _clientCount));
-
+                       
                         if (!s.ReceiveAsync(asyniar))//投递接收请求 表明当前操作是否有等待I/O的情况
                         {
                             ProcessReceive(asyniar);
@@ -309,13 +313,14 @@ namespace CobWeb.DashBoard
         /// </summary>
         /// <param name="e"></param>
         /// <param name="data"></param>
-        public void Send(SocketAsyncEventArgs e, byte[] data)
-        {
+        public void Send(string msg,SocketAsyncEventArgs e)
+        {            
             if (e.SocketError == SocketError.Success)
             {
                 Socket s = e.AcceptSocket;//和客户端关联的socket
                 if (s.Connected)
                 {
+                    var data = Encoding.UTF8.GetBytes(msg);
                     Array.Copy(data, 0, e.Buffer, 0, data.Length);//设置发送数据
 
                     //e.SetBuffer(data, 0, data.Length); //设置发送数据
@@ -422,7 +427,7 @@ namespace CobWeb.DashBoard
                         string info = Encoding.UTF8.GetString(data);
                         SetResponse(String.Format("收到 {0} 数据为 {1}", s.RemoteEndPoint.ToString(), info));
                         //TODO 处理数据
-
+                        Send("你好客户端", e);
                         //增加服务器接收的总字节数。
                     }
 

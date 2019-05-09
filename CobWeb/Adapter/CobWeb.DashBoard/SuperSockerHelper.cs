@@ -147,7 +147,7 @@ namespace CobWeb.DashBoard
         /// </summary>
         public event OnReceiveData ReceiveClientData;
 
-        public FormDashboard mainForm;
+      
         #endregion
 
         #region 定义属性
@@ -158,13 +158,13 @@ namespace CobWeb.DashBoard
         public List<AsyncUserToken> ClientList { get { return m_clients; } }
 
         #endregion
-
+        FormDashboard _baseForm;
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="numConnections">最大连接数</param>
         /// <param name="receiveBufferSize">缓存区大小</param>
-        public SocketManager(int numConnections, int receiveBufferSize)
+        public SocketManager(int numConnections, int receiveBufferSize,FormDashboard form)
         {
             m_clientCount = 0;
             m_maxConnectNum = numConnections;
@@ -175,6 +175,8 @@ namespace CobWeb.DashBoard
 
             m_pool = new SocketEventPool(numConnections);
             m_maxNumberAcceptedClients = new Semaphore(numConnections, numConnections);
+            this._baseForm = form;
+            Init();
         }
 
         /// <summary>
@@ -340,7 +342,7 @@ namespace CobWeb.DashBoard
                 //  Socket st = e.UserToken as Socket;
 
                 lock (m_clients) { m_clients.Add(userToken); }
-
+                SetResponse(String.Format("客户 {0} 连入, 共有 {1} 个连接。", e.AcceptSocket.RemoteEndPoint.ToString(), m_clients.Count()));
                 if (ClientNumberChange != null)
                     ClientNumberChange(1, userToken);
                 if (!e.AcceptSocket.ReceiveAsync(readEventArgs))
@@ -348,11 +350,12 @@ namespace CobWeb.DashBoard
 
                     ProcessReceive(readEventArgs);
                 }
-                mainForm.Invoke(mainForm.setlistboxcallback, userToken.Remote.ToString() + "连接成功！");
+                SetResponse(userToken.Remote.ToString() + "连接成功！");
+                
             }
             catch (Exception me)
             {
-                mainForm.Invoke(mainForm.setlistboxcallback, me.Message + "\r\n" + me.StackTrace);
+                SetResponse( me.Message + "\r\n" + me.StackTrace);
             }
 
             // Accept the next connection request
@@ -418,8 +421,8 @@ namespace CobWeb.DashBoard
                         //包够长时,则提取出来,交给后面的程序去处理
                         byte[] rev = token.Buffer.GetRange(4, packageLen).ToArray();
                         rstr = rstr + System.Text.Encoding.Default.GetString(rev);
-                        mainForm.Invoke(mainForm.setlistboxcallback, rstr);
-
+                     
+                        SetResponse(String.Format("收到 {0} 数据为 {1}", null, rstr));
                         SendMessage(token, rev);
 
 
@@ -448,8 +451,55 @@ namespace CobWeb.DashBoard
             }
             catch (Exception xe)
             {
-                mainForm.Invoke(mainForm.setlistboxcallback, xe.Message + "\r\n" + xe.StackTrace);
+                SetResponse( xe.Message + "\r\n" + xe.StackTrace);
             }
+        }
+        public void Send(string msg, Socket socket)
+        {
+            var data = Encoding.UTF8.GetBytes(msg);
+            // Send(SocketAsyncEventArgs e, byte[] data)
+
+            Send(socket, data, 0, data.Length, 100);
+        }
+
+        /// <summary>
+        /// 同步的使用socket发送数据
+        /// </summary>
+        /// <param name="socket"></param>
+        /// <param name="buffer"></param>
+        /// <param name="offset"></param>
+        /// <param name="size"></param>
+        /// <param name="timeout"></param>
+        public void Send(Socket socket, byte[] buffer, int offset, int size, int timeout)
+        {
+            socket.SendTimeout = 0;
+            int startTickCount = Environment.TickCount;
+            int sent = 0; // how many bytes is already sent
+            do
+            {
+                if (Environment.TickCount > startTickCount + timeout)
+                {
+                    //throw new Exception("Timeout.");
+                }
+                try
+                {
+                    sent += socket.Send(buffer, offset + sent, size - sent, SocketFlags.None);
+                }
+                catch (SocketException ex)
+                {
+                    if (ex.SocketErrorCode == SocketError.WouldBlock ||
+                    ex.SocketErrorCode == SocketError.IOPending ||
+                    ex.SocketErrorCode == SocketError.NoBufferSpaceAvailable)
+                    {
+                        // socket buffer is probably full, wait and try again
+                        Thread.Sleep(30);
+                    }
+                    else
+                    {
+                        throw ex; // any serious error occurr
+                    }
+                }
+            } while (sent < size);
         }
 
         // This method is invoked when an asynchronous send operation completes.  
@@ -528,8 +578,14 @@ namespace CobWeb.DashBoard
             }
             catch (Exception e)
             {
-                mainForm.Invoke(mainForm.setlistboxcallback, e.Message + "\r\n" + e.StackTrace);
+                SetResponse( e.Message + "\r\n" + e.StackTrace);
             }
+        }
+
+        public void SetResponse(string msg)
+        {
+            //Console.WriteLine("notice:" + msg);
+            _baseForm.SetText(msg);
         }
     }
 
