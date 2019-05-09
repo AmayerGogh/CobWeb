@@ -12,6 +12,7 @@ namespace CobWeb.DashBoard
     /*
      * msdn
      https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socketasynceventargs?redirectedfrom=MSDN&view=netframework-4.8
+     https://blog.csdn.net/huijunma2010/article/details/51176659 Socket异步通信——使用SocketAsyncEventArgs
          */
     /// <summary>
     /// IOCP SOCKET服务器
@@ -157,6 +158,9 @@ namespace CobWeb.DashBoard
                         case SocketAsyncOperation.Receive:
                             ProcessReceive(e);
                             break;
+                        case SocketAsyncOperation.Send:
+                            MessageBox.Show("send");
+                            break;
                         default:
                             throw new ArgumentException("The last operation completed on the socket was not a receive or send");
                     }
@@ -275,10 +279,12 @@ namespace CobWeb.DashBoard
                         Interlocked.Increment(ref _clientCount);//原子操作加1
                         SocketAsyncEventArgs asyniar = _objectPool.Pop();
                         asyniar.UserToken = s;
-
+                        var c = asyniar.AcceptSocket; //null
+                        var cc = asyniar.ConnectSocket; //null
                         var RemoteEndPoint = s.RemoteEndPoint.ToString();
-                        _baseForm. dicClient.Add(RemoteEndPoint, s);//添加至客户端集合
+                        _baseForm.dicClient.Add(RemoteEndPoint, asyniar);//添加至客户端集合
                         _baseForm.comboBox1.Items.Add(RemoteEndPoint);//添加客户端端口号
+
                         SetResponse(String.Format("客户 {0} 连入, 共有 {1} 个连接。", s.RemoteEndPoint.ToString(), _clientCount));
                        
                         if (!s.ReceiveAsync(asyniar))//投递接收请求 表明当前操作是否有等待I/O的情况
@@ -307,6 +313,23 @@ namespace CobWeb.DashBoard
                       
             Send(socket,data,0,data.Length,100);
         }
+        //public void Send2(string msg, Socket socket)
+        //{
+        //    var data = Encoding.UTF8.GetBytes(msg);
+        //    SocketAsyncEventArgs asyniar = new SocketAsyncEventArgs();
+        //    //asyniar.Completed += new EventHandler<SocketAsyncEventArgs>(OnSendComplete);
+        //    asyniar.SetBuffer(data, 0, data.Length);
+        //    //asyniar.UserToken = socket;
+        //    asyniar.RemoteEndPoint = socket.RemoteEndPoint;
+           
+        //    if (!socket.SendAsync(asyniar))//投递发送请求，这个函数有可能同步发送出去，这时返回false，并且不会引发SocketAsyncEventArgs.Completed事件
+        //    {
+        //        // 同步发送时处理发送完成事件
+        //        ProcessSend(asyniar);
+        //    }
+         
+        //}
+
         //_objectPool
         /// <summary>
         /// 异步的发送数据
@@ -317,14 +340,15 @@ namespace CobWeb.DashBoard
         {            
             if (e.SocketError == SocketError.Success)
             {
-                Socket s = e.AcceptSocket;//和客户端关联的socket
+                Socket s = (Socket)e.UserToken;
+                //Socket s = e.AcceptSocket;//和客户端关联的socket 原来是这么写的
                 if (s.Connected)
                 {
                     var data = Encoding.UTF8.GetBytes(msg);
                     Array.Copy(data, 0, e.Buffer, 0, data.Length);//设置发送数据
 
-                    //e.SetBuffer(data, 0, data.Length); //设置发送数据
-                    if (!s.SendAsync(e))//投递发送请求，这个函数有可能同步发送出去，这时返回false，并且不会引发SocketAsyncEventArgs.Completed事件
+                    e.SetBuffer(data, 0, data.Length); //设置发送数据
+                    if (!s.SendAsync(e))//投递发送请求，这个函数有可能同步发送出去，这时返回false，并且不会引发SocketAsyncEventArgs.Completed事件 //现在已经正在使用此 SocketAsyncEventArgs 实例进行异步套接字操作。'
                     {
                         // 同步发送时处理发送完成事件
                         ProcessSend(e);
@@ -407,35 +431,33 @@ namespace CobWeb.DashBoard
         /// <param name="e">与接收完成操作相关联的SocketAsyncEventArg对象</param>
         private void ProcessReceive(SocketAsyncEventArgs e)
         {
-            if (e.SocketError == SocketError.Success)//if (e.BytesTransferred > 0 && e.SocketError == SocketError.Success)
+            if (e.SocketError == SocketError.Success && e.BytesTransferred > 0)//// 检查远程主机是否关闭连接
             {
-                // 检查远程主机是否关闭连接
-                if (e.BytesTransferred > 0)
+                var c = e.AcceptSocket; //null
+                var cc = e.ConnectSocket; //null
+                Socket s = (Socket)e.UserToken;
+                //判断所有需接收的数据是否已经完成
+                if (s.Available == 0)
                 {
-                    Socket s = (Socket)e.UserToken;
-                    //判断所有需接收的数据是否已经完成
-                    if (s.Available == 0)
-                    {
-                        //从侦听者获取接收到的消息。 
-                        //String received = Encoding.ASCII.GetString(e.Buffer, e.Offset, e.BytesTransferred);
-                        //echo the data received back to the client
-                        //e.SetBuffer(e.Offset, e.BytesTransferred);
+                    //从侦听者获取接收到的消息。 
+                    //String received = Encoding.ASCII.GetString(e.Buffer, e.Offset, e.BytesTransferred);
+                    //echo the data received back to the client
+                    //e.SetBuffer(e.Offset, e.BytesTransferred);
 
-                        byte[] data = new byte[e.BytesTransferred];
-                        Array.Copy(e.Buffer, e.Offset, data, 0, data.Length);//从e.Buffer块中复制数据出来，保证它可重用
+                    byte[] data = new byte[e.BytesTransferred];
+                    Array.Copy(e.Buffer, e.Offset, data, 0, data.Length);//从e.Buffer块中复制数据出来，保证它可重用
 
-                        string info = Encoding.UTF8.GetString(data);
-                        SetResponse(String.Format("收到 {0} 数据为 {1}", s.RemoteEndPoint.ToString(), info));
-                        //TODO 处理数据
-                        Send("你好客户端", e);
-                        //增加服务器接收的总字节数。
-                    }
+                    string info = Encoding.UTF8.GetString(data);
+                    SetResponse(String.Format("收到 {0} 数据为 {1}", s.RemoteEndPoint.ToString(), info));
+                    //TODO 处理数据
+                    //Send("你好客户端", e);
+                    //增加服务器接收的总字节数。
+                }
 
-                    if (!s.ReceiveAsync(e))//为接收下一段数据，投递接收请求，这个函数有可能同步完成，这时返回false，并且不会引发SocketAsyncEventArgs.Completed事件
-                    {
-                        //同步接收时处理接收完成事件
-                        ProcessReceive(e);
-                    }
+                if (!s.ReceiveAsync(e))//为接收下一段数据，投递接收请求，这个函数有可能同步完成，这时返回false，并且不会引发SocketAsyncEventArgs.Completed事件
+                {
+                    //同步接收时处理接收完成事件
+                    ProcessReceive(e); //调用自己
                 }
             }
             else
