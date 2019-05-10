@@ -103,7 +103,7 @@ namespace CobWeb.DashBoard
         IOCPServer server;
         void Step2_InnerListen()
         {
-            server = new IOCPServer(6666, 1024, this);
+            server = new IOCPServer(6666, 4, this);
             server.Start();
             //server =  new SocketManager(66, 1024, this);
             //server.Start("127.0.0.1",6666);

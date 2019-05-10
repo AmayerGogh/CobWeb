@@ -13,6 +13,7 @@ namespace CobWeb.DashBoard
      * msdn
      https://docs.microsoft.com/en-us/dotnet/api/system.net.sockets.socketasynceventargs?redirectedfrom=MSDN&view=netframework-4.8
      https://blog.csdn.net/huijunma2010/article/details/51176659 Socket异步通信——使用SocketAsyncEventArgs
+     http://www.cnblogs.com/tianzhiliang/archive/2010/09/08/1821623.html 深入探析c# Socket
          */
     /// <summary>
     /// IOCP SOCKET服务器
@@ -153,13 +154,13 @@ namespace CobWeb.DashBoard
                     switch (e.LastOperation)
                     {
                         case SocketAsyncOperation.Accept:
-                            ProcessAccept(e);
+                            ProcessAccept(e); //事件调入
                             break;
                         case SocketAsyncOperation.Receive:
-                            ProcessReceive(e);
+                            ProcessReceive(e); //事件调入
                             break;
                         case SocketAsyncOperation.Send:
-                            MessageBox.Show("send");
+                            
                             break;
                         default:
                             throw new ArgumentException("The last operation completed on the socket was not a receive or send");
@@ -243,7 +244,7 @@ namespace CobWeb.DashBoard
                 asyniar = new SocketAsyncEventArgs();
                 //accept 操作完成时回调函数
                 asyniar.Completed += new EventHandler<SocketAsyncEventArgs>((sender,e)=> {
-                    ProcessAccept(e);
+                    ProcessAccept(e); //事件调入
                 });
             }
             else
@@ -282,7 +283,7 @@ namespace CobWeb.DashBoard
                         var c = asyniar.AcceptSocket; //null
                         var cc = asyniar.ConnectSocket; //null
                         var RemoteEndPoint = s.RemoteEndPoint.ToString();
-                        _baseForm.dicClient.Add(RemoteEndPoint, asyniar);//添加至客户端集合
+                        _baseForm.dicClient.Add(RemoteEndPoint, s);//添加至客户端集合
                         _baseForm.comboBox1.Items.Add(RemoteEndPoint);//添加客户端端口号
 
                         SetResponse(String.Format("客户 {0} 连入, 共有 {1} 个连接。", s.RemoteEndPoint.ToString(), _clientCount));
@@ -313,22 +314,59 @@ namespace CobWeb.DashBoard
                       
             Send(socket,data,0,data.Length,100);
         }
-        //public void Send2(string msg, Socket socket)
-        //{
-        //    var data = Encoding.UTF8.GetBytes(msg);
-        //    SocketAsyncEventArgs asyniar = new SocketAsyncEventArgs();
-        //    //asyniar.Completed += new EventHandler<SocketAsyncEventArgs>(OnSendComplete);
-        //    asyniar.SetBuffer(data, 0, data.Length);
-        //    //asyniar.UserToken = socket;
-        //    asyniar.RemoteEndPoint = socket.RemoteEndPoint;
-           
-        //    if (!socket.SendAsync(asyniar))//投递发送请求，这个函数有可能同步发送出去，这时返回false，并且不会引发SocketAsyncEventArgs.Completed事件
-        //    {
-        //        // 同步发送时处理发送完成事件
-        //        ProcessSend(asyniar);
-        //    }
-         
-        //}
+        public void Send2(string msg, Socket socket)
+        {
+
+
+            SocketAsyncEventArgs asyniar = new SocketAsyncEventArgs();
+            asyniar.Completed += new EventHandler<SocketAsyncEventArgs>(OnSendComplete);
+            var data = Encoding.UTF8.GetBytes(msg);
+           // Array.Copy(data, 0, asyniar.Buffer, 0, data.Length);//设置发送数据
+            asyniar.SetBuffer(data, 0, data.Length);           
+            asyniar.RemoteEndPoint = socket.RemoteEndPoint;
+
+            if (!socket.SendAsync(asyniar))//投递发送请求，这个函数有可能同步发送出去，这时返回false，并且不会引发SocketAsyncEventArgs.Completed事件
+            {
+                // 同步发送时处理发送完成事件 有问题啊
+                ProcessSend(asyniar);
+            }
+        }
+
+      
+        private void OnSendComplete(object sender, SocketAsyncEventArgs e)
+        {
+
+            if (e.SocketError == SocketError.Success)
+            {
+
+                //////TODO
+                //////重新初始化Buffer
+
+                //Socket s = e.AcceptSocket;//和客户端关联的socket 原来是这么写的
+                //if (s.Connected)
+                //{
+                //    var data = Encoding.UTF8.GetBytes("666");
+                //    Array.Copy(data, 0, e.Buffer, 0, data.Length);//设置发送数据
+
+                //    e.SetBuffer(data, 0, data.Length); //设置发送数据
+                //    if (!s.SendAsync(e))//投递发送请求，这个函数有可能同步发送出去，这时返回false，并且不会引发SocketAsyncEventArgs.Completed事件 //现在已经正在使用此 SocketAsyncEventArgs 实例进行异步套接字操作。'
+                //    {
+                //        // 同步发送时处理发送完成事件
+                //        ProcessSend(e);
+                //    }
+                //    else
+                //    {
+                //        CloseClientSocket(e);
+                //    }
+                //}           
+                e.Dispose();
+                e = null;
+            }
+            else
+            {
+                CloseClientSocket(e);
+            }
+        }
 
         //_objectPool
         /// <summary>
@@ -411,8 +449,8 @@ namespace CobWeb.DashBoard
             if (e.SocketError == SocketError.Success)
             {
                 Socket s = (Socket)e.UserToken;
-
                 //TODO
+                //重新初始化Buffer
             }
             else
             {
