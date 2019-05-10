@@ -20,6 +20,11 @@ namespace CobWeb.Util
         {
             return !string.IsNullOrWhiteSpace(s);
         }
+
+        public static void ConsoleWriteLineWithTime(string msg)
+        {
+            Console.WriteLine($"{DateTime.Now.ToString() } => {msg}");
+        }
     }
     public static class JsonHelper
     {

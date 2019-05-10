@@ -70,6 +70,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AtionExtension.cs" />
     <Compile Include="CommonCla.cs" />
     <Compile Include="CookieHelper.cs" />
     <Compile Include="ExceptionHelper.cs" />
@@ -90,6 +91,7 @@
     <Compile Include="StringHelper.cs" />
     <Compile Include="ThredHelper\ThreadExtension.cs" />
     <Compile Include="ThredHelper\Timer.cs" />
+    <Compile Include="ThredHelper\TimerIntervial.cs" />
     <Compile Include="TridentHelper\CommonWb.cs" />
     <Compile Include="TridentHelper\WebBrowserExtensions.cs" />
     <Compile Include="TridentHelper\WebBrowserImage.cs" />
