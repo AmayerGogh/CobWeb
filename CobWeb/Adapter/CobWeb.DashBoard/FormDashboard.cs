@@ -28,7 +28,7 @@ namespace CobWeb.DashBoard
             Step1_Init();
             Step2_InnerListen();
             Step3_OutListen();
-         
+            //Step3_OoutListenOwin();
         }
         private void FormDashboard_Load(object sender, EventArgs e)
         {
@@ -46,8 +46,17 @@ namespace CobWeb.DashBoard
         {
 
             var path = Path.GetFullPath(Program.cobwebPath);
-            var process = Process.Start(path + "CobWeb.exe");
+            try
+            {
+                var process = Process.Start(path + "CobWeb.exe");
+            }
+            catch (Exception ex)
+            {
 
+                
+            }
+          
+            
             //FormAdapter form = new FormAdapter();
             //form.Show();
         }
@@ -57,10 +66,7 @@ namespace CobWeb.DashBoard
             FormVirtualWeb formVritualWeb = new FormVirtualWeb();
             formVritualWeb.Show();
         }
-
-        Socket socketListen;//用于监听的socket
-        Socket socketConnect;//用于通信的socket
-        string RemoteEndPoint;     //客户端的网络节点  
+  
         public Dictionary<string, Socket> dicClient = new Dictionary<string, Socket>();//连接的客户端集合
         //public void StartSocket()
         //{
@@ -195,7 +201,7 @@ namespace CobWeb.DashBoard
             if (comboBox1.SelectedIndex != -1)
             {
                 var sock =  dicClient[comboBox1.SelectedItem.ToString()];
-                server.Send2(textBox2.Text, sock);
+                server.Send(textBox2.Text, sock);
             }
            
 
