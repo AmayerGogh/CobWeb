@@ -79,15 +79,6 @@ namespace CobWeb.DashBoard
 
 
 
-         SocketServer server;
-        void Step2_InnerListen()
-        {
-            server = new SocketServer(6666, 4);
-            server.OnRecive += Socket_OnRecive;
-            server.Start();
-            //server =  new SocketManager(66, 1024, this);
-            //server.Start("127.0.0.1",6666);
-        }
 
 
         void Step4_TimerStart()

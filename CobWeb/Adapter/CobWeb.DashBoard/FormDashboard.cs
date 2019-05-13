@@ -25,10 +25,7 @@ namespace CobWeb.DashBoard
             InitializeComponent();
             Control.CheckForIllegalCrossThreadCalls = false;
             comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
-            Step1_Init();
-            Step2_InnerListen();
-            Step3_OutListen();
-            //Step3_OoutListenOwin();
+                                              
         }
         private void FormDashboard_Load(object sender, EventArgs e)
         {
@@ -39,8 +36,29 @@ namespace CobWeb.DashBoard
         }
         private void btn_test_debug_Click(object sender, EventArgs e)
         {
-            FormAccess form = new FormAccess();
-            form.Show();
+            if (Program.FormAccess != null && !Program.FormAccess.IsDisposed)
+            {
+                if (Program.FormAccess.Visible == true)
+                {
+                    Program.FormAccess.Activate();
+                    return;
+                }
+            }
+            Thread newThread = new Thread(new ThreadStart(() =>
+            {
+                try
+                {
+                    Program.FormAccess.ShowDialog();
+                }
+                finally
+                {
+                    Program.FormAccess.Close();
+                }
+            }));
+            newThread.Name = "FormAccess";
+            newThread.SetApartmentState(ApartmentState.STA);
+            newThread.IsBackground = true; //随主线程一同退出
+            newThread.Start();
         }
         private void btn_bin_debug_Click(object sender, EventArgs e)
         {
@@ -191,7 +209,7 @@ namespace CobWeb.DashBoard
             if (comboBox1.SelectedIndex != -1)
             {
                 var sock = SocketServer.SocketClient[comboBox1.SelectedItem.ToString()];
-                server.Send(textBox2.Text, sock);
+               Program.server.Send(textBox2.Text, sock);
             }
         }
        

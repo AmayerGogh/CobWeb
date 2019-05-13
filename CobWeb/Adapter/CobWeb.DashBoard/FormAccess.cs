@@ -71,7 +71,11 @@ namespace CobWeb.DashBoard
             var names = Enum.GetNames(typeof(SocketRequestCode));
             cob_RequestCode.Items.AddRange(names);
         }
-
+        protected override void OnClosed(EventArgs e)
+        {            
+            this.Dispose();
+            base.OnClosed(e);
+        }
         private void Btn_rm_send_Click(object sender, EventArgs e)
         {
             rtxt_send.ResetText();

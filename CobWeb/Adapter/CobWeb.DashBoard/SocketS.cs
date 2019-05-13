@@ -131,8 +131,7 @@ namespace CobWeb.DashBoard
         }
 
         #endregion
-
-        FormDashboard _baseForm { get; set; }
+       
         #region 初始化
 
         /// <summary>
@@ -286,9 +285,7 @@ namespace CobWeb.DashBoard
                         var cc = asyniar.ConnectSocket; //null
                         var RemoteEndPoint = s.RemoteEndPoint.ToString();
                         SocketClient.Add(RemoteEndPoint, s);//添加至客户端集合
-                        OnConnection?.Invoke();                       
-                        SetResponse(String.Format("客户 {0} 连入, 共有 {1} 个连接。", s.RemoteEndPoint.ToString(), _clientCount));
-                       
+                        OnConnection?.Invoke(s.RemoteEndPoint.ToString());                                             
                         if (!s.ReceiveAsync(asyniar))//投递接收请求 表明当前操作是否有等待I/O的情况
                         {
                             ProcessReceive(asyniar);
@@ -296,7 +293,7 @@ namespace CobWeb.DashBoard
                     }
                     catch (SocketException ex)
                     {
-                        SetResponse(String.Format("接收客户 {0} 数据出错, 异常信息： {1} 。", s.RemoteEndPoint, ex.ToString()));
+                        OnError?.Invoke(String.Format("接收客户 {0} 数据出错, 异常信息： {1} 。", s.RemoteEndPoint, ex.ToString()));                        
                         //TODO 异常处理
                     }
                     //投递下一个接受请求
@@ -482,7 +479,7 @@ namespace CobWeb.DashBoard
                     Array.Copy(e.Buffer, e.Offset, data, 0, data.Length);//从e.Buffer块中复制数据出来，保证它可重用
 
                     string info = Encoding.UTF8.GetString(data);
-                    SetResponse(String.Format("收到 {0} 数据为 {1}", s.RemoteEndPoint.ToString(), info));
+                    OnRecive?.Invoke(s.RemoteEndPoint.ToString(), info);                   
                     //TODO 处理数据
                     //Send("你好客户端", e);
                     //增加服务器接收的总字节数。
@@ -509,8 +506,7 @@ namespace CobWeb.DashBoard
         /// </summary>
         /// <param name="e">SocketAsyncEventArg associated with the completed send/receive operation.</param>
         private void CloseClientSocket(SocketAsyncEventArgs e)
-        {
-            SetResponse(String.Format("客户 {0} 断开连接!", ((Socket)e.UserToken).RemoteEndPoint.ToString()));                 
+        {                      
             Socket s = e.UserToken as Socket;
             CloseClientSocket(s, e);
         }
@@ -535,7 +531,8 @@ namespace CobWeb.DashBoard
             {
              
             }
-            SocketClient.Remove(s.RemoteEndPoint.ToString());
+            var temp = s.RemoteEndPoint.ToString();
+            SocketClient.Remove(temp);
 
             s.Shutdown(SocketShutdown.Send);
             s.Disconnect(true);      
@@ -545,7 +542,7 @@ namespace CobWeb.DashBoard
             Interlocked.Decrement(ref _clientCount);
             _maxAcceptedClients.Release();
             _objectPool.Push(e);//SocketAsyncEventArg 对象被释放，压入可重用队列。
-            OnClose?.Invoke();
+            OnClose?.Invoke(temp);
         }
         #endregion
 
@@ -589,13 +586,14 @@ namespace CobWeb.DashBoard
             }
         }
         #endregion
-        public Action OnClose;
-        public Action OnConnection;
-        public Action<string> OnRecive;
+        public Action<string> OnClose;
+        public Action<string> OnConnection;
+        public Action<string,string> OnRecive;
+        public Action<string> OnError;
         public void SetResponse(string msg)
         {
             //Console.WriteLine("notice:" + msg);          
-            OnRecive?.Invoke(msg);
+            //OnRecive?.Invoke(msg);
         }
 
     }

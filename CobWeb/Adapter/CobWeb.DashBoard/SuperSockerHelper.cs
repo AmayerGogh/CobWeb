@@ -158,13 +158,13 @@ namespace CobWeb.DashBoard
         public List<AsyncUserToken> ClientList { get { return m_clients; } }
 
         #endregion
-        FormDashboard _baseForm;
+        
         /// <summary>
         /// 构造函数
         /// </summary>
         /// <param name="numConnections">最大连接数</param>
         /// <param name="receiveBufferSize">缓存区大小</param>
-        public SocketManager(int numConnections, int receiveBufferSize,FormDashboard form)
+        public SocketManager(int numConnections, int receiveBufferSize)
         {
             m_clientCount = 0;
             m_maxConnectNum = numConnections;
@@ -175,7 +175,7 @@ namespace CobWeb.DashBoard
 
             m_pool = new SocketEventPool(numConnections);
             m_maxNumberAcceptedClients = new Semaphore(numConnections, numConnections);
-            this._baseForm = form;
+           
             Init();
         }
 
