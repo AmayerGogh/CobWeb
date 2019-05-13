@@ -54,7 +54,7 @@
             this.btn_test_debug.Name = "btn_test_debug";
             this.btn_test_debug.Size = new System.Drawing.Size(124, 67);
             this.btn_test_debug.TabIndex = 0;
-            this.btn_test_debug.Text = "测试环境";
+            this.btn_test_debug.Text = "开启调用";
             this.btn_test_debug.UseVisualStyleBackColor = true;
             this.btn_test_debug.Click += new System.EventHandler(this.btn_test_debug_Click);
             // 
@@ -151,21 +151,21 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(272, 12);
+            this.button6.Location = new System.Drawing.Point(402, 12);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(124, 67);
             this.button6.TabIndex = 5;
-            this.button6.Text = "调用记录";
+            this.button6.Text = "todo";
             this.button6.UseVisualStyleBackColor = true;
             // 
             // btn_testStart
             // 
-            this.btn_testStart.Location = new System.Drawing.Point(402, 12);
+            this.btn_testStart.Location = new System.Drawing.Point(272, 12);
             this.btn_testStart.Name = "btn_testStart";
             this.btn_testStart.Size = new System.Drawing.Size(124, 67);
             this.btn_testStart.TabIndex = 6;
             this.btn_testStart.TabStop = false;
-            this.btn_testStart.Text = "测试窗体";
+            this.btn_testStart.Text = "Browser模拟";
             this.btn_testStart.UseVisualStyleBackColor = true;
             this.btn_testStart.Click += new System.EventHandler(this.btn_socketStart_Click);
             // 

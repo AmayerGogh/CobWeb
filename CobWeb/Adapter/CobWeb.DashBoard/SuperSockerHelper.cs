@@ -585,7 +585,7 @@ namespace CobWeb.DashBoard
         public void SetResponse(string msg)
         {
             //Console.WriteLine("notice:" + msg);
-            _baseForm.SetText(msg);
+            //_baseForm.SetText(msg);
         }
     }
 

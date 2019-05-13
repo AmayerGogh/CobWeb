@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-namespace CobWeb.Core
+namespace CobWeb.DashBoard
 {
     public partial class FormAccess : Form
     {
@@ -63,62 +63,7 @@ namespace CobWeb.Core
             }
             return true;
         }
-        public SocketRequestModel BuildRequest()
-        {
-            if (!ParamValid())
-            {
-                return null;
-            }
-            
-            var stopkey = Guid.NewGuid().ToString();
-            txt_stopkey.Text = stopkey;
-
-            string param = rtxt_send.Text;
-            if (!rtxt_send.Text.IsJson())
-            {
-                lbl_Msg.Text = "请求体必须为 json";
-                return null;
-            }
-
-            int timeout = 0;           
-            if (!int.TryParse(numeric_Timeout.Text, out timeout))
-            {
-                timeout = 60;
-            }
-            SocketRequestCode head;
-            if (!Enum.TryParse<SocketRequestCode>(cob_RequestCode.Text, out head))
-            {
-                lbl_Msg.Text = "请求head无效";
-                return null;
-            }           
-            SocketRequestModel model = new SocketRequestModel();
-            model.FileName = txt_fileName.Text;
-            model.Port = txt_port.Text;
-            model.Key = txt_stopkey.Text;
-            model.KernelType = cob_kernel.Text;          
-            model.Method = cmb_Type.Text;
-            model.Timeout = timeout;
-            model.Header = head;
-            return model;
-        }
-        void Excute(Stopwatch stopwatch = null)
-        {
-            var stopkey = Guid.NewGuid().ToString();
-            txt_stopkey.Text = stopkey;
-            rtxt_revice.Text = string.Empty;
-            string param = rtxt_send.Text;
-            dynamic dyn = param.DeserializeObject<ExpandoObject>();
-            //dyn读取 &&更改
-            param = dyn.SerializeObject(dyn);
-            string result = SocketAccess.Access<string, string>(
-                cmb_Type.Text,
-                param,
-                DateTime.Now.Ticks,
-                int.Parse(numeric_Timeout.Value.ToString()),
-                stopkey,
-                int.Parse(txt_port.Text), false
-                );
-        }
+     
 
 
         private void FormAccess_Load(object sender, EventArgs e)

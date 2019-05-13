@@ -39,7 +39,7 @@ namespace CobWeb.DashBoard
         }
         private void btn_test_debug_Click(object sender, EventArgs e)
         {
-            FormAccessTest form = new FormAccessTest();
+            FormAccess form = new FormAccess();
             form.Show();
         }
         private void btn_bin_debug_Click(object sender, EventArgs e)
@@ -67,7 +67,7 @@ namespace CobWeb.DashBoard
             formVritualWeb.Show();
         }
   
-        public Dictionary<string, Socket> dicClient = new Dictionary<string, Socket>();//连接的客户端集合
+       
         //public void StartSocket()
         //{
         //    //创建套接字
@@ -179,17 +179,7 @@ namespace CobWeb.DashBoard
         //    }
         //}
 
-        public void SetText(string str)
-        {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new MethodInvoker(() => SetText(str)));
-            }
-            else
-            {
-                textBox1.Text += "\r\n" + str;
-            }
-        }
+      
 
         /// <summary>
         /// send
@@ -200,18 +190,15 @@ namespace CobWeb.DashBoard
         {
             if (comboBox1.SelectedIndex != -1)
             {
-                var sock =  dicClient[comboBox1.SelectedItem.ToString()];
+                var sock = SocketServer.SocketClient[comboBox1.SelectedItem.ToString()];
                 server.Send(textBox2.Text, sock);
             }
-           
-
-
-          
-
+        }
+       
+        private void Button6_Click(object sender, EventArgs e)
+        {
 
         }
-
-     
     }
 
 }

@@ -19,8 +19,9 @@ namespace CobWeb.DashBoard
     /// <summary>
     /// IOCP SOCKET服务器
     /// </summary>
-    public class IOCPServer : IDisposable
+    public class SocketServer : IDisposable
     {
+        public static Dictionary<string, Socket> SocketClient = new Dictionary<string, Socket>();
         const int opsToPreAlloc = 2;
         #region Fields
         /// <summary>
@@ -90,10 +91,10 @@ namespace CobWeb.DashBoard
         /// </summary>
         /// <param name="listenPort">监听的端口</param>
         /// <param name="maxClient">最大的客户端数量</param>
-        public IOCPServer(int listenPort, int maxClient,FormDashboard form)
+        public SocketServer(int listenPort, int maxClient)
             : this(IPAddress.Any, listenPort, maxClient)
         {
-            this._baseForm = form;
+           
         }
 
         /// <summary>
@@ -101,7 +102,7 @@ namespace CobWeb.DashBoard
         /// </summary>
         /// <param name="localEP">监听的终结点</param>
         /// <param name="maxClient">最大客户端数量</param>
-        public IOCPServer(IPEndPoint localEP, int maxClient)
+        public SocketServer(IPEndPoint localEP, int maxClient)
             : this(localEP.Address, localEP.Port, maxClient)
         {
         }
@@ -112,7 +113,7 @@ namespace CobWeb.DashBoard
         /// <param name="localIPAddress">监听的IP地址</param>
         /// <param name="listenPort">监听的端口</param>
         /// <param name="maxClient">最大客户端数量</param>
-        public IOCPServer(IPAddress localIPAddress, int listenPort, int maxClient)
+        public SocketServer(IPAddress localIPAddress, int listenPort, int maxClient)
         {
             this.Address = localIPAddress;
             this.Port = listenPort;
@@ -284,9 +285,8 @@ namespace CobWeb.DashBoard
                         var c = asyniar.AcceptSocket; //null
                         var cc = asyniar.ConnectSocket; //null
                         var RemoteEndPoint = s.RemoteEndPoint.ToString();
-                        _baseForm.dicClient.Add(RemoteEndPoint, s);//添加至客户端集合
-                        _baseForm.comboBox1.Items.Add(RemoteEndPoint);//添加客户端端口号
-
+                        SocketClient.Add(RemoteEndPoint, s);//添加至客户端集合
+                        OnConnection?.Invoke();                       
                         SetResponse(String.Format("客户 {0} 连入, 共有 {1} 个连接。", s.RemoteEndPoint.ToString(), _clientCount));
                        
                         if (!s.ReceiveAsync(asyniar))//投递接收请求 表明当前操作是否有等待I/O的情况
@@ -535,7 +535,7 @@ namespace CobWeb.DashBoard
             {
              
             }
-            _baseForm.dicClient.Remove(s.RemoteEndPoint.ToString());
+            SocketClient.Remove(s.RemoteEndPoint.ToString());
 
             s.Shutdown(SocketShutdown.Send);
             s.Disconnect(true);      
@@ -545,6 +545,7 @@ namespace CobWeb.DashBoard
             Interlocked.Decrement(ref _clientCount);
             _maxAcceptedClients.Release();
             _objectPool.Push(e);//SocketAsyncEventArg 对象被释放，压入可重用队列。
+            OnClose?.Invoke();
         }
         #endregion
 
@@ -588,11 +589,13 @@ namespace CobWeb.DashBoard
             }
         }
         #endregion
-
+        public Action OnClose;
+        public Action OnConnection;
+        public Action<string> OnRecive;
         public void SetResponse(string msg)
         {
-            //Console.WriteLine("notice:" + msg);
-            _baseForm.SetText(msg);
+            //Console.WriteLine("notice:" + msg);          
+            OnRecive?.Invoke(msg);
         }
 
     }

@@ -1,4 +1,4 @@
-﻿namespace CobWeb.Core
+﻿namespace CobWeb.DashBoard
 {
     partial class FormAccess
     {
@@ -26,10 +26,8 @@
         private void InitializeComponent()
         {
             this.btn_Excute = new System.Windows.Forms.Button();
-            this.cmb_Type = new System.Windows.Forms.ComboBox();
             this.numeric_Timeout = new System.Windows.Forms.NumericUpDown();
             this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
             this.rtxt_send = new System.Windows.Forms.RichTextBox();
             this.rtxt_revice = new System.Windows.Forms.RichTextBox();
             this.txt_stopkey = new System.Windows.Forms.TextBox();
@@ -46,6 +44,10 @@
             this.btn_rm_send = new System.Windows.Forms.Button();
             this.btn_rm_recive = new System.Windows.Forms.Button();
             this.lbl_Msg = new System.Windows.Forms.Label();
+            this.cmb_Type = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_Timeout)).BeginInit();
             this.SuspendLayout();
             // 
@@ -59,16 +61,6 @@
             this.btn_Excute.Text = "调用";
             this.btn_Excute.UseVisualStyleBackColor = true;
             this.btn_Excute.Click += new System.EventHandler(this.btn_Excute_Click);
-            // 
-            // cmb_Type
-            // 
-            this.cmb_Type.FormattingEnabled = true;
-            this.cmb_Type.Items.AddRange(new object[] {
-            "GetVersion"});
-            this.cmb_Type.Location = new System.Drawing.Point(573, 46);
-            this.cmb_Type.Name = "cmb_Type";
-            this.cmb_Type.Size = new System.Drawing.Size(165, 20);
-            this.cmb_Type.TabIndex = 3;
             // 
             // numeric_Timeout
             // 
@@ -100,15 +92,6 @@
             this.label1.Size = new System.Drawing.Size(59, 12);
             this.label1.TabIndex = 4;
             this.label1.Text = "超时时间:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(496, 49);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(47, 12);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "方法名:";
             // 
             // rtxt_send
             // 
@@ -147,10 +130,10 @@
             this.label5.TabIndex = 15;
             this.label5.Text = "通信端口:";
             // 
-            // txt_prot
+            // txt_port
             // 
             this.txt_port.Location = new System.Drawing.Point(70, 16);
-            this.txt_port.Name = "txt_prot";
+            this.txt_port.Name = "txt_port";
             this.txt_port.Size = new System.Drawing.Size(165, 21);
             this.txt_port.TabIndex = 16;
             this.txt_port.Text = "6666";
@@ -261,11 +244,51 @@
             this.lbl_Msg.TabIndex = 37;
             this.lbl_Msg.Text = "初始值";
             // 
+            // cmb_Type
+            // 
+            this.cmb_Type.FormattingEnabled = true;
+            this.cmb_Type.Items.AddRange(new object[] {
+            "GetVersion"});
+            this.cmb_Type.Location = new System.Drawing.Point(573, 46);
+            this.cmb_Type.Name = "cmb_Type";
+            this.cmb_Type.Size = new System.Drawing.Size(165, 20);
+            this.cmb_Type.TabIndex = 3;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(496, 49);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(47, 12);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "方法名:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(766, 48);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(59, 12);
+            this.label4.TabIndex = 39;
+            this.label4.Text = "调用端口:";
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "由系统决定"});
+            this.comboBox1.Location = new System.Drawing.Point(831, 45);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(165, 20);
+            this.comboBox1.TabIndex = 38;
+            // 
             // FormAccess
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1031, 626);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.lbl_Msg);
             this.Controls.Add(this.btn_rm_recive);
             this.Controls.Add(this.btn_rm_send);
@@ -299,10 +322,8 @@
         }
         #endregion
         public System.Windows.Forms.Button btn_Excute;
-        private System.Windows.Forms.ComboBox cmb_Type;
         private System.Windows.Forms.NumericUpDown numeric_Timeout;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
         public System.Windows.Forms.RichTextBox rtxt_send;
         public System.Windows.Forms.RichTextBox rtxt_revice;
         private System.Windows.Forms.TextBox txt_stopkey;
@@ -319,5 +340,9 @@
         private System.Windows.Forms.Button btn_rm_send;
         private System.Windows.Forms.Button btn_rm_recive;
         private System.Windows.Forms.Label lbl_Msg;
+        private System.Windows.Forms.ComboBox cmb_Type;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }

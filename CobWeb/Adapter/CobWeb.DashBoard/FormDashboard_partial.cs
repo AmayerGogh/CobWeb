@@ -1,7 +1,5 @@
 ﻿using CobWeb.Util;
 using CobWeb.Util.ThredHelper;
-using Microsoft.Owin.Hosting;
-using Owin;
 using System;
 using System.Collections;
 using System.Collections.Concurrent;
@@ -21,17 +19,10 @@ namespace CobWeb.DashBoard
 {
     public partial class FormDashboard
     {
-        /// <summary>
-        /// 当前的 进程对应类
-        /// </summary>
-        static List<CobWeb_ProcessList> CobWeb_ProcessList = new List<CobWeb_ProcessList>();
 
-        /// <summary>
-        /// 
-        /// </summary>
-        ConcurrentDictionary<int, object> hashtable2 = new ConcurrentDictionary<int, object>();
 
-        static List<Socket> sockets = new List<Socket>();
+
+
         void Refesh_dataGridView1()
         {
             try
@@ -45,7 +36,7 @@ namespace CobWeb.DashBoard
                 foreach (var item in ps)
                 {
 
-                   
+
                     DataGridViewTextBoxCell textboxcell = new DataGridViewTextBoxCell() { Value = item.Id };
                     DataGridViewTextBoxCell textboxcell2 = new DataGridViewTextBoxCell() { };
                     DataGridViewTextBoxCell textboxcell3 = new DataGridViewTextBoxCell() { Value = item.WorkingSet64 / (1024 * 1024) };
@@ -76,10 +67,10 @@ namespace CobWeb.DashBoard
 
             }
 
-                 
-                
 
-           
+
+
+
 
 
 
@@ -88,38 +79,17 @@ namespace CobWeb.DashBoard
 
 
 
-
-        void Step1_Init()
+         SocketServer server;
+         void Step2_InnerListen()
         {
-
-        }
-        //SocketManager server;
-
-        IOCPServer server;
-        void Step2_InnerListen()
-        {
-            server = new IOCPServer(6666, 4, this);
+            server = new SocketServer(6666, 4);
+            server.OnRecive += Socket_OnRecive;
             server.Start();
             //server =  new SocketManager(66, 1024, this);
             //server.Start("127.0.0.1",6666);
         }
 
-  
-        void Step3_OutListen()
-        {
-            HttpListenerOut.Prefixes.Add("http://localhost:30000/");
-            HttpListenerOut.Start();
-            Task.Run(() =>
-            {
-                //httpPostRequestHandle();
-                HttpListenerOut.BeginGetContext(new AsyncCallback(GetContextCallBack), HttpListenerOut);
-            });
-            //HttpListenerContextModel_Pool.DoWhileTest();
-        }
-        public static Dictionary<int, HttpListenerContext> HttpContext = new Dictionary<int, HttpListenerContext>();
-       
-        private static HttpListener HttpListenerOut = new HttpListener();
-        public static List<HttpListenerContextModel> HttpListenerContext_Pool = new List<HttpListenerContextModel>();
+
         void Step4_TimerStart()
         {
             TimerIntervial.Register(1, () =>
@@ -130,10 +100,10 @@ namespace CobWeb.DashBoard
                 }
                 textBox2.Text += DateTime.Now.ToString() + Thread.CurrentThread.ManagedThreadId + "_" + Process.GetCurrentProcess().Threads.Count + Environment.NewLine;
                 Thread.Sleep(100);
-                Refesh_dataGridView1();              
+                Refesh_dataGridView1();
 
             });
-          
+
             TimerIntervial.Enabled();
         }
 
@@ -174,30 +144,24 @@ namespace CobWeb.DashBoard
         //    }
         //}
 
-        
-        static void GetContextCallBack(IAsyncResult ar)
+
+       
+
+        public void Socket_OnRecive(string msg)
         {
-            HttpListenerOut = ar.AsyncState as HttpListener;
-            HttpListenerContext context = HttpListenerOut.EndGetContext(ar);
-
-            HttpListenerContextModel_Pool.Add( new HttpListenerContextModel() {
-                Id = Guid.NewGuid().ToString(),
-                Context =context
-            });
-            //var requestBody = string.Empty;
-            //using (var stream = context.Request.InputStream)
-            //using (StreamReader reader = new StreamReader(stream))
-            //{
-            //    requestBody = reader.ReadToEnd();
-            //}
-
-            //Thread.Sleep(10000);
-            //SetResponse(context.Response, 200, new { data = "ok", msg = requestBody });
-
-            HttpListenerOut.BeginGetContext(new AsyncCallback(GetContextCallBack), HttpListenerOut);
+            SetText(msg);
         }
-      
-
+        public void SetText(string str)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(() => SetText(str)));
+            }
+            else
+            {
+                textBox1.Text += "\r\n" + str;
+            }
+        }
 
     }
     public class CobWeb_ProcessList
@@ -214,7 +178,7 @@ namespace CobWeb.DashBoard
         public int SocketPort { get; set; }
     }
 
-  
 
-  
+
+
 }
