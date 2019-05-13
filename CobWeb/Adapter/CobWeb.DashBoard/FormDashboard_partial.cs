@@ -80,7 +80,7 @@ namespace CobWeb.DashBoard
 
 
          SocketServer server;
-         void Step2_InnerListen()
+        void Step2_InnerListen()
         {
             server = new SocketServer(6666, 4);
             server.OnRecive += Socket_OnRecive;
