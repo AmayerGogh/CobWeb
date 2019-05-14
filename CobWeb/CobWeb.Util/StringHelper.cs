@@ -28,6 +28,10 @@ namespace CobWeb.Util
     }
     public static class JsonHelper
     {
+        public static string Serialize(object obj)
+        {
+            return JsonConvert.SerializeObject(obj);
+        }
         public static T DeserializeObject<T>(this string s)
         {
             return JsonConvert.DeserializeObject<T>(s);

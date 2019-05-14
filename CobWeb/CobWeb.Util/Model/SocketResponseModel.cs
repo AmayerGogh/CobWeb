@@ -32,8 +32,6 @@ namespace CobWeb.Util.Model
         A_RequestNormalBreak = -99992,
         [Description("内核")]
         A_KernelError = -99990,
-
-
         成功 = 0,
 
     }

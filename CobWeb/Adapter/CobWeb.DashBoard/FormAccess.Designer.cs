@@ -116,6 +116,7 @@
             // 
             // txt_stopkey
             // 
+            this.txt_stopkey.Enabled = false;
             this.txt_stopkey.Location = new System.Drawing.Point(70, 45);
             this.txt_stopkey.Name = "txt_stopkey";
             this.txt_stopkey.Size = new System.Drawing.Size(165, 21);
@@ -204,8 +205,6 @@
             // cob_RequestCode
             // 
             this.cob_RequestCode.FormattingEnabled = true;
-            this.cob_RequestCode.Items.AddRange(new object[] {
-            "GetVersion"});
             this.cob_RequestCode.Location = new System.Drawing.Point(314, 45);
             this.cob_RequestCode.Name = "cob_RequestCode";
             this.cob_RequestCode.Size = new System.Drawing.Size(165, 20);

@@ -8,11 +8,12 @@ namespace CobWeb.Util.Model
 {
     public class SocketRequestModel
     {
-     
+
         public string Port { get; set; }
         /// <summary>
         /// 请求参数
         /// </summary>
+        [Obsolete]
         public object Param { get; set; }
         /// <summary>
         /// 用于超时
@@ -36,7 +37,7 @@ namespace CobWeb.Util.Model
         /// 浏览器内核
         /// </summary>
         public string KernelType { get; set; }
-        
+
         /// <summary>
         /// 包名
         /// </summary>
@@ -45,26 +46,42 @@ namespace CobWeb.Util.Model
         /// 访问接口
         /// </summary>
         public string Method { get; set; }
-
+        /// <summary>
+        /// 内容
+        /// </summary>
+        public string Context { get; set; }
         /// <summary>
         /// 标志头
         /// </summary>
-        public SocketRequestCode Header { get; set; }
+        public string Header { get; set; }
     }
 
-    public enum SocketRequestCode
+    public class SocketRequestHeader
     {
+
         [Description("使用窗口的爬虫")]
-        UserFormSpider = 1,
+        public static string UserFormSpider = "FSp.";
         [Description("不使用窗口的爬虫")]
-        NoUserFormSpider = 2,
+        public static string NoUserFormSpider = "NFSp";
         [Description("步骤查询")]
-        Step = 3,
+        public static string Step = "Step";
         [Description("窗口是否在工作")]
-        IsWorking = 4,
+        public static string IsWorking = "IsWk";
         [Description("基本信息")]
-        Info = 5,
+        public static string Info = "Info";
         [Description("执行指令")]
-        Command = 6,
+        public static string Command = "CMD.";
+
+        public static HashSet<string> Head = new HashSet<string>();
+        static SocketRequestHeader()
+        {
+            Head.Add(UserFormSpider);
+            Head.Add(NoUserFormSpider);
+            Head.Add(Step);
+            Head.Add(IsWorking);
+            Head.Add(Info);
+            Head.Add(Command);
+        }
     }
+
 }

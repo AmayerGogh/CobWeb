@@ -22,54 +22,22 @@ namespace CobWeb.DashBoard
         }
         private void btn_Excute_Click(object sender, EventArgs e)
         {
-        
+            Excute();
             //MessageBox.Show(cc);
             //btn_Excute.Enabled = false;
-           
+
         }
 
-        bool ParamValid()
-        {
-            if (string.IsNullOrWhiteSpace(txt_port.Text))
-            {
-                lbl_Msg.Text = "端口号为空";
-                return false;
-            }
-
-            if (string.IsNullOrWhiteSpace(cob_kernel.Text))
-            {
-                lbl_Msg.Text = "请指定内核";
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(cob_RequestCode.Text))
-            {
-                lbl_Msg.Text = "请指定操作类型";
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(cmb_Type.Text))
-            {
-                lbl_Msg.Text = "请指定方法名";
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(numeric_Timeout.Text))
-            {
-                lbl_Msg.Text = "请指定超时时间";
-                return false;
-            }
-            if (string.IsNullOrWhiteSpace(rtxt_send.Text))
-            {
-                lbl_Msg.Text = "请指定请求体";
-                return false;
-            }
-            return true;
-        }
+        
      
 
 
         private void FormAccess_Load(object sender, EventArgs e)
-        {
-            var names = Enum.GetNames(typeof(SocketRequestCode));
-            cob_RequestCode.Items.AddRange(names);
+        {            
+            foreach (var item in SocketRequestHeader.Head)
+            {
+                cob_RequestCode.Items.Add(item);
+            }                        
         }
         protected override void OnClosed(EventArgs e)
         {            

@@ -32,7 +32,7 @@ namespace CobWeb.DashBoard
             Application.Run(FormDashboard);
         }
         //
-        static FormDashboard FormDashboard;
+        public static FormDashboard FormDashboard;
         static FormAccess _formAccess;
         public static FormAccess FormAccess
         {
@@ -93,10 +93,9 @@ namespace CobWeb.DashBoard
             HttpListenerOut.Start();
             Task.Run(() =>
             {
-                //httpPostRequestHandle();
                 HttpListenerOut.BeginGetContext(new AsyncCallback(GetContextCallBack), HttpListenerOut);
             });
-            //HttpListenerContextModel_Pool.DoWhileTest();
+
         }
 
         private static HttpListener HttpListenerOut = new HttpListener();
@@ -128,34 +127,4 @@ namespace CobWeb.DashBoard
 
     }
 
-    public class FormAccessManager
-    {
-       
-        //void ShowLogForm()
-        //{
-        //    if (_formLog != null && !_formLog.IsDisposed)
-        //    {
-        //        if (_formLog.Visible == true)
-        //        {
-        //            _formLog.Activate();
-        //            return;
-        //        }
-        //    }
-        //    Thread newThread = new Thread(new ThreadStart(() =>
-        //    {
-        //        try
-        //        {
-        //            FormLog.ShowDialog();
-        //        }
-        //        finally
-        //        {
-        //            FormLog.Close();
-        //        }
-        //    }));
-        //    newThread.Name = "FormLog";
-        //    newThread.SetApartmentState(ApartmentState.STA);
-        //    newThread.IsBackground = true; //随主线程一同退出
-        //    newThread.Start();
-        //}
-    }
 }
