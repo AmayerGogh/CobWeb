@@ -85,11 +85,11 @@ namespace CobWeb.DashBoard
         {
             TimerIntervial.Register(1, () =>
             {
-                if (textBox2.Text.Length > 200)
+                if (txt_debug.Text.Length > 200)
                 {
-                    textBox2.Text = "";
+                    txt_debug.Text = "";
                 }
-                textBox2.Text += DateTime.Now.ToString() + Thread.CurrentThread.ManagedThreadId + "_" + Process.GetCurrentProcess().Threads.Count + Environment.NewLine;
+                txt_debug.Text += DateTime.Now.ToString() + Thread.CurrentThread.ManagedThreadId + "_" + Process.GetCurrentProcess().Threads.Count + Environment.NewLine;
                 Thread.Sleep(100);
                 Refesh_dataGridView1();
 
@@ -135,13 +135,7 @@ namespace CobWeb.DashBoard
         //    }
         //}
 
-
-       
-
-        public void Socket_OnRecive(string msg)
-        {
-            SetText(msg);
-        }
+             
         public void SetText(string str)
         {
             if (this.InvokeRequired)
@@ -150,7 +144,7 @@ namespace CobWeb.DashBoard
             }
             else
             {
-                textBox1.Text += "\r\n" + str;
+                txt_debug.Text += "\r\n" + str;
             }
         }
 
@@ -164,9 +158,8 @@ namespace CobWeb.DashBoard
         public DateTime StartTime { get; set; }
         public DateTime? LastWorkingEndTime { get; set; }
         public bool IsWorking { get; set; }
-        public DateTime? CurrentWorkingStartTime { get; set; }
-
-        public int SocketPort { get; set; }
+        public DateTime? CurrentWorkingStartTime { get; set; }        
+        public Socket Socket { get; set; }
     }
 
 

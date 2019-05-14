@@ -25,11 +25,11 @@ namespace CobWeb.DashBoard
             Excute();
             //MessageBox.Show(cc);
             //btn_Excute.Enabled = false;
-
+           
         }
+      
 
-        
-     
+
 
 
         private void FormAccess_Load(object sender, EventArgs e)

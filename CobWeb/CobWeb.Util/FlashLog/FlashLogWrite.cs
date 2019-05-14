@@ -53,7 +53,7 @@ namespace CobWeb.Util.FlashLog
             }
             else
             {
-                WriteType1(logFilePath, msg.Message);
+                WriteType2(logFilePath, msg.Message);
             }
         }
         void WriteType1(string path,string msg)

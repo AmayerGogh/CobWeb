@@ -133,6 +133,7 @@
             // 
             // txt_port
             // 
+            this.txt_port.Enabled = false;
             this.txt_port.Location = new System.Drawing.Point(70, 16);
             this.txt_port.Name = "txt_port";
             this.txt_port.Size = new System.Drawing.Size(165, 21);
@@ -235,7 +236,7 @@
             // lbl_Msg
             // 
             this.lbl_Msg.AutoSize = true;
-            this.lbl_Msg.Font = new System.Drawing.Font("SimSun", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.lbl_Msg.Font = new System.Drawing.Font("宋体", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lbl_Msg.ForeColor = System.Drawing.Color.Red;
             this.lbl_Msg.Location = new System.Drawing.Point(214, 601);
             this.lbl_Msg.Name = "lbl_Msg";

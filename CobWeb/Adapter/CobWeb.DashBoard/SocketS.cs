@@ -21,7 +21,7 @@ namespace CobWeb.DashBoard
     /// </summary>
     public class SocketServer : IDisposable
     {
-        public static Dictionary<string, Socket> SocketClient = new Dictionary<string, Socket>();
+       
         const int opsToPreAlloc = 2;
         #region Fields
         /// <summary>
@@ -284,8 +284,12 @@ namespace CobWeb.DashBoard
                         var c = asyniar.AcceptSocket; //null
                         var cc = asyniar.ConnectSocket; //null
                         var RemoteEndPoint = s.RemoteEndPoint.ToString();
-                        SocketClient.Add(RemoteEndPoint, s);//添加至客户端集合
-                        OnConnection?.Invoke(s.RemoteEndPoint.ToString());                                             
+                        //添加至客户端集合
+                        Program.SocketClient.Add(RemoteEndPoint, new CobWeb_ProcessList()
+                        {
+                            Socket = s
+                        });
+                        OnConnection?.Invoke(RemoteEndPoint);                                             
                         if (!s.ReceiveAsync(asyniar))//投递接收请求 表明当前操作是否有等待I/O的情况
                         {
                             ProcessReceive(asyniar);
@@ -532,7 +536,7 @@ namespace CobWeb.DashBoard
              
             }
             var temp = s.RemoteEndPoint.ToString();
-            SocketClient.Remove(temp);
+            Program.SocketClient.Remove(temp);
 
             s.Shutdown(SocketShutdown.Send);
             s.Disconnect(true);      

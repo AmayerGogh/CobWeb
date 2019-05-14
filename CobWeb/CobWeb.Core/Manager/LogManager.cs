@@ -32,5 +32,18 @@ namespace CobWeb.Core.Manager
                 return _yc全局异常;
             }
         }
+        static FlashLogger _socket通讯;
+      
+        public  static FlashLogger socket通讯
+        {
+            get
+            {
+                if (_socket通讯 == null)
+                {
+                    _socket通讯 = new FlashLogger("socket通讯");
+                }
+                return _socket通讯;
+            }
+        }
     }
 }

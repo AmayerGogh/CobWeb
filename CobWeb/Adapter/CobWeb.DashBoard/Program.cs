@@ -1,4 +1,5 @@
-﻿using CobWeb.Util;
+﻿using CobWeb.Core.Manager;
+using CobWeb.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -6,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -50,13 +52,21 @@ namespace CobWeb.DashBoard
         /// <summary>
         /// 当前的 进程对应类
         /// </summary>
-        public static List<CobWeb_ProcessList> CobWeb_ProcessList = new List<CobWeb_ProcessList>();
-
+        //public static List<CobWeb_ProcessList> CobWeb_ProcessList = new List<CobWeb_ProcessList>();
+        public static Dictionary<string, CobWeb_ProcessList> SocketClient = new Dictionary<string, CobWeb_ProcessList>();
 
         static void Step1_Init()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            //设置应用程序处理异常方式：ThreadException处理
+            Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+            //处理UI线程异常
+            Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Application_ThreadException);
+            //处理非UI线程异常
+            AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
+            AppDomain.CurrentDomain.FirstChanceException += new EventHandler<FirstChanceExceptionEventArgs>(CurrentDomain_FirstChanceException);
         }
 
 
@@ -74,18 +84,24 @@ namespace CobWeb.DashBoard
         static void Socket_OnRecive(string p, string msg)
         {
             FormDashboard?.SetText($"{p}接收:{msg}");
+            _formAccess?.SetText($"{p}接收:{msg}");
         }
         static void Socket_OnConnection(string msg)
         {
             FormDashboard?.SetText($"连接:{msg}");
+            _formAccess?.SetText($"连接:{msg}");
+            _formAccess?.Refesh_ClientList();
         }
         static void Socket_OnClose(string msg)
         {
             FormDashboard?.SetText($"关闭:{msg}");
+            _formAccess?.SetText($"关闭:{msg}");
+            _formAccess?.Refesh_ClientList();
         }
         static void Socket_OnError(string msg)
         {
             FormDashboard?.SetText($"error:{msg}");
+            _formAccess?.SetText($"error:{msg}");
         }
         static void Step3_OutListen()
         {
@@ -122,7 +138,22 @@ namespace CobWeb.DashBoard
             HttpListenerOut.BeginGetContext(new AsyncCallback(GetContextCallBack), HttpListenerOut);
         }
 
-
+        static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+        {
+            string str = ExceptionHelper.GetExceptionMsg(e.Exception, e.ToString());
+            LogManager.yc全局异常.Error(str);
+        }
+        static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            string str = ExceptionHelper.GetExceptionMsg(e.ExceptionObject as Exception, e.ToString());
+            LogManager.yc全局异常.Error(str);
+        }
+        static void CurrentDomain_FirstChanceException(object sender, FirstChanceExceptionEventArgs e)
+        {
+            var ee = e.Exception as Exception;
+            string str = ExceptionHelper.GetExceptionMsg(ee, e.ToString());
+            LogManager.yc全局异常.Error(str);
+        }
 
 
     }

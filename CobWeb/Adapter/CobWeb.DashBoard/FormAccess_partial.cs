@@ -18,7 +18,7 @@ namespace CobWeb.DashBoard
     public partial class  FormAccess
     {
        
-        Socket socket;
+       
 
 
         //private void btn_Excute_Click(object sender, EventArgs e)
@@ -121,14 +121,50 @@ namespace CobWeb.DashBoard
             var stopkey = Guid.NewGuid().ToString();
             model.Key = stopkey;
             txt_stopkey.Text = stopkey;
-            string param = rtxt_send.Text;
-            dynamic dyn = param.DeserializeObject<ExpandoObject>();
             //dyn读取 &&更改
+            string param = rtxt_send.Text;
+            dynamic dyn = param.DeserializeObject<ExpandoObject>();            
             param = JsonHelper.Serialize(dyn);
-            model.Context = param;
 
+            model.Context = param;
+            var req= model.Header + model.SerializeObject();
+            var selectedSocket = comboBox1.SelectedItem.ToString();
+            if (comboBox1.SelectedIndex != -1 && Program.SocketClient.ContainsKey(selectedSocket))
+            {
+                var sock = Program.SocketClient[selectedSocket];
+                Program.server.Send(req, sock.Socket);
+            }
+            else
+            {
+                lbl_Msg.Text = "调用者未找到";
+            }
 
             MessageBox.Show("可以调用了");
+        }
+        public void SetText(string str)
+        {
+            if (this.InvokeRequired)
+            {
+                this.Invoke(new MethodInvoker(() => SetText(str)));
+            }
+            else
+            {
+                if (rtxt_revice.Text.Length>10000)
+                {
+                    rtxt_revice.Text = string.Empty;
+                }
+                rtxt_revice.Text += "\r\n" + str;
+            }
+        }
+        public void Refesh_ClientList()
+        {
+            this.comboBox1.Items.Clear();
+            this.comboBox1.Items.Add("由系统决定");
+            var list = new List<string>();
+            foreach (var item in Program.SocketClient)
+            {
+                this.comboBox1.Items.Add(item.Key);
+            }            
         }
 
     }

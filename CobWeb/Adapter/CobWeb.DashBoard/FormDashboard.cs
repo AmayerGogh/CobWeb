@@ -23,8 +23,7 @@ namespace CobWeb.DashBoard
         public FormDashboard()
         {           
             InitializeComponent();
-            Control.CheckForIllegalCrossThreadCalls = false;
-            comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+            Control.CheckForIllegalCrossThreadCalls = false;           
                                               
         }
         private void FormDashboard_Load(object sender, EventArgs e)
@@ -206,17 +205,15 @@ namespace CobWeb.DashBoard
         /// <param name="e"></param>
         private void button1_Click(object sender, EventArgs e)
         {
-            if (comboBox1.SelectedIndex != -1)
-            {
-                var sock = SocketServer.SocketClient[comboBox1.SelectedItem.ToString()];
-               Program.server.Send(textBox2.Text, sock);
-            }
+            
         }
        
         private void Button6_Click(object sender, EventArgs e)
         {
 
         }
+
+     
     }
 
 }

@@ -11,12 +11,12 @@ namespace CobWeb.DashBoard
 {
     public class FormVirtualWeb : Form
     {
-        private TextBox txt_send;
-        private TextBox txt_recive;
         private Label label1;
         private Label label2;
         private Button btn_Con;
         private Button button2;
+        private RichTextBox txt_send;
+        private RichTextBox txt_recive;
         private Button button1;
 
         public FormVirtualWeb()
@@ -25,30 +25,14 @@ namespace CobWeb.DashBoard
         }
         private void InitializeComponent()
         {
-            this.txt_send = new System.Windows.Forms.TextBox();
-            this.txt_recive = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btn_Con = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
+            this.txt_send = new System.Windows.Forms.RichTextBox();
+            this.txt_recive = new System.Windows.Forms.RichTextBox();
             this.SuspendLayout();
-            // 
-            // txt_send
-            // 
-            this.txt_send.Location = new System.Drawing.Point(12, 24);
-            this.txt_send.Multiline = true;
-            this.txt_send.Name = "txt_send";
-            this.txt_send.Size = new System.Drawing.Size(387, 397);
-            this.txt_send.TabIndex = 0;
-            // 
-            // txt_recive
-            // 
-            this.txt_recive.Location = new System.Drawing.Point(421, 24);
-            this.txt_recive.Multiline = true;
-            this.txt_recive.Name = "txt_recive";
-            this.txt_recive.Size = new System.Drawing.Size(394, 397);
-            this.txt_recive.TabIndex = 1;
             // 
             // label1
             // 
@@ -98,16 +82,32 @@ namespace CobWeb.DashBoard
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.Button2_Click);
             // 
+            // txt_send
+            // 
+            this.txt_send.Location = new System.Drawing.Point(12, 24);
+            this.txt_send.Name = "txt_send";
+            this.txt_send.Size = new System.Drawing.Size(405, 437);
+            this.txt_send.TabIndex = 7;
+            this.txt_send.Text = "";
+            // 
+            // txt_recive
+            // 
+            this.txt_recive.Location = new System.Drawing.Point(423, 24);
+            this.txt_recive.Name = "txt_recive";
+            this.txt_recive.Size = new System.Drawing.Size(397, 402);
+            this.txt_recive.TabIndex = 8;
+            this.txt_recive.Text = "";
+            // 
             // FormVirtualWeb
             // 
             this.ClientSize = new System.Drawing.Size(823, 473);
+            this.Controls.Add(this.txt_recive);
+            this.Controls.Add(this.txt_send);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btn_Con);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.txt_recive);
-            this.Controls.Add(this.txt_send);
             this.Name = "FormVirtualWeb";
             this.ResumeLayout(false);
             this.PerformLayout();
