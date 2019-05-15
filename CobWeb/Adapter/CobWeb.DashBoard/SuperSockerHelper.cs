@@ -11,7 +11,23 @@ using System.Timers;
 
 namespace CobWeb.DashBoard
 {
+    class UserToken
+    {       
+        /// <summary>
+        /// 通信SOKET
+        /// </summary>
+        public Socket Socket { get; set; }
+        /// <summary>
+        /// 数据缓存区
+        /// </summary>
+        public List<byte> Buffer { get; set; }
+        public UserToken()
+        {
+            this.Buffer = new List<byte>();
+        }
 
+
+    }
     class AsyncUserToken
     {
         /// <summary>

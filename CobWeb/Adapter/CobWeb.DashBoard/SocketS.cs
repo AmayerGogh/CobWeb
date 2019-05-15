@@ -280,9 +280,9 @@ namespace CobWeb.DashBoard
 
                         Interlocked.Increment(ref _clientCount);//原子操作加1
                         SocketAsyncEventArgs asyniar = _objectPool.Pop();
-                        asyniar.UserToken = s;
-                        var c = asyniar.AcceptSocket; //null
-                        var cc = asyniar.ConnectSocket; //null
+                        asyniar.UserToken = new UserToken() {
+                            Socket =s
+                        };
                         var RemoteEndPoint = s.RemoteEndPoint.ToString();
                         //添加至客户端集合
                         Program.SocketClient.Add(RemoteEndPoint, new CobWeb_ProcessList()
@@ -459,35 +459,60 @@ namespace CobWeb.DashBoard
 
         #region 接收数据
 
-
+       
         /// <summary>
         ///接收完成时处理函数
         /// </summary>
         /// <param name="e">与接收完成操作相关联的SocketAsyncEventArg对象</param>
         private void ProcessReceive(SocketAsyncEventArgs e)
         {
-            if (e.SocketError == SocketError.Success && e.BytesTransferred > 0)//// 检查远程主机是否关闭连接
+           
+            if (e.SocketError == SocketError.Success && e.BytesTransferred > 0)//传输的字节数
             {
-                var c = e.AcceptSocket; //null
-                var cc = e.ConnectSocket; //null
-                Socket s = (Socket)e.UserToken;
+                UserToken token = (UserToken)e.UserToken;
+                var s = token.Socket;
+
+              
+                //读取数据
+                byte[] data = new byte[e.BytesTransferred];
+                Array.Copy(e.Buffer, e.Offset, data, 0, e.BytesTransferred);
+                //var msg_byte = System.Text.Encoding.Default.GetBytes(msg);                
+                lock (token.Buffer)
+                {
+                    token.Buffer.AddRange(data);                    
+                }
+                Thread.Sleep(500);
                 //判断所有需接收的数据是否已经完成
                 if (s.Available == 0)
                 {
-                    //从侦听者获取接收到的消息。 
-                    //String received = Encoding.ASCII.GetString(e.Buffer, e.Offset, e.BytesTransferred);
-                    //echo the data received back to the client
-                    //e.SetBuffer(e.Offset, e.BytesTransferred);
-
-                    byte[] data = new byte[e.BytesTransferred];
-                    Array.Copy(e.Buffer, e.Offset, data, 0, data.Length);//从e.Buffer块中复制数据出来，保证它可重用
-
-                    string info = Encoding.UTF8.GetString(data);
-                    OnRecive?.Invoke(s.RemoteEndPoint.ToString(), info);                   
-                    //TODO 处理数据
-                    //Send("你好客户端", e);
-                    //增加服务器接收的总字节数。
+                  
+                    string info = Encoding.UTF8.GetString(token.Buffer.ToArray());                   
+                    //从数据池中移除这组数据
+                    lock (token.Buffer)
+                    {
+                        token.Buffer = new List<byte>();
+                    }
+                    OnRecive?.Invoke(s.RemoteEndPoint.ToString(), info );
                 }
+                
+            
+
+
+
+
+                //判断所有需接收的数据是否已经完成
+                //if (s.Available == 0)
+                //{                  
+
+                //    byte[] data = new byte[e.BytesTransferred];
+                //    Array.Copy(e.Buffer, e.Offset, data, 0, data.Length);//从e.Buffer块中复制数据出来，保证它可重用
+
+                //    string info = Encoding.UTF8.GetString(data);
+                //    OnRecive?.Invoke(s.RemoteEndPoint.ToString(), info);                   
+                //    //TODO 处理数据
+                //    //Send("你好客户端", e);
+                //    //增加服务器接收的总字节数。
+                //}
 
                 if (!s.ReceiveAsync(e))//为接收下一段数据，投递接收请求，这个函数有可能同步完成，这时返回false，并且不会引发SocketAsyncEventArgs.Completed事件
                 {
@@ -510,9 +535,8 @@ namespace CobWeb.DashBoard
         /// </summary>
         /// <param name="e">SocketAsyncEventArg associated with the completed send/receive operation.</param>
         private void CloseClientSocket(SocketAsyncEventArgs e)
-        {                      
-            Socket s = e.UserToken as Socket;
-            CloseClientSocket(s, e);
+        {
+            CloseClientSocket((e.UserToken as UserToken).Socket, e);
         }
 
         /// <summary>
