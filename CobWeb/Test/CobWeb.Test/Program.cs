@@ -49,9 +49,9 @@ namespace CobWeb.Test
         {
             //Load load = new Load();
             //load.Init();
-        
-           
-            Test.Test1();
+
+
+            Test.Test3();
             Console.ReadKey();
         }
     }
@@ -69,7 +69,7 @@ namespace CobWeb.Test
         /// </summary>
         public static void Test1()
         {
-            var ra= new Random();
+            var ra = new Random();
             TimerIntervial.Register(1, () =>
             {
                 StringHelper.ConsoleWriteLineWithTime($"我是1秒执行1次的  当前线程数{System.Diagnostics.Process.GetCurrentProcess().Threads.Count}");
@@ -80,12 +80,12 @@ namespace CobWeb.Test
                 string sb = "";
                 foreach (ProcessThread item in System.Diagnostics.Process.GetCurrentProcess().Threads)
                 {
-                    sb +=item.Id+"-" +item.ThreadState +",";
+                    sb += item.Id + "-" + item.ThreadState + ",";
                 }
                 Console.WriteLine(sb);
-                Thread.Sleep(ra.Next(1000,10000));
+                Thread.Sleep(ra.Next(1000, 10000));
                 StringHelper.ConsoleWriteLineWithTime($"我是2秒执行1次的 end ");
-            },1000);
+            }, 1000);
             TimerIntervial.Enabled();
         }
         /// <summary>
@@ -100,6 +100,46 @@ namespace CobWeb.Test
                 StringHelper.ConsoleWriteLineWithTime("end");
             }).InvokeWithTimeout(1000);
             StringHelper.ConsoleWriteLineWithTime("这里结束了");
+        }
+
+        public static void Test3()
+        {
+            var msg = "般说来，如果没有分段发生， M S S还是越大越好（这也并不总是正确，参见图2 4 - 3和图2 4 - 4中的例子）。报文段越大允许每个报文段传送的数据就越多，相对I P和T C P首部有更高的网络利用率。当T C P发送一个S Y N时，或者是因为一个本地应用进程想发起一个连接，或者是因为另一端的主机收到了一个连接请求，它能将M S S值设置为外出接口上的MT U长度减去固定的I P首部和T C P首部长度。对于一个以太网， M S S值可达1 4 6 0字节。使用IEEE 802.3的封装（参见2 . 2节），它的M S S可达1 4 5 2字节。";
+            var b_msg = Encoding.UTF8.GetBytes(msg);
+
+            //string[] total = new string[b_msg.Length + 8];
+            var b_t = BitConverter.GetBytes(b_msg.Length + 8);
+            var header = "qqqa";
+            var b_header = Encoding.UTF8.GetBytes(header);
+
+            var info = b_t.Concat(b_header).ToArray().Concat(b_msg).ToArray();
+            
+            Console.WriteLine(Encoding.UTF8.GetString(info));
+
+            var recive = info.ToArray();
+            List<byte> ReturnPool = new List<byte>();
+            byte[] array = null;
+            var length = BitConverter.ToInt32(new byte[] { recive[0], recive[1], recive[2], recive[3] }, 0);
+            if (recive.Length == length)
+            {
+                array = recive;
+            }
+            else if (recive.Length > length)
+            {
+                array = recive.Take(length).ToArray();
+                ReturnPool.AddRange(recive.Skip(length));
+            }
+            else if (recive.Length < length)//应该不会出现了
+            {
+                
+            }
+
+                     
+          
+            var str_header = Encoding.UTF8.GetString(new byte[] { array[4], array[5], array[6], array[7] });
+            Console.WriteLine(str_header);
+            var str_msg = Encoding.UTF8.GetString(array.Skip(8).Take(length).ToArray());
+            Console.WriteLine(str_msg);
         }
     }
 

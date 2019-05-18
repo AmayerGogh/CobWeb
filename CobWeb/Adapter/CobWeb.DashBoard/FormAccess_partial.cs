@@ -1,6 +1,7 @@
 ﻿using CobWeb.Core;
 using CobWeb.Util;
 using CobWeb.Util.Model;
+using CobWeb.Util.SocketHelper;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -127,7 +128,8 @@ namespace CobWeb.DashBoard
             param = JsonHelper.Serialize(dyn);
 
             model.Context = param;
-            var req= model.Header + model.SerializeObject();
+            
+            var req = SocketHelper.BuildRequest(model.SerializeObject());
             var selectedSocket = comboBox1.SelectedItem.ToString();
             if (comboBox1.SelectedIndex != -1 && Program.SocketClient.ContainsKey(selectedSocket))
             {

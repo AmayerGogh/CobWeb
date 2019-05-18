@@ -6,6 +6,10 @@ using System.Net.Sockets;
 using System.Net;
 using System.Threading;
 using System.Windows.Forms;
+using CobWeb.Util.Model;
+using CobWeb.Util;
+using System.Threading.Tasks;
+using CobWeb.Util.SocketHelper;
 
 namespace CobWeb.DashBoard
 {
@@ -21,7 +25,7 @@ namespace CobWeb.DashBoard
     /// </summary>
     public class SocketServer : IDisposable
     {
-       
+
         const int opsToPreAlloc = 2;
         #region Fields
         /// <summary>
@@ -94,7 +98,7 @@ namespace CobWeb.DashBoard
         public SocketServer(int listenPort, int maxClient)
             : this(IPAddress.Any, listenPort, maxClient)
         {
-           
+
         }
 
         /// <summary>
@@ -131,7 +135,7 @@ namespace CobWeb.DashBoard
         }
 
         #endregion
-       
+
         #region 初始化
 
         /// <summary>
@@ -150,7 +154,8 @@ namespace CobWeb.DashBoard
             {
                 //Pre-allocate a set of reusable SocketAsyncEventArgs
                 readWriteEventArg = new SocketAsyncEventArgs();
-                readWriteEventArg.Completed += new EventHandler<SocketAsyncEventArgs>((sender,e)=> {                      
+                readWriteEventArg.Completed += new EventHandler<SocketAsyncEventArgs>((sender, e) =>
+                {
                     // Determine which type of operation just completed and call the associated handler.
                     switch (e.LastOperation)
                     {
@@ -161,7 +166,7 @@ namespace CobWeb.DashBoard
                             ProcessReceive(e); //事件调入
                             break;
                         case SocketAsyncOperation.Send:
-                            
+
                             break;
                         default:
                             throw new ArgumentException("The last operation completed on the socket was not a receive or send");
@@ -244,7 +249,8 @@ namespace CobWeb.DashBoard
             {
                 asyniar = new SocketAsyncEventArgs();
                 //accept 操作完成时回调函数
-                asyniar.Completed += new EventHandler<SocketAsyncEventArgs>((sender,e)=> {
+                asyniar.Completed += new EventHandler<SocketAsyncEventArgs>((sender, e) =>
+                {
                     ProcessAccept(e); //事件调入
                 });
             }
@@ -262,7 +268,7 @@ namespace CobWeb.DashBoard
             }
         }
 
-      
+
 
         /// <summary>
         /// 监听Socket接受处理 接受到了一个连接请求
@@ -280,8 +286,9 @@ namespace CobWeb.DashBoard
 
                         Interlocked.Increment(ref _clientCount);//原子操作加1
                         SocketAsyncEventArgs asyniar = _objectPool.Pop();
-                        asyniar.UserToken = new UserToken() {
-                            Socket =s
+                        asyniar.UserToken = new UserToken()
+                        {
+                            Socket = s
                         };
                         var RemoteEndPoint = s.RemoteEndPoint.ToString();
                         //添加至客户端集合
@@ -289,7 +296,7 @@ namespace CobWeb.DashBoard
                         {
                             Socket = s
                         });
-                        OnConnection?.Invoke(RemoteEndPoint);                                             
+                        OnConnection?.Invoke(RemoteEndPoint);
                         if (!s.ReceiveAsync(asyniar))//投递接收请求 表明当前操作是否有等待I/O的情况
                         {
                             ProcessReceive(asyniar);
@@ -297,7 +304,7 @@ namespace CobWeb.DashBoard
                     }
                     catch (SocketException ex)
                     {
-                        OnError?.Invoke(String.Format("接收客户 {0} 数据出错, 异常信息： {1} 。", s.RemoteEndPoint, ex.ToString()));                        
+                        OnError?.Invoke(String.Format("接收客户 {0} 数据出错, 异常信息： {1} 。", s.RemoteEndPoint, ex.ToString()));
                         //TODO 异常处理
                     }
                     //投递下一个接受请求
@@ -309,14 +316,20 @@ namespace CobWeb.DashBoard
         #endregion
 
         #region 发送数据
-     
+
         public void Send(string msg, Socket socket)
+        {
+            var data = SocketHelper.BuildRequest(msg);
+            Send(data, socket);          
+        }
+
+        public void Send(byte[] data, Socket socket)
         {
             SocketAsyncEventArgs asyniar = new SocketAsyncEventArgs();
             asyniar.Completed += new EventHandler<SocketAsyncEventArgs>(OnSendComplete);
-            var data = Encoding.UTF8.GetBytes(msg);
-           // Array.Copy(data, 0, asyniar.Buffer, 0, data.Length);//设置发送数据
-            asyniar.SetBuffer(data, 0, data.Length);           
+           
+            // Array.Copy(data, 0, asyniar.Buffer, 0, data.Length);//设置发送数据
+            asyniar.SetBuffer(data, 0, data.Length);
             asyniar.RemoteEndPoint = socket.RemoteEndPoint;
 
             if (!socket.SendAsync(asyniar))//投递发送请求，这个函数有可能同步发送出去，这时返回false，并且不会引发SocketAsyncEventArgs.Completed事件
@@ -324,8 +337,6 @@ namespace CobWeb.DashBoard
                 Send(socket, data, 0, data.Length, 100);
             }
         }
-
-      
         private void OnSendComplete(object sender, SocketAsyncEventArgs e)
         {
 
@@ -458,48 +469,49 @@ namespace CobWeb.DashBoard
         #endregion
 
         #region 接收数据
+      
 
-       
         /// <summary>
         ///接收完成时处理函数
         /// </summary>
         /// <param name="e">与接收完成操作相关联的SocketAsyncEventArg对象</param>
         private void ProcessReceive(SocketAsyncEventArgs e)
         {
-           
+
             if (e.SocketError == SocketError.Success && e.BytesTransferred > 0)//传输的字节数
             {
                 UserToken token = (UserToken)e.UserToken;
                 var s = token.Socket;
 
-              
+
                 //读取数据
                 byte[] data = new byte[e.BytesTransferred];
                 Array.Copy(e.Buffer, e.Offset, data, 0, e.BytesTransferred);
-                //var msg_byte = System.Text.Encoding.Default.GetBytes(msg);                
+                //var msg_byte = System.Text.Encoding.Default.GetBytes(msg);
                 lock (token.Buffer)
                 {
-                    token.Buffer.AddRange(data);                    
+                    token.Buffer.AddRange(data);
                 }
-                Thread.Sleep(500);
+                Thread.Sleep(1000);
+                
                 //判断所有需接收的数据是否已经完成
                 if (s.Available == 0)
-                {
-                  
-                    string info = Encoding.UTF8.GetString(token.Buffer.ToArray());                   
+                {                  
+                    var list = token.Buffer;
+                    do
+                    {
+                        var res = SocketHelper.GetRequest(ref list);
+                        Task.Factory.StartNew((ta_res) =>{
+                            OnRecive?.Invoke(s.RemoteEndPoint.ToString(), ta_res.ToString());
+                        },res);
+                    } while (list.Count>0);
+
                     //从数据池中移除这组数据
                     lock (token.Buffer)
                     {
                         token.Buffer = new List<byte>();
                     }
-                    OnRecive?.Invoke(s.RemoteEndPoint.ToString(), info );
                 }
-                
-            
-
-
-
-
                 //判断所有需接收的数据是否已经完成
                 //if (s.Available == 0)
                 //{                  
@@ -548,8 +560,8 @@ namespace CobWeb.DashBoard
         {
             try
             {
-              
-               
+
+
             }
             catch (Exception)
             {
@@ -557,15 +569,15 @@ namespace CobWeb.DashBoard
             }
             finally
             {
-             
+
             }
             var temp = s.RemoteEndPoint.ToString();
             Program.SocketClient.Remove(temp);
 
             s.Shutdown(SocketShutdown.Send);
-            s.Disconnect(true);      
+            s.Disconnect(true);
             s.Close();
-            s.Dispose();           
+            s.Dispose();
             s = null;
             Interlocked.Decrement(ref _clientCount);
             _maxAcceptedClients.Release();
@@ -616,13 +628,9 @@ namespace CobWeb.DashBoard
         #endregion
         public Action<string> OnClose;
         public Action<string> OnConnection;
-        public Action<string,string> OnRecive;
+        public Action<string, string> OnRecive;
         public Action<string> OnError;
-        public void SetResponse(string msg)
-        {
-            //Console.WriteLine("notice:" + msg);          
-            //OnRecive?.Invoke(msg);
-        }
+       
 
     }
 
@@ -641,8 +649,11 @@ namespace CobWeb.DashBoard
         public void Push(SocketAsyncEventArgs item) { if (item == null) { throw new ArgumentNullException("Items added to a SocketAsyncEventArgsPool cannot be null"); } lock (m_pool) { m_pool.Push(item); } }
         // Removes a SocketAsyncEventArgs instance from the pool 
         // and returns the object removed from the pool 
-        public SocketAsyncEventArgs Pop() { lock (m_pool) {
-                if (m_pool.Count==0)
+        public SocketAsyncEventArgs Pop()
+        {
+            lock (m_pool)
+            {
+                if (m_pool.Count == 0)
                 {
                     return null;
                 }
@@ -652,6 +663,77 @@ namespace CobWeb.DashBoard
         // The number of SocketAsyncEventArgs instances in the pool
         public int Count { get { return m_pool.Count; } }
     }
+    class BufferManager
+    {
+        int m_numBytes;                 // the total number of bytes controlled by the buffer pool  
+        byte[] m_buffer;                // the underlying byte array maintained by the Buffer Manager  
+        Stack<int> m_freeIndexPool;     //   
+        int m_currentIndex;
+        int m_bufferSize;
+
+        public BufferManager(int totalBytes, int bufferSize)
+        {
+            m_numBytes = totalBytes;
+            m_currentIndex = 0;
+            m_bufferSize = bufferSize;
+            m_freeIndexPool = new Stack<int>();
+        }
+
+        // Allocates buffer space used by the buffer pool  
+        public void InitBuffer()
+        {
+            // create one big large buffer and divide that   
+            // out to each SocketAsyncEventArg object  
+            m_buffer = new byte[m_numBytes];
+        }
+
+        // Assigns a buffer from the buffer pool to the   
+        // specified SocketAsyncEventArgs object  
+        //  
+        // <returns>true if the buffer was successfully set, else false</returns>  
+        public bool SetBuffer(SocketAsyncEventArgs args)
+        {
+
+            if (m_freeIndexPool.Count > 0)
+            {
+                args.SetBuffer(m_buffer, m_freeIndexPool.Pop(), m_bufferSize);
+            }
+            else
+            {
+                if ((m_numBytes - m_bufferSize) < m_currentIndex)
+                {
+                    return false;
+                }
+                args.SetBuffer(m_buffer, m_currentIndex, m_bufferSize);
+                m_currentIndex += m_bufferSize;
+            }
+            return true;
+        }
+
+        // Removes the buffer from a SocketAsyncEventArg object.    
+        // This frees the buffer back to the buffer pool  
+        public void FreeBuffer(SocketAsyncEventArgs args)
+        {
+            m_freeIndexPool.Push(args.Offset);
+            args.SetBuffer(null, 0, 0);
+        }
+    }
+    class UserToken
+    {
+        /// <summary>
+        /// 通信SOKET
+        /// </summary>
+        public Socket Socket { get; set; }
+        /// <summary>
+        /// 数据缓存区
+        /// </summary>
+        public List<byte> Buffer { get; set; }
+        public UserToken()
+        {
+            this.Buffer = new List<byte>();
+        }
 
 
+    }
+  
 }

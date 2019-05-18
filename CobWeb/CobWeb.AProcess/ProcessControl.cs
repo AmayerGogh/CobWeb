@@ -3,6 +3,7 @@ using CobWeb.Core.Model;
 using CobWeb.Core.Process;
 using CobWeb.Util;
 using CobWeb.Util.Model;
+using CobWeb.Util.SocketHelper;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -42,7 +43,8 @@ namespace CobWeb.AProcess
         {
         }
         Socket _serverSocket;
-      public  void StartListen()
+        Socket client;
+        public  void StartListen()
         {
             IPEndPoint ipe;
             _serverSocket = SocketBasic.GetSocket(out ipe, Port);
@@ -90,6 +92,103 @@ namespace CobWeb.AProcess
                     }
                 }
             });
+        }
+
+        public void StartListen_Core()
+        {
+            //端口及IP
+            IPEndPoint ipe = new IPEndPoint(IPAddress.Parse("127.0.0.1"), Port);
+            if (client == null)
+            {
+                //创建套接字
+                client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            }
+            //开始连接到服务器
+            client.BeginConnect(ipe, asyncResult =>
+            {
+                client.EndConnect(asyncResult);
+                AsyncSend("你好我是客户端");
+                //接受消息
+                AsyncReceive(client);
+            }, null);
+        }
+        /// <summary>
+        /// 发送消息
+        /// </summary>
+        /// <param name="socket"></param>
+        /// <param name="message"></param>
+        public void AsyncSend(Socket socket, byte[] data)
+        {
+            if (socket == null || data.Length == 0) return;
+            try
+            {
+                socket.BeginSend(data, 0, data.Length, SocketFlags.None, asyncResult =>
+                {
+                    //完成发送消息
+                    int length = socket.EndSend(asyncResult);
+                    //
+                }, null);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        public void AsyncSend(string str)
+        {
+            var req = SocketHelper.BuildRequest(str);
+            AsyncSend(client,req);
+        }
+        /// <summary>
+        /// 接收消息
+        /// </summary>
+        /// <param name="socket"></param>
+        public void AsyncReceive(Socket socket)
+        {
+            byte[] data = new byte[1024];
+            try
+            {
+
+                //开始接收数据
+                socket.BeginReceive(data, 0, data.Length, SocketFlags.None,
+                asyncResult =>
+                {
+                    try
+                    {
+                        int length = socket.EndReceive(asyncResult);
+                        var result = data.ToList();
+                        do
+                        {
+                            var req = SocketHelper.GetRequest(ref result);
+                            Task.Factory.StartNew((ta_res) => {
+                                var res = Excute(ta_res as string);
+                                AsyncSend(res);
+                                
+                            }, req);
+                        } while (result.Count > 0);
+
+                        //SetText(Encoding.UTF8.GetString(data));
+                    }
+                    catch (Exception)
+                    {
+                        AsyncReceive(socket);
+                    }
+
+
+                    AsyncReceive(socket);
+                }, null);
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        public void AsyncClose()
+        {
+            if (client != null)
+            {
+                client.Close();
+                client.Dispose();
+                client = null;
+            }
         }
         readonly Object _objLock = new Object();
         string Excute(string dataParam)

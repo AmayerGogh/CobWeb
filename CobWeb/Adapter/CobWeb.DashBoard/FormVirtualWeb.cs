@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CobWeb.Util.SocketHelper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -108,7 +109,7 @@ namespace CobWeb.DashBoard
             this.Controls.Add(this.btn_Con);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "FormVirtualWeb";
+            this.Name = "FormVirtualWeb";       
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -152,8 +153,9 @@ namespace CobWeb.DashBoard
                 client.BeginConnect(ipe, asyncResult =>
                 {
                     client.EndConnect(asyncResult);
+                    var req = SocketHelper.BuildRequest("你好我是客户端");
                     //向服务器发送消息
-                    AsyncSend(client, "你好我是客户端");
+                    AsyncSend(client, req);
                     //接受消息
                     AsyncReceive(client);
                 }, null);
@@ -177,9 +179,18 @@ namespace CobWeb.DashBoard
             if (socket == null || message == string.Empty) return;
             //编码
             byte[] data = Encoding.UTF8.GetBytes(message);
+            AsyncSend(socket, data);          
+        }
+        /// <summary>
+        /// 发送消息
+        /// </summary>
+        /// <param name="socket"></param>
+        /// <param name="message"></param>
+        public void AsyncSend(Socket socket, byte[] data)
+        {
+            if (socket == null || data.Length==0) return;         
             try
             {
-
                 socket.BeginSend(data, 0, data.Length, SocketFlags.None, asyncResult =>
                 {
                     //完成发送消息
@@ -250,7 +261,8 @@ namespace CobWeb.DashBoard
 
         private void button1_Click(object sender, EventArgs e)
         {
-             AsyncSend(client, txt_send.Text);
+            var req = SocketHelper.BuildRequest(txt_send.Text);
+             AsyncSend(client, req);
             //c.Send(txt_send.Text);
         }
 
@@ -258,5 +270,6 @@ namespace CobWeb.DashBoard
         {
             AsyncClose();
         }
+      
     }
 }

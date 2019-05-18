@@ -69,7 +69,7 @@ namespace CobWeb
                 Number = number,
                 Port = port
             };
-            processControl.StartListen();
+            processControl.StartListen_Core();
             var pro = Process.GetCurrentProcess();
             Application.Run(formBrowser);
         }

@@ -54,6 +54,7 @@ namespace CobWeb.Util.Model
         /// 标志头
         /// </summary>
         public string Header { get; set; }
+      
     }
 
     public class SocketRequestHeader

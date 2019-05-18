@@ -87,7 +87,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SocketHelper\SocketAccess.cs" />
     <Compile Include="SocketHelper\SocketBasic.cs" />
-    <Compile Include="SocketHelper\SocketServer_.cs" />
+    <Compile Include="SocketHelper\no_use_SocketServer_.cs" />
+    <Compile Include="SocketHelper\SocketHelper.cs" />
     <Compile Include="StringHelper.cs" />
     <Compile Include="ThredHelper\ThreadExtension.cs" />
     <Compile Include="ThredHelper\Timer.cs" />
