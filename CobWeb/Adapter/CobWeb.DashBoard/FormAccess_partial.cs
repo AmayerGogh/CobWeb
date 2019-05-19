@@ -51,7 +51,7 @@ namespace CobWeb.DashBoard
                 lbl_Msg.Text = "请指定操作类型";
                 return false;
             }
-            if (string.IsNullOrWhiteSpace(cmb_Type.Text))
+            if (string.IsNullOrWhiteSpace(cob_Type.Text))
             {
                 lbl_Msg.Text = "请指定方法名";
                 return false;
@@ -89,7 +89,11 @@ namespace CobWeb.DashBoard
                 lbl_Msg.Text = "请求体必须为 json";
                 return null;
             }
-
+            if (cob_clients.SelectedItem==null)
+            {
+                lbl_Msg.Text = "请指定发送方";
+                return null;
+            }
             int timeout = 0;
             if (!int.TryParse(numeric_Timeout.Text, out timeout))
             {
@@ -106,7 +110,7 @@ namespace CobWeb.DashBoard
             model.Port = txt_port.Text;
             model.Key = txt_stopkey.Text;
             model.KernelType = cob_kernel.Text;
-            model.Method = cmb_Type.Text;
+            model.Method = cob_Type.Text;
             model.Timeout = timeout;
             model.Header = SocketRequestHeader.UserFormSpider;
             return model;
@@ -130,8 +134,8 @@ namespace CobWeb.DashBoard
             model.Context = param;
             
             var req = SocketHelper.BuildRequest(model.SerializeObject());
-            var selectedSocket = comboBox1.SelectedItem.ToString();
-            if (comboBox1.SelectedIndex != -1 && Program.SocketClient.ContainsKey(selectedSocket))
+            var selectedSocket = cob_clients.SelectedItem.ToString();
+            if (cob_clients.SelectedIndex != -1 && Program.SocketClient.ContainsKey(selectedSocket))
             {
                 var sock = Program.SocketClient[selectedSocket];
                 Program.server.Send(req, sock.Socket);
@@ -139,9 +143,7 @@ namespace CobWeb.DashBoard
             else
             {
                 lbl_Msg.Text = "调用者未找到";
-            }
-
-            MessageBox.Show("可以调用了");
+            }           
         }
         public void SetText(string str)
         {
@@ -160,12 +162,12 @@ namespace CobWeb.DashBoard
         }
         public void Refesh_ClientList()
         {
-            this.comboBox1.Items.Clear();
-            this.comboBox1.Items.Add("由系统决定");
+            this.cob_clients.Items.Clear();
+            this.cob_clients.Items.Add("由系统决定");
             var list = new List<string>();
             foreach (var item in Program.SocketClient)
             {
-                this.comboBox1.Items.Add(item.Key);
+                this.cob_clients.Items.Add(item.Key);
             }            
         }
 

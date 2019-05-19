@@ -44,10 +44,11 @@
             this.btn_rm_send = new System.Windows.Forms.Button();
             this.btn_rm_recive = new System.Windows.Forms.Button();
             this.lbl_Msg = new System.Windows.Forms.Label();
-            this.cmb_Type = new System.Windows.Forms.ComboBox();
+            this.cob_Type = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cob_clients = new System.Windows.Forms.ComboBox();
+            this.btn_ref = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.numeric_Timeout)).BeginInit();
             this.SuspendLayout();
             // 
@@ -244,15 +245,15 @@
             this.lbl_Msg.TabIndex = 37;
             this.lbl_Msg.Text = "初始值";
             // 
-            // cmb_Type
+            // cob_Type
             // 
-            this.cmb_Type.FormattingEnabled = true;
-            this.cmb_Type.Items.AddRange(new object[] {
+            this.cob_Type.FormattingEnabled = true;
+            this.cob_Type.Items.AddRange(new object[] {
             "GetVersion"});
-            this.cmb_Type.Location = new System.Drawing.Point(573, 46);
-            this.cmb_Type.Name = "cmb_Type";
-            this.cmb_Type.Size = new System.Drawing.Size(165, 20);
-            this.cmb_Type.TabIndex = 3;
+            this.cob_Type.Location = new System.Drawing.Point(573, 46);
+            this.cob_Type.Name = "cob_Type";
+            this.cob_Type.Size = new System.Drawing.Size(165, 20);
+            this.cob_Type.TabIndex = 3;
             // 
             // label2
             // 
@@ -272,23 +273,35 @@
             this.label4.TabIndex = 39;
             this.label4.Text = "调用端口:";
             // 
-            // comboBox1
+            // cob_clients
             // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.cob_clients.FormattingEnabled = true;
+            this.cob_clients.Items.AddRange(new object[] {
             "由系统决定"});
-            this.comboBox1.Location = new System.Drawing.Point(831, 45);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(165, 20);
-            this.comboBox1.TabIndex = 38;
+            this.cob_clients.Location = new System.Drawing.Point(831, 45);
+            this.cob_clients.Name = "cob_clients";
+            this.cob_clients.Size = new System.Drawing.Size(114, 20);
+            this.cob_clients.TabIndex = 38;
+            // 
+            // btn_ref
+            // 
+            this.btn_ref.Anchor = System.Windows.Forms.AnchorStyles.Bottom;
+            this.btn_ref.Location = new System.Drawing.Point(942, 43);
+            this.btn_ref.Name = "btn_ref";
+            this.btn_ref.Size = new System.Drawing.Size(54, 23);
+            this.btn_ref.TabIndex = 40;
+            this.btn_ref.Text = "刷新";
+            this.btn_ref.UseVisualStyleBackColor = true;
+            this.btn_ref.Click += new System.EventHandler(this.btn_ref_Click);
             // 
             // FormAccess
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1031, 626);
+            this.Controls.Add(this.btn_ref);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.comboBox1);
+            this.Controls.Add(this.cob_clients);
             this.Controls.Add(this.lbl_Msg);
             this.Controls.Add(this.btn_rm_recive);
             this.Controls.Add(this.btn_rm_send);
@@ -308,7 +321,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.numeric_Timeout);
-            this.Controls.Add(this.cmb_Type);
+            this.Controls.Add(this.cob_Type);
             this.Controls.Add(this.btn_Excute);
             this.MinimumSize = new System.Drawing.Size(800, 500);
             this.Name = "FormAccess";
@@ -340,9 +353,10 @@
         private System.Windows.Forms.Button btn_rm_send;
         private System.Windows.Forms.Button btn_rm_recive;
         private System.Windows.Forms.Label lbl_Msg;
-        private System.Windows.Forms.ComboBox cmb_Type;
+        private System.Windows.Forms.ComboBox cob_Type;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cob_clients;
+        public System.Windows.Forms.Button btn_ref;
     }
 }

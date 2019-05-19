@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +25,15 @@ namespace CobWeb.Util
         public static void ConsoleWriteLineWithTime(string msg)
         {
             Console.WriteLine($"{DateTime.Now.ToString() } => {msg}");
+        }
+        public static string Enumerable2Str(IEnumerable list)
+        {
+            var ret = string.Empty;
+            foreach (var item in list)
+            {
+                ret += item as string;
+            }
+            return ret;
         }
     }
     public static class JsonHelper

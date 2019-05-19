@@ -26,7 +26,7 @@
         private void InitializeComponent()
         {
             this.btn_test_debug = new System.Windows.Forms.Button();
-            this.btn_bin_debug = new System.Windows.Forms.Button();
+            this.btn_bin_ie = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -41,6 +41,7 @@
             this.button6 = new System.Windows.Forms.Button();
             this.btn_testStart = new System.Windows.Forms.Button();
             this.txt_debug = new System.Windows.Forms.RichTextBox();
+            this.btn_bin_ref = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.flowLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
@@ -55,15 +56,15 @@
             this.btn_test_debug.UseVisualStyleBackColor = true;
             this.btn_test_debug.Click += new System.EventHandler(this.btn_test_debug_Click);
             // 
-            // btn_bin_debug
+            // btn_bin_ie
             // 
-            this.btn_bin_debug.Location = new System.Drawing.Point(142, 12);
-            this.btn_bin_debug.Name = "btn_bin_debug";
-            this.btn_bin_debug.Size = new System.Drawing.Size(124, 67);
-            this.btn_bin_debug.TabIndex = 1;
-            this.btn_bin_debug.Text = "开启窗口";
-            this.btn_bin_debug.UseVisualStyleBackColor = true;
-            this.btn_bin_debug.Click += new System.EventHandler(this.btn_bin_debug_Click);
+            this.btn_bin_ie.Location = new System.Drawing.Point(142, 12);
+            this.btn_bin_ie.Name = "btn_bin_ie";
+            this.btn_bin_ie.Size = new System.Drawing.Size(124, 67);
+            this.btn_bin_ie.TabIndex = 1;
+            this.btn_bin_ie.Text = "开启IE窗口";
+            this.btn_bin_ie.UseVisualStyleBackColor = true;
+            this.btn_bin_ie.Click += new System.EventHandler(this.btn_bin_debug_Click);
             // 
             // dataGridView1
             // 
@@ -89,37 +90,44 @@
             // 
             this.Column1.HeaderText = "进程Id";
             this.Column1.Name = "Column1";
+            this.Column1.ReadOnly = true;
             // 
             // Column2
             // 
             this.Column2.HeaderText = "参数";
             this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
             this.Column2.Width = 300;
             // 
             // Column3
             // 
             this.Column3.HeaderText = "内存占用";
             this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
             // 
             // Column4
             // 
             this.Column4.HeaderText = "CPU占用";
             this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
             // 
             // Column7
             // 
             this.Column7.HeaderText = "线程数";
             this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
             // 
             // Column5
             // 
             this.Column5.HeaderText = "启动时间";
             this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
             // 
             // Column6
             // 
             this.Column6.HeaderText = "在执行";
             this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
             // 
             // flowLayoutPanel1
             // 
@@ -151,7 +159,7 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(402, 12);
+            this.button6.Location = new System.Drawing.Point(532, 12);
             this.button6.Name = "button6";
             this.button6.Size = new System.Drawing.Size(124, 67);
             this.button6.TabIndex = 5;
@@ -160,7 +168,7 @@
             // 
             // btn_testStart
             // 
-            this.btn_testStart.Location = new System.Drawing.Point(272, 12);
+            this.btn_testStart.Location = new System.Drawing.Point(402, 12);
             this.btn_testStart.Name = "btn_testStart";
             this.btn_testStart.Size = new System.Drawing.Size(124, 67);
             this.btn_testStart.TabIndex = 6;
@@ -177,20 +185,31 @@
             this.txt_debug.TabIndex = 10;
             this.txt_debug.Text = "";
             // 
+            // btn_bin_ref
+            // 
+            this.btn_bin_ref.Location = new System.Drawing.Point(272, 12);
+            this.btn_bin_ref.Name = "btn_bin_ref";
+            this.btn_bin_ref.Size = new System.Drawing.Size(124, 67);
+            this.btn_bin_ref.TabIndex = 11;
+            this.btn_bin_ref.Text = "开启 Cef 窗口";
+            this.btn_bin_ref.UseVisualStyleBackColor = true;
+            this.btn_bin_ref.Click += new System.EventHandler(this.btn_bin_ref_Click);
+            // 
             // FormDashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(947, 563);
+            this.Controls.Add(this.btn_bin_ref);
             this.Controls.Add(this.txt_debug);
             this.Controls.Add(this.btn_testStart);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.flowLayoutPanel1);
             this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.btn_bin_debug);
+            this.Controls.Add(this.btn_bin_ie);
             this.Controls.Add(this.btn_test_debug);
             this.Name = "FormDashboard";
-            this.Text = "Form1";
+            this.Text = "Dashboard";
             this.Load += new System.EventHandler(this.FormDashboard_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.flowLayoutPanel1.ResumeLayout(false);
@@ -199,7 +218,7 @@
         }
         #endregion
         private System.Windows.Forms.Button btn_test_debug;
-        private System.Windows.Forms.Button btn_bin_debug;
+        private System.Windows.Forms.Button btn_bin_ie;
         private System.Windows.Forms.DataGridView dataGridView1;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.Windows.Forms.Button button4;
@@ -214,6 +233,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
         private System.Windows.Forms.Button btn_testStart;
         private System.Windows.Forms.RichTextBox txt_debug;
+        private System.Windows.Forms.Button btn_bin_ref;
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿using CobWeb.Core;
+using CobWeb.Core.Manager;
 using CobWeb.Core.Model;
 using CobWeb.Core.Process;
 using CobWeb.Util;
@@ -138,6 +139,7 @@ namespace CobWeb.AProcess
             var req = SocketHelper.BuildRequest(str);
             AsyncSend(client,req);
         }
+        public List<byte> Recive_Pool = new List<byte>();
         /// <summary>
         /// 接收消息
         /// </summary>
@@ -154,19 +156,27 @@ namespace CobWeb.AProcess
                 {
                     try
                     {
-                        int length = socket.EndReceive(asyncResult);
-                        var result = data.ToList();
-                        do
+                        LogManager.socket通讯.Debug($"asyncResult");
+                        Recive_Pool.AddRange(data);
+                        if (socket.Available == 0)
                         {
-                            var req = SocketHelper.GetRequest(ref result);
-                            Task.Factory.StartNew((ta_res) => {
-                                var res = Excute(ta_res as string);
-                                AsyncSend(res);
-                                
-                            }, req);
-                        } while (result.Count > 0);
-
-                        //SetText(Encoding.UTF8.GetString(data));
+                            int length = socket.EndReceive(asyncResult);
+                            LogManager.socket通讯.Debug($"list.length {Recive_Pool.Count}");
+                            do
+                            {
+                                LogManager.socket通讯.Debug($"dowhile list.length {Recive_Pool.Count}");
+                                var res = SocketHelper.GetRequest(ref Recive_Pool);
+                                if (string.IsNullOrWhiteSpace(res))
+                                {
+                                    break;
+                                }
+                                Task.Factory.StartNew((ta_res) =>
+                                {
+                                    LogManager.socket通讯.Debug($"settext ");
+                                    Excute(ta_res as string);
+                                }, res);
+                            } while (Recive_Pool.Count > 0);
+                        }
                     }
                     catch (Exception)
                     {
@@ -194,11 +204,13 @@ namespace CobWeb.AProcess
         string Excute(string dataParam)
         {
             Thread.Sleep(new Random().Next(1000, 10000));
-            return JsonConvert.SerializeObject(new SocketResponseModel()
+            var res = JsonConvert.SerializeObject(new SocketResponseModel()
             {
                 StateCode = 0,
                 Result = "nonono"
             });
+            AsyncSend(res);
+            return res;
             try
             {
                 var paramModel = JsonConvert.DeserializeObject<SocketRequestModel>(dataParam);

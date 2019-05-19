@@ -1,4 +1,5 @@
-﻿using CobWeb.Util.SocketHelper;
+﻿using CobWeb.Core.Manager;
+using CobWeb.Util.SocketHelper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -109,7 +110,8 @@ namespace CobWeb.DashBoard
             this.Controls.Add(this.btn_Con);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Name = "FormVirtualWeb";       
+            this.Name = "FormVirtualWeb";
+            this.Text = "虚拟浏览器";
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -119,7 +121,7 @@ namespace CobWeb.DashBoard
         {
             //原来的
             AsyncConnect();
-           // AsyncConnect2();
+            // AsyncConnect2();
         }
         public void AsyncConnect2()
         {
@@ -148,7 +150,7 @@ namespace CobWeb.DashBoard
                 {
                     //创建套接字
                     client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                }                                          
+                }
                 //开始连接到服务器
                 client.BeginConnect(ipe, asyncResult =>
                 {
@@ -169,18 +171,18 @@ namespace CobWeb.DashBoard
         }
 
 
-        /// <summary>
-        /// 发送消息
-        /// </summary>
-        /// <param name="socket"></param>
-        /// <param name="message"></param>
-        public void AsyncSend(Socket socket, string message)
-        {
-            if (socket == null || message == string.Empty) return;
-            //编码
-            byte[] data = Encoding.UTF8.GetBytes(message);
-            AsyncSend(socket, data);          
-        }
+        ///// <summary>
+        ///// 发送消息
+        ///// </summary>
+        ///// <param name="socket"></param>
+        ///// <param name="message"></param>
+        //public void AsyncSend(Socket socket, string message)
+        //{
+        //    if (socket == null || message == string.Empty) return;
+        //    //编码
+        //    byte[] data = Encoding.UTF8.GetBytes(message);
+        //    AsyncSend(socket, data);          
+        //}
         /// <summary>
         /// 发送消息
         /// </summary>
@@ -188,7 +190,7 @@ namespace CobWeb.DashBoard
         /// <param name="message"></param>
         public void AsyncSend(Socket socket, byte[] data)
         {
-            if (socket == null || data.Length==0) return;         
+            if (socket == null || data.Length == 0) return;
             try
             {
                 socket.BeginSend(data, 0, data.Length, SocketFlags.None, asyncResult =>
@@ -208,7 +210,7 @@ namespace CobWeb.DashBoard
         /// <param name="socket"></param>
         public void AsyncReceive(Socket socket)
         {
-            byte[] data = new byte[1024];
+            byte[] data = new byte[1024 * 2];
             try
             {
 
@@ -218,10 +220,29 @@ namespace CobWeb.DashBoard
                 {
                     try
                     {
-                        int length = socket.EndReceive(asyncResult);
-                        SetText(Encoding.UTF8.GetString(data));
+                        LogManager.socket通讯.Debug($"asyncResult");
+                        Recive_Pool.AddRange(data);
+                        if (socket.Available == 0)
+                        {
+                            int length = socket.EndReceive(asyncResult);
+                            LogManager.socket通讯.Debug($"list.length {Recive_Pool.Count}");
+                            do
+                            {
+                                LogManager.socket通讯.Debug($"dowhile list.length {Recive_Pool.Count}");
+                                var res = SocketHelper.GetRequest(ref Recive_Pool);
+                                if (string.IsNullOrWhiteSpace(res))
+                                {
+                                    break;
+                                }
+                                Task.Factory.StartNew((ta_res) =>
+                                {
+                                    LogManager.socket通讯.Debug($"settext ");
+                                    SetText(ta_res as string);
+                                }, res);
+                            } while (Recive_Pool.Count > 0);
+                        }
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
                         AsyncReceive(socket);
                     }
@@ -229,6 +250,7 @@ namespace CobWeb.DashBoard
 
                     AsyncReceive(socket);
                 }, null);
+
             }
             catch (Exception ex)
             {
@@ -237,13 +259,15 @@ namespace CobWeb.DashBoard
 
         public void AsyncClose()
         {
-            if (client!=null)
-            {                
+            if (client != null)
+            {
                 client.Close();
                 client.Dispose();
                 client = null;
             }
         }
+
+        public List<byte> Recive_Pool = new List<byte>();
         public void SetText(string str)
         {
             if (this.InvokeRequired)
@@ -253,7 +277,7 @@ namespace CobWeb.DashBoard
             else
             {
 
-                txt_recive.Text += "\r\n" + str;
+                txt_recive.Text += str + "\r\n";
             }
         }
 
@@ -262,7 +286,7 @@ namespace CobWeb.DashBoard
         private void button1_Click(object sender, EventArgs e)
         {
             var req = SocketHelper.BuildRequest(txt_send.Text);
-             AsyncSend(client, req);
+            AsyncSend(client, req);
             //c.Send(txt_send.Text);
         }
 
@@ -270,6 +294,6 @@ namespace CobWeb.DashBoard
         {
             AsyncClose();
         }
-      
+
     }
 }

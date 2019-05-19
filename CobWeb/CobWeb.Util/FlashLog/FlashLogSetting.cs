@@ -10,7 +10,7 @@ namespace CobWeb.Util.FlashLog
         /// <summary>
         /// 单个日志的最大值
         /// </summary>
-        public  static int Max_LogSize = 1024 * 10;
+        public  static int Max_LogSize = 1024 * 1000;
     }
     /// <summary>
     /// 日志等级

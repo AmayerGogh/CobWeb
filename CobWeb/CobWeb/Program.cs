@@ -2,6 +2,7 @@
 using CobWeb.Browser;
 using CobWeb.Core;
 using CobWeb.Core.Control;
+using CobWeb.Util;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -18,8 +19,8 @@ namespace CobWeb
         /// 应用程序的主入口点。
         /// </summary>
         [STAThread]
-        static void Main()
-        {
+        static void Main(string[] args)
+        {           
             //AppDomain.CurrentDomain.AssemblyResolve += Init.OnResolveAssembly;
             Init.Step1_Default();
             Init.Step2_GlobalException();
@@ -27,10 +28,9 @@ namespace CobWeb
             var port = 6666;
             var number = 0;
             FormBrowser formBrowser = null;
-            string[] cmdArgs = Environment.GetCommandLineArgs();
-            if (cmdArgs.Length > 0)
+            if (args!=null && args.Length > 0)
             {
-                var param_str = cmdArgs.Where(m => m.Contains("cob") && m.Contains("|")).FirstOrDefault();
+                var param_str = args.Where(m => m.Contains("cob") && m.Contains("|")).FirstOrDefault();
                 if (param_str!=null)
                 {
                     var param = param_str.Split('|');

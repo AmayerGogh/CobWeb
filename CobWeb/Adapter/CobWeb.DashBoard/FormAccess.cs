@@ -25,22 +25,38 @@ namespace CobWeb.DashBoard
             Excute();
             //MessageBox.Show(cc);
             //btn_Excute.Enabled = false;
-           
+
         }
-      
+
 
 
 
 
         private void FormAccess_Load(object sender, EventArgs e)
-        {            
+        {
             foreach (var item in SocketRequestHeader.Head)
             {
                 cob_RequestCode.Items.Add(item);
-            }                        
+            }
+            if (cob_kernel.Items.Count > 0)
+            {
+                cob_kernel.SelectedIndex = 0;
+            }
+            if (cob_RequestCode.Items.Count > 0)
+            {
+                cob_RequestCode.SelectedIndex = 0;
+            }
+            if (cob_Type.Items.Count>0)
+            {
+                cob_Type.SelectedIndex = 0;
+            }
+            if (cob_clients.Items.Count>0)
+            {
+                cob_clients.SelectedIndex = 0;
+            }           
         }
         protected override void OnClosed(EventArgs e)
-        {            
+        {
             this.Dispose();
             base.OnClosed(e);
         }
@@ -52,6 +68,11 @@ namespace CobWeb.DashBoard
         private void Btn_rm_recive_Click(object sender, EventArgs e)
         {
             rtxt_revice.ResetText();
+        }
+
+        private void btn_ref_Click(object sender, EventArgs e)
+        {
+            Refesh_ClientList();
         }
     }
 }

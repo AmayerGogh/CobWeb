@@ -47,7 +47,7 @@ namespace CobWeb.Util.FlashLog
             }
             string LogDate = DateTime.Now.Year.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Day.ToString();
             string logFilePath = GetPath(path, LogDate, 0);
-            if (msg.Message.Length <= 1024 * 100) //100k
+            if (msg.Message.Length <= 1024 * 10) //1024k
             {
                 WriteType1(logFilePath, msg.Message + Environment.NewLine);
             }

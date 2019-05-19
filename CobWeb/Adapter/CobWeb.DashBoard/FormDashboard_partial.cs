@@ -27,22 +27,20 @@ namespace CobWeb.DashBoard
         {
             try
             {
-                Process[] ps = Process.GetProcessesByName("CobWeb.exe");
+                Process[] ps = Process.GetProcessesByName("CobWeb");
                 this.dataGridView1.BeginInvoke(new ThreadStart(delegate ()
                 {
                     this.dataGridView1.Rows.Clear();
                 }));
-                DataGridViewRow row = new DataGridViewRow();
+               
                 foreach (var item in ps)
                 {
-
-
+                    DataGridViewRow row = new DataGridViewRow();
                     DataGridViewTextBoxCell textboxcell = new DataGridViewTextBoxCell() { Value = item.Id };
                     DataGridViewTextBoxCell textboxcell2 = new DataGridViewTextBoxCell() { };
                     DataGridViewTextBoxCell textboxcell3 = new DataGridViewTextBoxCell() { Value = item.WorkingSet64 / (1024 * 1024) };
                     DataGridViewTextBoxCell textboxcell4 = new DataGridViewTextBoxCell();
-                    DataGridViewTextBoxCell textboxcell5 = new DataGridViewTextBoxCell() { Value = item.Threads.Count };
-                    //DataGridViewTextBoxCell textboxcell6 = new datagr 
+                    DataGridViewTextBoxCell textboxcell5 = new DataGridViewTextBoxCell() { Value = item.Threads.Count };                    
                     var commands = string.Empty;
                     //using (var searcher = new ManagementObjectSearcher("SELECT CommandLine FROM Win32_Process WHERE ProcessId = " + item.Id))
                     //using (var objects = searcher.Get())
@@ -56,11 +54,12 @@ namespace CobWeb.DashBoard
                     //textboxcell4.Value = (item.TotalProcessorTime - TimeSpan.Zero).TotalMilliseconds / 1000 / Environment.ProcessorCount * 100;
 
                     row.Cells.AddRange(textboxcell, textboxcell2, textboxcell3, textboxcell4, textboxcell5);
+                    this.dataGridView1.BeginInvoke(new ThreadStart(delegate ()
+                    {
+                        this.dataGridView1.Rows.Add(row);
+                    }));
                 }
-                this.dataGridView1.BeginInvoke(new ThreadStart(delegate ()
-                {
-                    this.dataGridView1.Rows.Add(row);
-                }));
+              
             }
             finally
             {
@@ -144,14 +143,31 @@ namespace CobWeb.DashBoard
             }
             else
             {
-                txt_debug.Text += "\r\n" + str;
+                txt_debug.Text +=  str+ "\r\n";
             }
         }
+        void StartBrowserProcess(string b_type)
+        {
+            var path = Path.GetFullPath(Program.cobwebPath);
+            try
+            {
+                var port = Program.server.Port;                
+                var process = Process.Start(path + "CobWeb.exe",$"cob|{b_type}|{port}");
+            }
+            catch (Exception ex)
+            {
 
+
+            }
+
+
+            //FormAdapter form = new FormAdapter();
+            //form.Show();
+        }
     }
     public class CobWeb_ProcessList
     {
-        public int Id { get; set; }
+        public int ProcessId { get; set; }
         public string StartInfo { get; set; }
         public long WorkingSet64 { get; set; }
         public long Cpu { get; set; }

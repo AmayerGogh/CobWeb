@@ -23,6 +23,11 @@ namespace CobWeb.Util.SocketHelper
             var res = string.Empty;
             try
             {
+                if (length==0)
+                {
+                    recive = new List<byte>();
+                    return string.Empty;
+                }
                 if (recive.Count == length)
                 {
                     res = Encoding.UTF8.GetString(recive.Skip(4).Take(length - 4).ToArray());

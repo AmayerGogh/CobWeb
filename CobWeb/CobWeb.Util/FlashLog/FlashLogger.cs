@@ -19,7 +19,7 @@ namespace CobWeb.Util.FlashLog
         {
             LogQueue.Instance.EnqueueMessage(new FlashLogMessage
             {
-                Message = "[" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss,fff") + "]\r\n" + message,
+                Message = "【" + DateTime.Now.ToString("HH:mm:ss,fff") + "】\r\n" + message,
                 Level = level,
                 Exception = ex,
                 Service = service
