@@ -165,18 +165,7 @@ namespace CobWeb.DashBoard
             //form.Show();
         }
     }
-    public class CobWeb_ProcessList
-    {
-        public int ProcessId { get; set; }
-        public string StartInfo { get; set; }
-        public long WorkingSet64 { get; set; }
-        public long Cpu { get; set; }
-        public DateTime StartTime { get; set; }
-        public DateTime? LastWorkingEndTime { get; set; }
-        public bool IsWorking { get; set; }
-        public DateTime? CurrentWorkingStartTime { get; set; }        
-        public Socket Socket { get; set; }
-    }
+   
 
 
 

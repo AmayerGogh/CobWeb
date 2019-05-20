@@ -135,9 +135,9 @@ namespace CobWeb.DashBoard
             
             var req = SocketHelper.BuildRequest(model.SerializeObject());
             var selectedSocket = cob_clients.SelectedItem.ToString();
-            if (cob_clients.SelectedIndex != -1 && Program.SocketClient.ContainsKey(selectedSocket))
+            if (cob_clients.SelectedIndex != -1 && SocketClient_Pool.Contains(selectedSocket))
             {
-                var sock = Program.SocketClient[selectedSocket];
+                var sock = SocketClient_Pool.Get(selectedSocket);
                 Program.server.Send(req, sock.Socket);
             }
             else
@@ -160,15 +160,12 @@ namespace CobWeb.DashBoard
                 rtxt_revice.Text += "\r\n" + str;
             }
         }
-        public void Refesh_ClientList()
+        public void Refresh_ClientList()
         {
             this.cob_clients.Items.Clear();
             this.cob_clients.Items.Add("由系统决定");
-            var list = new List<string>();
-            foreach (var item in Program.SocketClient)
-            {
-                this.cob_clients.Items.Add(item.Key);
-            }            
+            this.cob_clients.Items.AddRange(SocketClient_Pool.GetKeys().ToArray());
+           
         }
 
     }

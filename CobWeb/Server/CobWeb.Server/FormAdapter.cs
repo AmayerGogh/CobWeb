@@ -17,35 +17,15 @@ namespace CobWeb.Server
     {
         public FormAdapter()
         {
+            
             InitializeComponent();
+            // this.Opacity = 0.1;
+            this.BackColor = Color.White; this.TransparencyKey = Color.White;
         }
-        private void btn_Excute_Click(object sender, EventArgs e)
+      
+        private void WebBrowser1_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
-            btn_Excute.Enabled = false;
-            var stopwatch = Stopwatch.StartNew();
-            Task.Run(() =>
-            {
-                Excute(stopwatch);
-                btn_Excute.Enabled = true;
-            });
-        }
-        void Excute(Stopwatch stopwatch = null)
-        {
-            var stopkey = Guid.NewGuid().ToString();
-            txt_stopkey.Text = stopkey;
-            rtxt_Result.Text = string.Empty;
-            string param = rtxt_Param.Text;
-            dynamic dyn = param.DeserializeObject<ExpandoObject>();
-            //dyn读取 &&更改
-            param = dyn.SerializeObject(dyn);
-            string result = SocketAccess.Access<string, string>(
-                cmb_Type.Text,
-                param,
-                DateTime.Now.Ticks,
-                int.Parse(numeric_Timeout.Value.ToString()),
-                stopkey,
-                int.Parse(txt_prot.Text),
-                checkBox1.Checked);
+
         }
     }
 }

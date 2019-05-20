@@ -20,7 +20,7 @@ namespace CobWeb.DashBoard
 
     }
 
-    public static class HttpListenerContextModel_Pool
+    public static class HttpListenerContext_Pool
     {
 
         static Dictionary<string, HttpListenerContextModel> _HttpContext = new Dictionary<string, HttpListenerContextModel>();
@@ -87,7 +87,6 @@ namespace CobWeb.DashBoard
         {
 
         }
-
 
         static void SetResponse(HttpListenerResponse response, int statusCode, object obj)
         {

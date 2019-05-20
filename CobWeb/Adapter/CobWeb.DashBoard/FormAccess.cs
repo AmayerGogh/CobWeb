@@ -72,7 +72,7 @@ namespace CobWeb.DashBoard
 
         private void btn_ref_Click(object sender, EventArgs e)
         {
-            Refesh_ClientList();
+            Refresh_ClientList();
         }
     }
 }

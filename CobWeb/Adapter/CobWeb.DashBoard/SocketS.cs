@@ -286,13 +286,13 @@ namespace CobWeb.DashBoard
 
                         Interlocked.Increment(ref _clientCount);//原子操作加1
                         SocketAsyncEventArgs asyniar = _objectPool.Pop();
-                        asyniar.UserToken = new UserToken()
+                        asyniar.UserToken = new SubClientModel()
                         {
                             Socket = s
                         };
                         var RemoteEndPoint = s.RemoteEndPoint.ToString();
                         //添加至客户端集合
-                        Program.SocketClient.Add(RemoteEndPoint, new CobWeb_ProcessList()
+                        SocketClient_Pool.Add(RemoteEndPoint, new SubClientModel()
                         {
                             Socket = s
                         });
@@ -480,7 +480,7 @@ namespace CobWeb.DashBoard
 
             if (e.SocketError == SocketError.Success && e.BytesTransferred > 0)//传输的字节数
             {
-                UserToken token = (UserToken)e.UserToken;
+                SubClientModel token = (SubClientModel)e.UserToken;
                 var s = token.Socket;
 
 
@@ -548,7 +548,7 @@ namespace CobWeb.DashBoard
         /// <param name="e">SocketAsyncEventArg associated with the completed send/receive operation.</param>
         private void CloseClientSocket(SocketAsyncEventArgs e)
         {
-            CloseClientSocket((e.UserToken as UserToken).Socket, e);
+            CloseClientSocket((e.UserToken as SubClientModel).Socket, e);
         }
 
         /// <summary>
@@ -572,7 +572,7 @@ namespace CobWeb.DashBoard
 
             }
             var temp = s.RemoteEndPoint.ToString();
-            Program.SocketClient.Remove(temp);
+            SocketClient_Pool.Remove(temp);
 
             s.Shutdown(SocketShutdown.Send);
             s.Disconnect(true);
@@ -718,22 +718,6 @@ namespace CobWeb.DashBoard
             args.SetBuffer(null, 0, 0);
         }
     }
-    class UserToken
-    {
-        /// <summary>
-        /// 通信SOKET
-        /// </summary>
-        public Socket Socket { get; set; }
-        /// <summary>
-        /// 数据缓存区
-        /// </summary>
-        public List<byte> Buffer { get; set; }
-        public UserToken()
-        {
-            this.Buffer = new List<byte>();
-        }
-
-
-    }
+   
   
 }

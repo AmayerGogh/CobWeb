@@ -49,12 +49,6 @@ namespace CobWeb.DashBoard
         }
         public static string cobwebPath = @"..\..\..\..\CobWeb\bin\Debug\";
 
-        /// <summary>
-        /// 当前的 进程对应类
-        /// </summary>
-        //public static List<CobWeb_ProcessList> CobWeb_ProcessList = new List<CobWeb_ProcessList>();
-        public static Dictionary<string, CobWeb_ProcessList> SocketClient = new Dictionary<string, CobWeb_ProcessList>();
-
         static void Step1_Init()
         {
             Application.EnableVisualStyles();
@@ -90,13 +84,13 @@ namespace CobWeb.DashBoard
         {
             FormDashboard?.SetText($"连接:{msg}");
             _formAccess?.SetText($"连接:{msg}");
-            _formAccess?.Refesh_ClientList();
+            _formAccess?.Refresh_ClientList();
         }
         static void Socket_OnClose(string msg)
         {
             FormDashboard?.SetText($"关闭:{msg}");
             _formAccess?.SetText($"关闭:{msg}");
-            _formAccess?.Refesh_ClientList();
+            _formAccess?.Refresh_ClientList();
         }
         static void Socket_OnError(string msg)
         {
@@ -120,7 +114,7 @@ namespace CobWeb.DashBoard
             HttpListenerOut = ar.AsyncState as HttpListener;
             HttpListenerContext context = HttpListenerOut.EndGetContext(ar);
 
-            HttpListenerContextModel_Pool.Add(new HttpListenerContextModel()
+            HttpListenerContext_Pool.Add(new HttpListenerContextModel()
             {
                 Id = Guid.NewGuid().ToString(),
                 Context = context
