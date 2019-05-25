@@ -294,7 +294,8 @@ namespace CobWeb.DashBoard
                         //添加至客户端集合
                         SocketClient_Pool.Add(RemoteEndPoint, new SubClientModel()
                         {
-                            Socket = s
+                            Socket = s,
+                            StartTime=DateTime.Now
                         });
                         OnConnection?.Invoke(RemoteEndPoint);
                         if (!s.ReceiveAsync(asyniar))//投递接收请求 表明当前操作是否有等待I/O的情况
@@ -491,8 +492,7 @@ namespace CobWeb.DashBoard
                 lock (token.Buffer)
                 {
                     token.Buffer.AddRange(data);
-                }
-                Thread.Sleep(1000);
+                }                
                 
                 //判断所有需接收的数据是否已经完成
                 if (s.Available == 0)

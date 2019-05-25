@@ -47,13 +47,14 @@ namespace CobWeb.Util.FlashLog
             }
             string LogDate = DateTime.Now.Year.ToString() + "-" + DateTime.Now.Month.ToString() + "-" + DateTime.Now.Day.ToString();
             string logFilePath = GetPath(path, LogDate, 0);
-            if (msg.Message.Length <= 1024 * 10) //1024k
+            var header = "【" + DateTime.Now.ToString("HH:mm:ss,fff") + "】\r\n";
+            if (msg.Message.Length <= 1024 * 10) //1024k  测试性能基本一样
             {
-                WriteType1(logFilePath, msg.Message + Environment.NewLine);
+                WriteType1(logFilePath, header + msg.Message + Environment.NewLine);
             }
             else
             {
-                WriteType2(logFilePath, msg.Message);
+                WriteType2(logFilePath,header + msg.Message);
             }
         }
         void WriteType1(string path,string msg)

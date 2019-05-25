@@ -5,6 +5,7 @@ using CobWeb.Core.Model;
 using CobWeb.Util;
 using CobWeb.Util.FlashLog;
 using CobWeb.Util.ThredHelper;
+using log4net;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,7 +18,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 namespace CobWeb.Test
 {
-    public class LogManager
+    public class LogTest
     {
         static FlashLogger _lc流程;
         public static FlashLogger lc流程
@@ -33,15 +34,34 @@ namespace CobWeb.Test
         }
         /// <summary>
         /// 日志测试
+        /// 实际时间 flashlog 33s  log4net23s
         /// </summary>
         public static void Test()
         {
-            for (int i = 0; i < 100; i++)
+
+            log4net.Config.XmlConfigurator.Configure();
+            ILog log = log4net.LogManager.GetLogger("log4net");
+            _lc流程 = new FlashLogger("流程");
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            for (int i = 0; i < 10000; i++)
             {
-                LogManager.lc流程.Info(i.ToString() + "--------------------------------------------");
-                Console.WriteLine(i);
+                lc流程.Debug(i.ToString() + "--------------------------------------------");
             }
+            Console.WriteLine("Using Elapsed output runTime:{0}", stopwatch.Elapsed.ToString());
+            Console.WriteLine("Using ElapsedMilliseconds output runTime:{0}", stopwatch.ElapsedMilliseconds);
+            stopwatch.Stop();
+            stopwatch.Restart();
+            for (int i = 0; i < 10000; i++)
+            {
+                log.Debug(i.ToString() + "--------------------------------------------");
+            }
+            stopwatch.Stop();
+            Console.WriteLine("Using Elapsed output runTime:{0}", stopwatch.Elapsed.ToString());
+            Console.WriteLine("Using ElapsedMilliseconds output runTime:{0}", stopwatch.ElapsedMilliseconds);
         }
+
+
     }
     class Program
     {
@@ -51,17 +71,11 @@ namespace CobWeb.Test
             //load.Init();
 
 
-            Test.Test3();
+            LogTest.Test();
             Console.ReadKey();
         }
     }
-    public class Load
-    {
-        public static Dictionary<string, Type> dictionary = new Dictionary<string, Type>();
-        public void Init()
-        {
-        }
-    }
+   
     public static class Test
     {
         /// <summary>
@@ -102,6 +116,9 @@ namespace CobWeb.Test
             StringHelper.ConsoleWriteLineWithTime("这里结束了");
         }
 
+        /// <summary>
+        /// socket协议分段测试
+        /// </summary>
         public static void Test3()
         {
             var msg = "般说来，如果没有分段发生， M S S还是越大越好（这也并不总是正确，参见图2 4 - 3和图2 4 - 4中的例子）。报文段越大允许每个报文段传送的数据就越多，相对I P和T C P首部有更高的网络利用率。当T C P发送一个S Y N时，或者是因为一个本地应用进程想发起一个连接，或者是因为另一端的主机收到了一个连接请求，它能将M S S值设置为外出接口上的MT U长度减去固定的I P首部和T C P首部长度。对于一个以太网， M S S值可达1 4 6 0字节。使用IEEE 802.3的封装（参见2 . 2节），它的M S S可达1 4 5 2字节。";
@@ -141,6 +158,8 @@ namespace CobWeb.Test
             var str_msg = Encoding.UTF8.GetString(array.Skip(8).Take(length).ToArray());
             Console.WriteLine(str_msg);
         }
+
+       
     }
 
 

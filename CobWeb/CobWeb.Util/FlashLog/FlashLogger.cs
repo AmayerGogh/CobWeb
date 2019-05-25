@@ -19,7 +19,7 @@ namespace CobWeb.Util.FlashLog
         {
             LogQueue.Instance.EnqueueMessage(new FlashLogMessage
             {
-                Message = "【" + DateTime.Now.ToString("HH:mm:ss,fff") + "】\r\n" + message,
+                Message = message,
                 Level = level,
                 Exception = ex,
                 Service = service
@@ -112,13 +112,12 @@ namespace CobWeb.Util.FlashLog
                 FlashLogMessage msg;
                 // 判断是否有内容需要如磁盘 从列队中获取内容，并删除列队中的内容
                 while (_que.Count > 0 && _que.TryDequeue(out msg))
-                {
+                {                    
                     // 判断日志等级，然后写日志
                     _log.Write(msg);
                 }
                 // 重新设置信号
-                _mre.Reset();
-                Thread.Sleep(100);
+                _mre.Reset();                
             }
         }
         /// <summary>
