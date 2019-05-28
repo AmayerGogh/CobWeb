@@ -42,23 +42,34 @@ namespace CobWeb.Test
             log4net.Config.XmlConfigurator.Configure();
             ILog log = log4net.LogManager.GetLogger("log4net");
             _lc流程 = new FlashLogger("流程");
-            Stopwatch stopwatch = new Stopwatch();
-            stopwatch.Start();
-            for (int i = 0; i < 10000; i++)
+            var te = 0;
+            var te2 = 0;
+            CodeTimer.Time("flash", 10000, () =>
             {
-                lc流程.Debug(i.ToString() + "--------------------------------------------");
-            }
-            Console.WriteLine("Using Elapsed output runTime:{0}", stopwatch.Elapsed.ToString());
-            Console.WriteLine("Using ElapsedMilliseconds output runTime:{0}", stopwatch.ElapsedMilliseconds);
-            stopwatch.Stop();
-            stopwatch.Restart();
-            for (int i = 0; i < 10000; i++)
+                lc流程.Debug(te.ToString() + "--------------------------------------------");
+                te++;
+            });
+            CodeTimer.Time("log4net", 10000, () =>
             {
-                log.Debug(i.ToString() + "--------------------------------------------");
-            }
-            stopwatch.Stop();
-            Console.WriteLine("Using Elapsed output runTime:{0}", stopwatch.Elapsed.ToString());
-            Console.WriteLine("Using ElapsedMilliseconds output runTime:{0}", stopwatch.ElapsedMilliseconds);
+                log.Debug(te2.ToString() + "--------------------------------------------");
+                te2++;
+            });
+
+            /*
+             flash
+             Time Elapsed:   55ms
+             CPU Cycles:     63,817,096
+             Gen 0:          0
+             Gen 1:          0
+             Gen 2:          0
+
+            log4net
+             Time Elapsed:   9,428ms
+             CPU Cycles:     22,985,320,396
+             Gen 0:          84
+             Gen 1:          0
+             Gen 2:          0
+              */
         }
 
 
@@ -67,6 +78,7 @@ namespace CobWeb.Test
     {
         static void Main(string[] args)
         {
+            CodeTimer.Initialize();
             //Load load = new Load();
             //load.Init();
 

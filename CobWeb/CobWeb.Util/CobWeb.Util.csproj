@@ -90,6 +90,7 @@
     <Compile Include="SocketHelper\no_use_SocketServer_.cs" />
     <Compile Include="SocketHelper\SocketHelper.cs" />
     <Compile Include="StringHelper.cs" />
+    <Compile Include="TestHelper.cs" />
     <Compile Include="ThredHelper\ThreadExtension.cs" />
     <Compile Include="ThredHelper\Timer.cs" />
     <Compile Include="ThredHelper\TimerIntervial.cs" />

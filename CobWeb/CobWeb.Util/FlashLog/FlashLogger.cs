@@ -109,7 +109,7 @@ namespace CobWeb.Util.FlashLog
             {
                 // 等待信号通知
                 _mre.WaitOne();
-                FlashLogMessage msg;
+                FlashLogMessage msg;                
                 // 判断是否有内容需要如磁盘 从列队中获取内容，并删除列队中的内容
                 while (_que.Count > 0 && _que.TryDequeue(out msg))
                 {                    
