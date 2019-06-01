@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CobWeb.Util.FlashLog;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,7 +15,7 @@ namespace CobWeb.Util.SocketHelper
             var b_t = BitConverter.GetBytes(b_msg.Length + 4);
             return b_t.Concat(b_msg).ToArray();
         }
-
+        public static FlashLogger _log = new FlashLogger("socket通讯");
         public static string GetRequest(ref List<byte> recive)
         {
             var length = BitConverter.ToInt32(new byte[] { recive[0], recive[1], recive[2], recive[3] }, 0);
@@ -27,7 +28,7 @@ namespace CobWeb.Util.SocketHelper
                 {
                     recive = new List<byte>();
                     return string.Empty;
-                }
+                }                
                 if (recive.Count == length)
                 {
                     res = Encoding.UTF8.GetString(recive.Skip(4).Take(length - 4).ToArray());
@@ -35,7 +36,11 @@ namespace CobWeb.Util.SocketHelper
                 }
                 else if (recive.Count > length)
                 {
-                    res = Encoding.UTF8.GetString(recive.Skip(4).Take(length - 4).ToArray());
+                    _log.Debug($"1 recive.count: {recive.Count} || length :{length}");
+                    var t = recive.Skip(4).Take(length - 4).ToArray();
+                    _log.Debug($"2 t.length:{t.Length}");
+                    res = Encoding.UTF8.GetString(t);
+                    _log.Debug($"3 res.length:{res.Length}");
                     recive.RemoveRange(0, length);
                 }
                 else if (recive.Count < length)//应该不会出现了
@@ -45,8 +50,7 @@ namespace CobWeb.Util.SocketHelper
             }
             catch (Exception e)
             {
-
-
+                recive = new List<byte>();
             }
 
             return res;
