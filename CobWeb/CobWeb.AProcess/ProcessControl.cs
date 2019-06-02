@@ -134,6 +134,25 @@ namespace CobWeb.AProcess
             {
             }
         }
+
+        public void AsyncSend(SocketResponseModel req)
+        {
+            try
+            {
+                var res = JsonConvert.SerializeObject(req);
+                AsyncSend(res);
+            }
+            catch (Exception ex)
+            {
+                var res = JsonConvert.SerializeObject(new SocketResponseModel()
+                {
+                    StateCode = SocketResponseCode.A_JsonError,
+                    Result = ex.Message
+                });
+                AsyncSend(res);
+            }
+           
+        }
         public void AsyncSend(string str)
         {
             var req = SocketHelper.BuildRequest(str);
@@ -173,7 +192,7 @@ namespace CobWeb.AProcess
                                 Task.Factory.StartNew((ta_res) =>
                                 {
                                     LogManager.socket通讯.Debug($"settext ");
-                                    Excute(ta_res as string);
+                                    ExcuteCore(ta_res as string);
                                 }, res);
                             } while (Recive_Pool.Count > 0);
                         }
@@ -200,17 +219,145 @@ namespace CobWeb.AProcess
                 client = null;
             }
         }
-        readonly Object _objLock = new Object();
-        string Excute(string dataParam) 
+        readonly Object _objLock = new Object();    
+        void ExcuteCore(string dataParam)
         {
-            Thread.Sleep(new Random().Next(1000, 10000));
+            //test
+            /*
+            //Thread.Sleep(new Random().Next(1000, 10000));
             var res = JsonConvert.SerializeObject(new SocketResponseModel()
             {
                 StateCode = 0,
-                Result = "nonono"
+                Result = dataParam
             });
             AsyncSend(res);
-            return res;
+            */
+            try
+            {
+                //SocketRequestHeader.UserFormSpider
+               var response = new SocketResponseModel();
+               var request = dataParam.DeserializeObject<SocketRequestModel>();
+
+                if (request.Header == SocketRequestHeader.UserFormSpider)
+                {
+                   
+                    if (request.KernelType != KernelType)
+                    {
+                        response.StateCode = SocketResponseCode.A_KernelError;
+                        AsyncSend(response);
+                        return;
+                    }
+                    lock (_objLock)
+                    {
+                        if (FormBrowser.IsWorking())
+                        {
+                            response.StateCode = SocketResponseCode.A_SystemBusy;
+                            AsyncSend(response);
+                            return;
+                        }
+                    }
+                    AsyncSend(DoProcessUseBrowser(request));
+                    
+                }
+                else if(request.Header == SocketRequestHeader.NoUserFormSpider)
+                {
+                    AsyncSend(DoProcessNoUseBrowser(request));
+                }
+            }
+            catch (Exception ex)
+            {
+                var res = JsonConvert.SerializeObject(new SocketResponseModel()
+                {
+                    StateCode = SocketResponseCode.A_UnknownException,
+                    Result = ex.Message
+                });
+                AsyncSend(res);
+            }
+        }
+
+
+        SocketResponseModel DoProcessUseBrowser(SocketRequestModel request)
+        {
+            var resultModel = new SocketResponseModel();
+            try
+            {
+                //就是下边那个
+                ////设置并执行相应操作，核心方法
+                //SetActionType(request);
+                //得到处理程序,若有异常直接抛出
+                _process = ProcessFactory.GetProcessByMethod(ProcessControl.FormBrowser, request);
+                if (_process==null)
+                {
+                    //todo
+                    return null;
+                }
+                FormBrowser.SetWorking(_process);
+                //开始执行
+                _process.Begin();
+
+                //得到执行结果
+                while (!CommonCla.IsTimeout(request.StartTime, request.Timeout))
+                {
+                    resultModel.Result = FormBrowser.GetResult();
+                    if (resultModel.Result == null)
+                    {
+                        if (MonitorStopProcess(request.Key))
+                        {
+                            resultModel.Result = SocketResponseCode.A_RequestNormalBreak.ToString();
+                            break;
+                        }
+                        if (FormBrowser.IsDisposed)
+                            throw new Exception(SocketResponseCode.A_RequestAccidentBreak.ToString());
+                        Thread.Sleep(100);
+                    }
+                    else
+                    {
+                        resultModel.StateCode = 0;
+                        break;
+                    }
+                }
+                if (resultModel.Result == null)
+                    throw new Exception(SocketResponseCode.A_TimeOutResult.ToString());
+            }
+            catch (Exception ex)
+            {
+                resultModel.ErrMsg = ex.Message;
+                resultModel.StateCode = SocketResponseCode.A_UnknownException;
+            }
+            return resultModel;
+        }
+        SocketResponseModel DoProcessNoUseBrowser(SocketRequestModel request)
+        {
+            var process = ProcessFactory.GetProcessByMethod(request);
+            if (process==null)
+            {
+                //todo
+                return null;
+            }
+            return new SocketResponseModel()
+            {
+                StateCode = 0,
+                Result = process.Excute(request.Param)
+            };
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        string Excute(string dataParam) 
+        {
+         
+          
             try
             {
                 var paramModel = JsonConvert.DeserializeObject<SocketRequestModel>(dataParam);

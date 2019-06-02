@@ -30,8 +30,10 @@ namespace CobWeb.Util.Model
         [Description("请求被意外中断")]
         A_RequestAccidentBreak = -99993,
         A_RequestNormalBreak = -99992,
-        [Description("内核")]
+        [Description("内核错误")]
         A_KernelError = -99990,
+        [Description("序列化失败")]
+        A_JsonError = -99989,
         成功 = 0,
 
     }

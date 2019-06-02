@@ -32,7 +32,7 @@ namespace CobWeb.Browser
             this.browser.NewWindow += new System.ComponentModel.CancelEventHandler(this.webBrowser_NewWindow);
             this.browser.Dock = DockStyle.Fill;
             panel1.Controls.Add(this.browser);
-            ExcuteRecord("加载完成了");
+            //ExcuteRecord("加载完成了");
         }
         void webBrowser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
