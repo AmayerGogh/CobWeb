@@ -1,4 +1,6 @@
-﻿namespace CobWeb.DashBoard
+﻿using CobWeb.Util.Model;
+
+namespace CobWeb.DashBoard
 {
     partial class FormAccess
     {
@@ -179,9 +181,9 @@
             // 
             this.cob_kernel.FormattingEnabled = true;
             this.cob_kernel.Items.AddRange(new object[] {
-            "IE",
-            "Cef",
-            "WebKit"});
+            SocketKernelType.IE,
+            SocketKernelType.CefSharp,
+            SocketKernelType.Webkit});
             this.cob_kernel.Location = new System.Drawing.Point(314, 19);
             this.cob_kernel.Name = "cob_kernel";
             this.cob_kernel.Size = new System.Drawing.Size(165, 20);

@@ -84,6 +84,7 @@
       <DependentUpon>FormLog.cs</DependentUpon>
     </Compile>
     <Compile Include="Manager\LogManager.cs" />
+    <Compile Include="Model\CommandModel.cs" />
     <Compile Include="Model\LoginResult.cs" />
     <Compile Include="Control\CefKernelControl.cs">
       <SubType>Component</SubType>

@@ -132,7 +132,8 @@ namespace CobWeb.DashBoard
             param = JsonHelper.Serialize(dyn);
 
             model.Context = param;
-            
+            model.Header = cob_RequestCode.SelectedItem.ToString();
+            model.StartTime = DateTime.Now.Ticks;
             var req = SocketHelper.BuildRequest(model.SerializeObject());
             var selectedSocket = cob_clients.SelectedItem.ToString();
             if (cob_clients.SelectedIndex != -1 && SocketClient_Pool.Contains(selectedSocket))
@@ -143,7 +144,8 @@ namespace CobWeb.DashBoard
             else
             {
                 lbl_Msg.Text = "调用者未找到";
-            }           
+            }
+            
         }
         public void SetText(string str)
         {

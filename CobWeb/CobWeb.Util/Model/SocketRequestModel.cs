@@ -54,9 +54,12 @@ namespace CobWeb.Util.Model
         /// 标志头
         /// </summary>
         public string Header { get; set; }
+        /// <summary>
+        /// (暂缺)
+        /// </summary>
+        public string Access_token { get; set; }
       
     }
-
     public class SocketRequestHeader
     {
 
@@ -64,12 +67,9 @@ namespace CobWeb.Util.Model
         public static string UserFormSpider = "FSp.";
         [Description("不使用窗口的爬虫")]
         public static string NoUserFormSpider = "NFSp";
-        [Description("步骤查询")]
-        public static string Step = "Step";
-        [Description("窗口是否在工作")]
-        public static string IsWorking = "IsWk";
+      
         [Description("基本信息")]
-        public static string Info = "Info";
+        public static string Heartbeat = "Beat";
         [Description("执行指令")]
         public static string Command = "CMD.";
 
@@ -78,11 +78,22 @@ namespace CobWeb.Util.Model
         {
             Head.Add(UserFormSpider);
             Head.Add(NoUserFormSpider);
-            Head.Add(Step);
-            Head.Add(IsWorking);
-            Head.Add(Info);
+          
+            Head.Add(Heartbeat);
             Head.Add(Command);
         }
     }
+    public class SocketKernelType
+    {
+
+        
+        public static string CefSharp = "cef";
+      
+        public static string IE = "ie";       
+       
+        public static string Webkit = "webkit";
+     
+    }
+   
 
 }

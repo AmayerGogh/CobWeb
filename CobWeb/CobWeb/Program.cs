@@ -3,6 +3,7 @@ using CobWeb.Browser;
 using CobWeb.Core;
 using CobWeb.Core.Control;
 using CobWeb.Util;
+using CobWeb.Util.Model;
 using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
@@ -48,27 +49,24 @@ namespace CobWeb
                     }
                 }
             }
-            switch (browserType)
+            if (browserType == SocketKernelType.CefSharp)
             {
-                case "cef":
-                    formBrowser = new CEF_Form(new CefKernelControl("about:blank"));
-                    break;
-                case "ie":
-                    formBrowser = new IEForm(new TridentKernelControl());
-                    break;
-                case "webkit":
-                    formBrowser = new WebKitForm(new WebKitKernelControl());
-                    break;
-                default:
-                    formBrowser = new CEF_Form(new CefKernelControl("about:blank"));
-                    break;
+                formBrowser = new CEF_Form(new CefKernelControl("about:blank"));
             }
-            ProcessControl.FormBrowser = formBrowser;
-            ProcessControl processControl = new ProcessControl()
+            else if(browserType == SocketKernelType.Webkit)
             {
-                Number = number,
-                Port = port
-            };
+                formBrowser = new WebKitForm(new WebKitKernelControl());
+            }
+            else if (browserType == SocketKernelType.IE)
+            {
+                formBrowser = new IEForm(new TridentKernelControl());
+            }
+            else
+            {
+                formBrowser = new CEF_Form(new CefKernelControl("about:blank"));
+            }          
+            ProcessControl.FormBrowser = formBrowser;
+            ProcessControl processControl = new ProcessControl(browserType, number,port){};
             processControl.StartListen_Core();
             var pro = Process.GetCurrentProcess();
             Application.Run(formBrowser);

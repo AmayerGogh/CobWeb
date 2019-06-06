@@ -47,6 +47,9 @@
     <Reference Include="CefSharp.WinForms">
       <HintPath>..\Lib\CEFSharp\CefSharp.WinForms.dll</HintPath>
     </Reference>
+    <Reference Include="LiteDB, Version=4.1.4.0, Culture=neutral, PublicKeyToken=4ee40123013c9f27, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiteDB.4.1.4\lib\net40\LiteDB.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.mshtml, Version=7.0.3300.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
@@ -72,14 +75,17 @@
   <ItemGroup>
     <Compile Include="AtionExtension.cs" />
     <Compile Include="CommonCla.cs" />
-    <Compile Include="CookieHelper.cs" />
+    <Compile Include="HttpHelper\CookieHelper.cs" />
+    <Compile Include="EnumHelper.cs" />
     <Compile Include="ExceptionHelper.cs" />
     <Compile Include="FlashLog\FlashLogger.cs" />
     <Compile Include="FlashLog\FlashLogSetting.cs" />
     <Compile Include="FlashLog\FlashLogWrite.cs" />
+    <Compile Include="HttpHelper\Spider.cs" />
     <Compile Include="LocalHelper\MonitorConfig.cs" />
     <Compile Include="MemoryCacheHelper.cs" />
     <Compile Include="MemoryMappedHelper.cs" />
+    <Compile Include="Model\SocketHeartBeatModel.cs" />
     <Compile Include="Model\SocketRequestModel.cs" />
     <Compile Include="Model\SocketResponseModel.cs" />
     <Compile Include="NamedPipe\NamedPipeHelper.cs" />
@@ -100,6 +106,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

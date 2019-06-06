@@ -1,4 +1,5 @@
 ﻿
+using CobWeb.Util.Model;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -61,7 +62,7 @@ namespace CobWeb.DashBoard
         }
         private void btn_bin_debug_Click(object sender, EventArgs e)
         {
-            StartBrowserProcess("ie");
+            StartBrowserProcess(SocketKernelType.IE);
         }
 
         private void btn_socketStart_Click(object sender, EventArgs e)
@@ -74,7 +75,7 @@ namespace CobWeb.DashBoard
        
         private void btn_bin_ref_Click(object sender, EventArgs e)
         {
-            StartBrowserProcess("cef");
+            StartBrowserProcess(SocketKernelType.CefSharp);
         }
     }
 

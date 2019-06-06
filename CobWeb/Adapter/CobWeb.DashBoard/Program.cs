@@ -105,6 +105,7 @@ namespace CobWeb.DashBoard
             {
                 HttpListenerOut.BeginGetContext(new AsyncCallback(GetContextCallBack), HttpListenerOut);
             });
+            HttpListenerContext_Pool.DoWhileTest();
 
         }
 
@@ -112,8 +113,7 @@ namespace CobWeb.DashBoard
         static void GetContextCallBack(IAsyncResult ar)
         {
             HttpListenerOut = ar.AsyncState as HttpListener;
-            HttpListenerContext context = HttpListenerOut.EndGetContext(ar);
-
+            HttpListenerContext context = HttpListenerOut.EndGetContext(ar);            
             HttpListenerContext_Pool.Add(new HttpListenerContextModel()
             {
                 Id = Guid.NewGuid().ToString(),

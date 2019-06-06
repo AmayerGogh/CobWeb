@@ -1,6 +1,7 @@
 ﻿using CobWeb.AProcess;
 using CobWeb.Core.Model;
 using CobWeb.Core.Process;
+using CobWeb.Util;
 using CobWeb.Util.Model;
 using System;
 using System.Collections.Generic;
@@ -19,37 +20,43 @@ namespace CobWeb.Core.Process
         public static Dictionary<string, Type> dictionary = new Dictionary<string, Type>();
         static Dictionary<string, object> classs = new Dictionary<string, object>();
         static ProcessFactory()
-        {
-            //{
-            //    var types = CommonCla.FindAllClassByInterface<IProcessBase>();
-            //    foreach (var type in types)
-            //    {
-            //        if (!string.IsNullOrWhiteSpace(type.Name))
-            //            if (!ProcessBaseDic.ContainsKey(type.Name))
-            //                ProcessBaseDic.Add(type.Name, type);
-            //    }
-            //}
-            //{
-            //    var types = CommonCla.FindAllClassByInterface<IProcessBase2>();
-            //    foreach (var type in types)
-            //    {
-            //        if (!string.IsNullOrWhiteSpace(type.Name))
-            //            if (!ProcessBase2Dic.ContainsKey(type.Name))
-            //                ProcessBase2Dic.Add(type.Name, type);
-            //    }
-            //}
+        {           
+            var types = Assembly.GetExecutingAssembly().GetTypes();
+            foreach (var type in types)
+            {
+                foreach (var t in type.GetInterfaces())
+                {
+                    if (t == typeof(IProcessBase))
+                    {
+                        ProcessBaseDic.Add(t.Name, t);
+                        break;
+                    }
+                    else if(t == typeof(IProcessBase2))
+                    {
+                        ProcessBase2Dic.Add(t.Name, t);
+                        break;
+                    }
+                }
+            } 
         }
         public static IProcessBase GetProcessByMethod(FormBrowser formBrowser, SocketRequestModel paramModel)
         {
-          
-            paramModel.FileName = "TaobaoSpider.dll";
-            paramModel.IsUseForm = true;
-            paramModel.Method = "TaoBaoSpider";
-            if (string.IsNullOrEmpty(paramModel.FileName))
+
+            if (!string.IsNullOrEmpty(paramModel.FileName))
             {
-                return GetProcessInAssembly(formBrowser, paramModel);
+                paramModel.FileName = "TaobaoSpider.dll";
+                paramModel.IsUseForm = true;
+                paramModel.Method = "TaoBaoSpider";
+                if (string.IsNullOrEmpty(paramModel.FileName))
+                {
+                    return GetProcessInAssembly(formBrowser, paramModel);
+                }
             }
-            var process = new GetVersion(formBrowser, paramModel);
+       
+            if (!ProcessBaseDic.ContainsKey(paramModel.Method))
+                throw new Exception(SocketResponseCode.A_UnknownMethod.ToString());
+            var process = (IProcessBase)Activator.CreateInstance(ProcessBaseDic[paramModel.Method],
+                formBrowser, paramModel);
             return (IProcessBase)process;
         }
         //public static IProcessBase GetProcessByMethod(FormSpider form, ParamModel paramModel)
@@ -60,7 +67,7 @@ namespace CobWeb.Core.Process
         //        form, paramModel);
         //    return process;
         //}
-        public static IProcessBase2 GetProcessByMethod(SocketRequestModel paramModel)
+        public static IProcessBase2 GetProcessByMethod2(SocketRequestModel paramModel)
         {
             if (!ProcessBase2Dic.ContainsKey(paramModel.Method))
                 throw new Exception(SocketResponseCode.A_UnknownMethod.ToString());

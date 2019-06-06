@@ -38,7 +38,7 @@ namespace CobWeb.DashBoard
             }
             return true;
         }
-     
+             
         public static void DoWhileTest()
         {
             Thread thread = new Thread(new ThreadStart(() =>
@@ -51,9 +51,17 @@ namespace CobWeb.DashBoard
                         var item = _HttpContext.FirstOrDefault();
                         if (item.Key.IsNotNullOrEmpty())
                         {
-                            SetResponse(item.Value.Context.Response, 200, new { data = item.Value.Id, msg = "{\"data\":1}" });
+
+                            //todo
+                            //var data = new {
+                            //    data = item.Value.Id,
+                            //    msg = new {
+                            //        header = item.Value.Context.Request.Headers.ToString()
+                            //    }
+                            //};
+                            SetResponse(item.Value.Context.Response, 200, item.Value.Context.Request.Headers.ToString());
                             _HttpContext.Remove(item.Key);
-                        }                     
+                        }
                     }
                     Thread.Sleep(1000);
                 }

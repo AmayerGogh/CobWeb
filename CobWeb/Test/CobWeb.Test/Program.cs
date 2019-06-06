@@ -4,15 +4,19 @@ using CobWeb.Core.Control;
 using CobWeb.Core.Model;
 using CobWeb.Util;
 using CobWeb.Util.FlashLog;
+using CobWeb.Util.HttpHelper;
 using CobWeb.Util.ThredHelper;
+using LiteDB;
 using log4net;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -83,7 +87,8 @@ namespace CobWeb.Test
             //load.Init();
 
 
-            LogTest.Test();
+            //LogTest.Test();
+            DbTest.Test();
             Console.ReadKey();
         }
     }
@@ -173,6 +178,209 @@ namespace CobWeb.Test
 
        
     }
+    /// <summary>
+    /// 爬虫测试
+    /// </summary>
+    public static class SpiderTest
+    {
+        public static void Test1()
+        {
+            //CityCrawler();
+            Ithome();
+           
+        }
+
+        /// <summary>
+        /// 抓取城市列表
+        /// </summary>
+        public static void CityCrawler()
+        {
+
+            var cityUrl = "http://hotels.ctrip.com/citylist";//定义爬虫入口URL
+            var cityList = new List<City>();//定义泛型列表存放城市名称及对应的酒店URL
+            var cityCrawler = new Spider();//调用刚才写的爬虫程序
+            cityCrawler.OnStart += (s, e) =>
+            {
+                Console.WriteLine("爬虫开始抓取地址：" + e.Uri.ToString());
+            };
+            cityCrawler.OnError += (s, e) =>
+            {
+                Console.WriteLine("爬虫抓取出现错误：" + e.Uri.ToString() + "，异常消息：" + e.Exception.Message);
+            };
+            cityCrawler.OnCompleted += (s, e) =>
+            {
+                Console.WriteLine(e.PageSource);
+                //使用正则表达式清洗网页源代码中的数据
+                var links = Regex.Matches(e.PageSource, @"<a[^>]+href=""*(?<href>/hotel/[^>\s]+)""\s*[^>]*>(?<text>(?!.*img).*?)</a>", RegexOptions.IgnoreCase);
+                foreach (Match match in links)
+                {
+                    var city = new City
+                    {
+                        CityName = match.Groups["text"].Value,
+                        Uri = new Uri("http://hotels.ctrip.com" + match.Groups["href"].Value
+                    )
+                    };
+                    if (!cityList.Contains(city)) cityList.Add(city);//将数据加入到泛型列表
+                    Console.WriteLine(city.CityName + "|" + city.Uri);//将城市名称及URL显示到控制台
+                }
+                Console.WriteLine("===============================================");
+                Console.WriteLine("爬虫抓取任务完成！合计 " + links.Count + " 个城市。");
+                Console.WriteLine("耗时：" + e.Milliseconds + "毫秒");
+                Console.WriteLine("线程：" + e.ThreadId);
+                Console.WriteLine("地址：" + e.Uri.ToString());
+            };
+            cityCrawler.StartAsync(new Uri(cityUrl)).Wait();//没被封锁就别使用代理：60.221.50.118:8090
+        }
+
+        /// <summary>
+        /// 抓取酒店列表
+        /// </summary>
+        public static void HotelCrawler()
+        {
+            var hotelUrl = "http://hotels.ctrip.com/hotel/jinan144";
+            var hotelList = new List<Hotel>();
+            var hotelCrawler = new Spider();
+            hotelCrawler.OnStart += (s, e) =>
+            {
+                Console.WriteLine("爬虫开始抓取地址：" + e.Uri.ToString());
+            };
+            hotelCrawler.OnError += (s, e) =>
+            {
+                Console.WriteLine("爬虫抓取出现错误：" + e.Uri.ToString() + "，异常消息：" + e.Exception.Message);
+            };
+            hotelCrawler.OnCompleted += (s, e) =>
+            {
+                var links = Regex.Matches(e.PageSource, @"""><a[^>]+href=""*(?<href>/hotel/[^>\s]+)""\s*data-dopost[^>]*><span[^>]+>.*?</span>(?<text>.*?)</a>", RegexOptions.IgnoreCase);
+                foreach (Match match in links)
+                {
+                    var hotel = new Hotel
+                    {
+                        HotelName = match.Groups["text"].Value,
+                        Uri = new Uri("http://hotels.ctrip.com" + match.Groups["href"].Value
+                    )
+                    };
+                    if (!hotelList.Contains(hotel)) hotelList.Add(hotel);//将数据加入到泛型列表
+                    Console.WriteLine(hotel.HotelName + "|" + hotel.Uri);//将酒店名称及详细页URL显示到控制台
+                }
+
+                Console.WriteLine();
+                Console.WriteLine("===============================================");
+                Console.WriteLine("爬虫抓取任务完成！合计 " + links.Count + " 个酒店。");
+                Console.WriteLine("耗时：" + e.Milliseconds + "毫秒");
+                Console.WriteLine("线程：" + e.ThreadId);
+                Console.WriteLine("地址：" + e.Uri.ToString());
+            };
+            hotelCrawler.StartAsync(new Uri(hotelUrl)).Wait();//没被封锁就别使用代理：60.221.50.118:8090
+        }
+
+        /// <summary>
+        /// 抓取酒店列表
+        /// </summary>
+        public static void Ithome()
+        {
+            var hotelUrl = "http://localhost:30000/";
+            var hotelList = new List<Hotel>();
+            var hotelCrawler = new Spider();
+            hotelCrawler.OnStart += (s, e) =>
+            {
+                Console.WriteLine("爬虫开始抓取地址：" + e.Uri.ToString());
+            };
+            hotelCrawler.OnError += (s, e) =>
+            {
+                Console.WriteLine("爬虫抓取出现错误：" + e.Uri.ToString() + "，异常消息：" + e.Exception.Message);
+            };
+            hotelCrawler.OnCompleted += (s, e) =>
+            {
+                for (int i = 0; i < e.PageSource.Length; i++)
+                {
+                    var c = e.PageSource[i].ToString();
+                    if (c == @"\")
+                    {
+                        i += 3;
+                        Console.WriteLine();
+                        continue;
+                    }
+                    Console.Write(e.PageSource[i].ToString());
+                }
+                //foreach (var item in e.PageSource)
+                //{
+                //    if (item)
+                //    {
+
+                //    }
+                //    Console.Write(item);
+                //}
+                //Console.WriteLine(e.PageSource);
+              
+            };
+            hotelCrawler.StartAsync(new Uri(hotelUrl)).Wait();//没被封锁就别使用代理：60.221.50.118:8090
+        }
+      
+        public class City
+        {
+            public string CityName { get; set; }
+
+            public Uri Uri { get; set; }
+        }
+        public class Hotel
+        {
+            public string HotelName { get; set; }
+
+            public decimal Price { get; set; }
+
+            public Uri Uri { get; set; }
 
 
+        }
+    }
+
+
+    public static class DbTest
+    {
+        public static void Test()
+        {
+            using (var db = new LiteDatabase(@"test.db"))
+            {
+               
+                // Get customer collection
+                var col = db.GetCollection<Customer>("customers");
+                var results2 = col.Find(x => x.Age > 20);
+                // Create your new customer instance
+                var customer = new Customer
+                {
+                    Name = "John Doe",
+                    Phones = new string[] { "8000-0000", "9000-0000" },
+                    Age = 39,
+                    IsActive = true,
+                    Chr =new Customer()
+                    {
+                        Name="Test"
+                    }
+                };
+                
+                // Create unique index in Name field
+                col.EnsureIndex(x => x.Name, true);
+
+                // Insert new customer document (Id will be auto-incremented)
+                col.Insert(customer);
+
+                // Update a document inside a collection
+                customer.Name = "Joana Doe";
+
+                col.Update(customer);
+                
+                // Use LINQ to query documents (with no index)
+                var results = col.Find(x => x.Age > 20);
+            }
+        }
+        public class Customer
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+            public int Age { get; set; }
+            public string[] Phones { get; set; }
+            public bool IsActive { get; set; }
+            public Customer Chr { get; set; }
+        }
+    }
 }

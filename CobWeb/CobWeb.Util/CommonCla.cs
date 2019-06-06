@@ -57,20 +57,21 @@ namespace CobWeb.Util
         public static List<Type> FindAllClassByInterface<T>()
         {
             var types = new List<Type>();
-            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+            //var assemblies = AppDomain.CurrentDomain
+
+            var types2 = Assembly.GetExecutingAssembly().GetTypes();
+            foreach (var type in types2)//Assembly.GetExecutingAssembly().GetTypes())
             {
-                foreach (var type in assembly.GetTypes())
+                foreach (var t in type.GetInterfaces())
                 {
-                    foreach (var t in type.GetInterfaces())
+                    if (t == typeof(T))
                     {
-                        if (t == typeof(T))
-                        {
-                            types.Add(type);
-                            break;
-                        }
+                        types.Add(type);
+                        break;
                     }
                 }
             }
+            
             return types;
         }
         /// <summary>

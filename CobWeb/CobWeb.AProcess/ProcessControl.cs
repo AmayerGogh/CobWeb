@@ -17,97 +17,42 @@ using System.Threading;
 using System.Threading.Tasks;
 namespace CobWeb.AProcess
 {
-    public  class ProcessControl
+    public class ProcessControl
     {
-        public  ProcessControl()
+        public ProcessControl(string kernelType,int number,int port)
         {
+            State.BrowserType = kernelType;
+            State.Id = number;
+            State.Port = port;
+            State.StartTime = DateTime.Now;
+            State.ProcessId = Process.GetCurrentProcess().Id;
         }
-        public void Init()
-        {
-        }
+       
         public static FormBrowser FormBrowser;
-        /// <summary>
-        /// 端口号
-        /// </summary>
-        public  int Port { get; set; }
-        /// <summary>
-        /// 进程编号
-        /// </summary>
-        public  int Number { get; set; }
-        /// <summary>
-        /// 初始化所属MacUrl
-        /// </summary>
-        public  string MacUrl { get; set; }
-        public string KernelType { get; set; }
+        static SocketHeartBeatModel State = new SocketHeartBeatModel();
+      
+        static Socket client;
         //step
         public void Step1_GetSetting()
         {
         }
-        Socket _serverSocket;
-        Socket client;
-        public  void StartListen()
-        {
-            IPEndPoint ipe;
-            _serverSocket = SocketBasic.GetSocket(out ipe, Port);
-            _serverSocket.Bind(ipe);
-            _serverSocket.Listen(10);
-            var text = string.Format("建立调用监听完成! {0} 端口:{1} 序号:{2}", MacUrl, Port, Number);
-            ExcuteRecord(text);
-            ExcuteRecord("*******************************************************");
-            ExcuteRecord("注:一个进程同时只会执行一个需要窗口的接口!");
-            ExcuteRecord("*******************************************************");
-            Task.Run(() =>
-            {
-                Thread.CurrentThread.Name = "socketBase";
-                while (true)
-                {
-                    try
-                    {
-                        Socket cSocket = _serverSocket.Accept();
-                        Task.Factory.StartNew((c) =>
-                        {
-                            Thread.CurrentThread.Name = "socketListen";
-                            var socket = c as Socket;
-                            try
-                            {
-                                var recvStr = SocketBasic.Receive(socket, 3);
-                                Thread.CurrentThread.SetThreadName("RequestInstance_Thread");
-                                ExcuteRecord("接收到的信息");
-                                ExcuteRecord(recvStr);
-                                var result = Excute(recvStr);
-                                SocketBasic.Send(socket, result, 3);
-                            }
-                            catch (Exception ex)
-                            {
-                            }
-                            finally
-                            {
-                                if (socket != null)
-                                    socket.Dispose();
-                            }
-                        }, cSocket);
-                    }
-                    catch (Exception ex)
-                    {
-                        Process.GetCurrentProcess().Kill();
-                    }
-                }
-            });
-        }
+      
+       
 
         public void StartListen_Core()
         {
             //端口及IP
-            IPEndPoint ipe = new IPEndPoint(IPAddress.Parse("127.0.0.1"), Port);
+            IPEndPoint ipe = new IPEndPoint(IPAddress.Parse("127.0.0.1"), State.Port);
             if (client == null)
             {
                 //创建套接字
                 client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             }
+           
             //开始连接到服务器
             client.BeginConnect(ipe, asyncResult =>
             {
-                client.EndConnect(asyncResult);
+                client.EndConnect(asyncResult);                
                 AsyncSend("你好我是客户端");
                 //接受消息
                 AsyncReceive(client);
@@ -151,12 +96,12 @@ namespace CobWeb.AProcess
                 });
                 AsyncSend(res);
             }
-           
+
         }
         public void AsyncSend(string str)
         {
             var req = SocketHelper.BuildRequest(str);
-            AsyncSend(client,req);
+            AsyncSend(client, req);
         }
         public List<byte> Recive_Pool = new List<byte>();
         /// <summary>
@@ -219,7 +164,7 @@ namespace CobWeb.AProcess
                 client = null;
             }
         }
-        readonly Object _objLock = new Object();    
+        readonly Object _objLock = new Object();
         void ExcuteCore(string dataParam)
         {
             //test
@@ -235,13 +180,13 @@ namespace CobWeb.AProcess
             try
             {
                 //SocketRequestHeader.UserFormSpider
-               var response = new SocketResponseModel();
-               var request = dataParam.DeserializeObject<SocketRequestModel>();
+                var response = new SocketResponseModel();
+                var request = dataParam.DeserializeObject<SocketRequestModel>();
 
                 if (request.Header == SocketRequestHeader.UserFormSpider)
                 {
-                   
-                    if (request.KernelType != KernelType)
+
+                    if (request.KernelType != State.BrowserType)
                     {
                         response.StateCode = SocketResponseCode.A_KernelError;
                         AsyncSend(response);
@@ -256,12 +201,20 @@ namespace CobWeb.AProcess
                             return;
                         }
                     }
+                    State.CurrentWorkingStartTime = DateTime.Now;
                     AsyncSend(DoProcessUseBrowser(request));
-                    
+                    State.LastWorkingEndTime = DateTime.Now;
                 }
-                else if(request.Header == SocketRequestHeader.NoUserFormSpider)
+                else if (request.Header == SocketRequestHeader.NoUserFormSpider)
                 {
                     AsyncSend(DoProcessNoUseBrowser(request));
+                }
+                else if(request.Header == SocketRequestHeader.Heartbeat)
+                {
+                    AsyncSend(DoHeartbeat());
+                }else if(request.Header == SocketRequestHeader.Command)
+                {
+                    AsyncSend(DoCommand(request.Context));
                 }
             }
             catch (Exception ex)
@@ -285,8 +238,8 @@ namespace CobWeb.AProcess
                 ////设置并执行相应操作，核心方法
                 //SetActionType(request);
                 //得到处理程序,若有异常直接抛出
-                _process = ProcessFactory.GetProcessByMethod(ProcessControl.FormBrowser, request);
-                if (_process==null)
+                _process = ProcessFactory.GetProcessByMethod(FormBrowser, request);
+                if (_process == null)
                 {
                     //todo
                     return null;
@@ -324,12 +277,16 @@ namespace CobWeb.AProcess
                 resultModel.ErrMsg = ex.Message;
                 resultModel.StateCode = SocketResponseCode.A_UnknownException;
             }
+            finally
+            {
+                _process.End();
+            }
             return resultModel;
         }
         SocketResponseModel DoProcessNoUseBrowser(SocketRequestModel request)
         {
-            var process = ProcessFactory.GetProcessByMethod(request);
-            if (process==null)
+            var process = ProcessFactory.GetProcessByMethod2(request);
+            if (process == null)
             {
                 //todo
                 return null;
@@ -337,27 +294,138 @@ namespace CobWeb.AProcess
             return new SocketResponseModel()
             {
                 StateCode = 0,
-                Result = process.Excute(request.Param)
+                Result = process.Excute(request.Context)
             };
+        }
+        SocketResponseModel DoHeartbeat()
+        {
+            State.IsWorking = FormBrowser.IsWorking();
+            return new SocketResponseModel()
+            {
+                StateCode = 0,
+                Result = State.SerializeObject()
+            };            
+        }
+        SocketResponseModel DoCommand(string param)
+        {
+            var resultModel = new SocketResponseModel();
+            try
+            {
+               var par = param.DeserializeObject<CommandModel>();
+                if (par.Command =="shutdown")
+                {
+                    //Process.GetCurrentProcess.
+                    Process.GetCurrentProcess().Close();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return resultModel;
         }
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-        string Excute(string dataParam) 
+        /// <summary>
+        /// 中断请求的监视
+        /// </summary>
+        bool MonitorStopProcess(string guidkey)
         {
-         
-          
+            if (MemoryCacheHelper.CacheIsHave(guidkey))
+            {
+                MemoryCacheHelper.RemoveCache(guidkey);
+                return true;
+            }
+            else
+                return false;
+        }
+        public void ExcuteRecord(string txt)
+        {
+            FormBrowser.ExcuteRecord(txt);
+        }
+
+        #region 执行
+        /// <summary>
+        /// 处理程序,每次须重新创建
+        /// </summary>
+        IProcessBase _process = null;
+        /// <summary>
+        /// 设置操作类型,也即设置处理事件
+        /// </summary>
+        public void SetActionType(SocketRequestModel paramModel)
+        {
+            //赋值为null
+            // this._result = null;
+            //得到处理程序,若有异常直接抛出
+            _process = ProcessFactory.GetProcessByMethod(ProcessControl.FormBrowser, paramModel);
+            FormBrowser.SetWorking(_process);
+            //开始执行
+            _process?.Begin();
+        }
+        #endregion
+
+
+
+
+
+
+        /* obs
+        static Socket _serverSocket;
+        public void StartListen()
+        {
+            IPEndPoint ipe;
+            _serverSocket = SocketBasic.GetSocket(out ipe, State.Port);
+            _serverSocket.Bind(ipe);
+            _serverSocket.Listen(10);
+            var text = string.Format("建立调用监听完成! {0} 端口:{1}", State.Id, State.Port);
+            ExcuteRecord(text);
+            ExcuteRecord("*******************************************************");
+            ExcuteRecord("注:一个进程同时只会执行一个需要窗口的接口!");
+            ExcuteRecord("*******************************************************");
+            Task.Run(() =>
+            {
+                Thread.CurrentThread.Name = "socketBase";
+                while (true)
+                {
+                    try
+                    {
+                        Socket cSocket = _serverSocket.Accept();
+                        Task.Factory.StartNew((c) =>
+                        {
+                            Thread.CurrentThread.Name = "socketListen";
+                            var socket = c as Socket;
+                            try
+                            {
+                                var recvStr = SocketBasic.Receive(socket, 3);
+                                Thread.CurrentThread.SetThreadName("RequestInstance_Thread");
+                                ExcuteRecord("接收到的信息");
+                                ExcuteRecord(recvStr);
+                                var result = Excute(recvStr);
+                                SocketBasic.Send(socket, result, 3);
+                            }
+                            catch (Exception ex)
+                            {
+                            }
+                            finally
+                            {
+                                if (socket != null)
+                                    socket.Dispose();
+                            }
+                        }, cSocket);
+                    }
+                    catch (Exception ex)
+                    {
+                        Process.GetCurrentProcess().Kill();
+                    }
+                }
+            });
+        }
+        string Excute(string dataParam)
+        {
+
+
             try
             {
                 var paramModel = JsonConvert.DeserializeObject<SocketRequestModel>(dataParam);
@@ -365,10 +433,10 @@ namespace CobWeb.AProcess
                 //是否使用窗口
                 if (paramModel.IsUseForm)
                 {
-                    if (paramModel.KernelType != null && paramModel.KernelType != KernelType)
+                    if (paramModel.KernelType != null && paramModel.KernelType != State.BrowserType)
                     {
                         return JsonConvert.SerializeObject(new SocketResponseModel()
-                        {                            
+                        {
                             StateCode = 0,
                             Result = SocketResponseCode.A_KernelError.ToString()
                         });
@@ -383,7 +451,7 @@ namespace CobWeb.AProcess
                                 StateCode = 0,
                                 Result = SocketResponseCode.A_ChangeProcess.ToString()
                             });
-                        }                       
+                        }
                     }
                     return ProcessAndResult(dataParam, paramModel);
                 }
@@ -434,7 +502,7 @@ namespace CobWeb.AProcess
                             Thread.Sleep(100);
                         }
                         else
-                        {                            
+                        {
                             resultModel.StateCode = 0;
                             break;
                         }
@@ -451,7 +519,7 @@ namespace CobWeb.AProcess
             catch (Exception ex)//解析参数发生错误
             {
                 //如果Start发生异常
-                FormBrowser.SetWorkingStop();                
+                FormBrowser.SetWorkingStop();
                 resultModel.Result = ex.Message;
                 //_log.FatalFormat("{0}\r\nStart()\r\n{1}", paramModel.Method, ex.Message);
             }
@@ -475,42 +543,6 @@ namespace CobWeb.AProcess
             }
             return JsonConvert.SerializeObject(resultModel);
         }
-        #region 执行
-        /// <summary>
-        /// 处理程序,每次须重新创建
-        /// </summary>
-        IProcessBase _process = null;
-        /// <summary>
-        /// 设置操作类型,也即设置处理事件
-        /// </summary>
-        public void SetActionType(SocketRequestModel paramModel)
-        {
-            //赋值为null
-           // this._result = null;
-            //得到处理程序,若有异常直接抛出
-            _process = ProcessFactory.GetProcessByMethod(ProcessControl.FormBrowser, paramModel);
-            FormBrowser.SetWorking(_process);
-            //开始执行
-            _process?.Begin();
-        }
-        #endregion
-        /// <summary>
-        /// 中断请求的监视
-        /// </summary>
-        bool MonitorStopProcess(string guidkey)
-        {
-            if (MemoryCacheHelper.CacheIsHave(guidkey))
-            {
-                MemoryCacheHelper.RemoveCache(guidkey);
-                return true;
-            }
-            else
-                return false;
-        }
-        public void ExcuteRecord(string txt)
-        {
-            FormBrowser.ExcuteRecord(txt);            
-        }
-        //监听
+        */  
     }
 }

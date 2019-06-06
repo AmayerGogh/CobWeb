@@ -42,6 +42,7 @@ namespace CobWeb.Core
         /// </summary>
         public virtual void End()
         {
+            //是否有预加载
             if (IsWorkGoOn)
             {
                 processBase.End(IsWorkGoOn);
