@@ -21,16 +21,16 @@ namespace CobWeb.Core
         }
         public virtual string Excute(object param)
         {
-            RequestData = JsonConvert.DeserializeObject<SocketRequestModel>(param as string);
-            if (RequestData.Param is string)
-            {
-                //RecordLog("请求串ProcessBaseNotUseBrowser:" + RequestData.Param);
-            }
-            else
-            {
-                string temp = JsonConvert.SerializeObject(RequestData.Param);
-                //RecordLog("请求串ProcessBaseNotUseBrowser:" + temp);
-            }
+            //RequestData = JsonConvert.DeserializeObject<SocketRequestModel>(param as string);
+            //if (RequestData.Param is string)
+            //{
+            //    //RecordLog("请求串ProcessBaseNotUseBrowser:" + RequestData.Param);
+            //}
+            //else
+            //{
+            //    string temp = JsonConvert.SerializeObject(RequestData.Param);
+            //    //RecordLog("请求串ProcessBaseNotUseBrowser:" + temp);
+            //}
             return string.Empty;
         }
         private bool IsQuit()

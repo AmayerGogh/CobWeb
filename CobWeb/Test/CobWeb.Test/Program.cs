@@ -6,6 +6,7 @@ using CobWeb.Util;
 using CobWeb.Util.FlashLog;
 using CobWeb.Util.HttpHelper;
 using CobWeb.Util.ThredHelper;
+using Ithome;
 using LiteDB;
 using log4net;
 using System;
@@ -88,11 +89,13 @@ namespace CobWeb.Test
 
 
             //LogTest.Test();
-            DbTest.Test();
+            //DbTest.Test();
+            //SpiderTest.Test();
+            NoUseFormTest.Test();
             Console.ReadKey();
         }
     }
-   
+
     public static class Test
     {
         /// <summary>
@@ -147,7 +150,7 @@ namespace CobWeb.Test
             var b_header = Encoding.UTF8.GetBytes(header);
 
             var info = b_t.Concat(b_header).ToArray().Concat(b_msg).ToArray();
-            
+
             Console.WriteLine(Encoding.UTF8.GetString(info));
 
             var recive = info.ToArray();
@@ -165,40 +168,53 @@ namespace CobWeb.Test
             }
             else if (recive.Length < length)//应该不会出现了
             {
-                
+
             }
 
-                     
-          
+
+
             var str_header = Encoding.UTF8.GetString(new byte[] { array[4], array[5], array[6], array[7] });
             Console.WriteLine(str_header);
             var str_msg = Encoding.UTF8.GetString(array.Skip(8).Take(length).ToArray());
             Console.WriteLine(str_msg);
         }
 
-       
+
     }
     /// <summary>
     /// 爬虫测试
     /// </summary>
     public static class SpiderTest
     {
-        public static void Test1()
+        public static void Test()
         {
-            //CityCrawler();
             Ithome();
-           
+            //Ithome();
+
         }
 
         /// <summary>
         /// 抓取城市列表
         /// </summary>
-        public static void CityCrawler()
+        public static void Ithome()
         {
 
-            var cityUrl = "http://hotels.ctrip.com/citylist";//定义爬虫入口URL
+            var cityUrl = "https://www.ithome.com";//定义爬虫入口URL
             var cityList = new List<City>();//定义泛型列表存放城市名称及对应的酒店URL
             var cityCrawler = new Spider();//调用刚才写的爬虫程序
+            var heads = new Dictionary<HttpRequestHeader, string>() { };
+            heads.Add(HttpRequestHeader.UserAgent, "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8");
+            heads.Add(HttpRequestHeader.Accept, "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
+            heads.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate");
+            heads.Add(HttpRequestHeader.AcceptLanguage, "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2");
+            heads.Add(HttpRequestHeader.ContentType, "text/html; charset=utf-8");
+            heads.Add(HttpRequestHeader.Host, "www.ithome.com");          
+            var param = new SpiderRequestParam()
+            {
+                Uri = new Uri(cityUrl),
+                Heads = heads,
+                Method ="GET",
+            };
             cityCrawler.OnStart += (s, e) =>
             {
                 Console.WriteLine("爬虫开始抓取地址：" + e.Uri.ToString());
@@ -210,26 +226,8 @@ namespace CobWeb.Test
             cityCrawler.OnCompleted += (s, e) =>
             {
                 Console.WriteLine(e.PageSource);
-                //使用正则表达式清洗网页源代码中的数据
-                var links = Regex.Matches(e.PageSource, @"<a[^>]+href=""*(?<href>/hotel/[^>\s]+)""\s*[^>]*>(?<text>(?!.*img).*?)</a>", RegexOptions.IgnoreCase);
-                foreach (Match match in links)
-                {
-                    var city = new City
-                    {
-                        CityName = match.Groups["text"].Value,
-                        Uri = new Uri("http://hotels.ctrip.com" + match.Groups["href"].Value
-                    )
-                    };
-                    if (!cityList.Contains(city)) cityList.Add(city);//将数据加入到泛型列表
-                    Console.WriteLine(city.CityName + "|" + city.Uri);//将城市名称及URL显示到控制台
-                }
-                Console.WriteLine("===============================================");
-                Console.WriteLine("爬虫抓取任务完成！合计 " + links.Count + " 个城市。");
-                Console.WriteLine("耗时：" + e.Milliseconds + "毫秒");
-                Console.WriteLine("线程：" + e.ThreadId);
-                Console.WriteLine("地址：" + e.Uri.ToString());
             };
-            cityCrawler.StartAsync(new Uri(cityUrl)).Wait();//没被封锁就别使用代理：60.221.50.118:8090
+            cityCrawler.StartAsync(param).Wait();//没被封锁就别使用代理：60.221.50.118:8090
         }
 
         /// <summary>
@@ -270,52 +268,11 @@ namespace CobWeb.Test
                 Console.WriteLine("线程：" + e.ThreadId);
                 Console.WriteLine("地址：" + e.Uri.ToString());
             };
-            hotelCrawler.StartAsync(new Uri(hotelUrl)).Wait();//没被封锁就别使用代理：60.221.50.118:8090
+            //hotelCrawler.StartAsync(new Uri(hotelUrl)).Wait();//没被封锁就别使用代理：60.221.50.118:8090
         }
 
-        /// <summary>
-        /// 抓取酒店列表
-        /// </summary>
-        public static void Ithome()
-        {
-            var hotelUrl = "http://localhost:30000/";
-            var hotelList = new List<Hotel>();
-            var hotelCrawler = new Spider();
-            hotelCrawler.OnStart += (s, e) =>
-            {
-                Console.WriteLine("爬虫开始抓取地址：" + e.Uri.ToString());
-            };
-            hotelCrawler.OnError += (s, e) =>
-            {
-                Console.WriteLine("爬虫抓取出现错误：" + e.Uri.ToString() + "，异常消息：" + e.Exception.Message);
-            };
-            hotelCrawler.OnCompleted += (s, e) =>
-            {
-                for (int i = 0; i < e.PageSource.Length; i++)
-                {
-                    var c = e.PageSource[i].ToString();
-                    if (c == @"\")
-                    {
-                        i += 3;
-                        Console.WriteLine();
-                        continue;
-                    }
-                    Console.Write(e.PageSource[i].ToString());
-                }
-                //foreach (var item in e.PageSource)
-                //{
-                //    if (item)
-                //    {
+     
 
-                //    }
-                //    Console.Write(item);
-                //}
-                //Console.WriteLine(e.PageSource);
-              
-            };
-            hotelCrawler.StartAsync(new Uri(hotelUrl)).Wait();//没被封锁就别使用代理：60.221.50.118:8090
-        }
-      
         public class City
         {
             public string CityName { get; set; }
@@ -341,7 +298,7 @@ namespace CobWeb.Test
         {
             using (var db = new LiteDatabase(@"test.db"))
             {
-               
+
                 // Get customer collection
                 var col = db.GetCollection<Customer>("customers");
                 var results2 = col.Find(x => x.Age > 20);
@@ -352,12 +309,12 @@ namespace CobWeb.Test
                     Phones = new string[] { "8000-0000", "9000-0000" },
                     Age = 39,
                     IsActive = true,
-                    Chr =new Customer()
+                    Chr = new Customer()
                     {
-                        Name="Test"
+                        Name = "Test"
                     }
                 };
-                
+
                 // Create unique index in Name field
                 col.EnsureIndex(x => x.Name, true);
 
@@ -368,7 +325,7 @@ namespace CobWeb.Test
                 customer.Name = "Joana Doe";
 
                 col.Update(customer);
-                
+
                 // Use LINQ to query documents (with no index)
                 var results = col.Find(x => x.Age > 20);
             }
@@ -381,6 +338,16 @@ namespace CobWeb.Test
             public string[] Phones { get; set; }
             public bool IsActive { get; set; }
             public Customer Chr { get; set; }
+        }
+    }
+
+    public class NoUseFormTest
+    {
+        public static void Test()
+        {
+            IthomeSpider ithomeSpider = new IthomeSpider(null);
+            var res =ithomeSpider.Excute(null);
+            Console.WriteLine("完工2");
         }
     }
 }

@@ -33,134 +33,133 @@ namespace CobWeb.Util.HttpHelper
         {
             return await Task.Run(() =>
             {
-                var pageSource = string.Empty;
-                try
+                return Start(param);               
+            });
+        }
+
+        public string Start(SpiderRequestParam param)
+        {
+            var pageSource = string.Empty;
+            try
+            {
+                var request = (HttpWebRequest)WebRequest.Create(param.Uri);
+                if (param.CookieContainer.Count == 0 && !string.IsNullOrWhiteSpace(param.Cookies))
                 {
-                    var request = (HttpWebRequest)WebRequest.Create(param.Uri);
-                    if (param.CookieContainer.Count == 0)
+                    request.CookieContainer = CookieHelper.CookieStr2CookieContainer(param.Cookies, param.Uri.ToString());
+                }
+                else
+                {
+                    request.CookieContainer = param.CookieContainer;
+                }
+                if (this.OnStart != null) this.OnStart(this, new OnStartEventArgs(param.Uri));
+                var watch = new Stopwatch();
+                watch.Start();
+                request.ServicePoint.Expect100Continue = false;//加快载入速度
+                request.ServicePoint.UseNagleAlgorithm = false;//禁止Nagle算法加快载入速度
+                request.AllowWriteStreamBuffering = false;//禁止缓冲加快载入速度      
+                request.AllowAutoRedirect = param.AllowAutoRedirect;//禁止自动跳转                   
+                request.ProtocolVersion = HttpVersion.Version11;
+                request.ServicePoint.ConnectionLimit = int.MaxValue;//定义最大连接数
+                request.KeepAlive = true;
+
+                request.Timeout = param.Timeout;//定义请求超时时间为5秒 
+
+                if (param.Heads != null)
+                {
+                    foreach (var item in param.Heads)
                     {
-                        request.CookieContainer = CookieHelper.CookieStr2CookieContainer(param.Cookies, param.Uri.ToString());
+                        switch (item.Key)
+                        {
+                            case HttpRequestHeader.ContentType:
+                                break;
+                            case HttpRequestHeader.Connection: //todo
+                                request.KeepAlive = true;
+                                break;
+                            case HttpRequestHeader.Host:
+                                request.Host = item.Value;
+                                break;
+                            case HttpRequestHeader.Accept:
+                                request.Accept = item.Value;
+                                break;
+                            default:
+                                request.Headers[item.Key.ToString()] = item.Value;
+                                break;
+                        }
+                    }
+                }
+
+                if (param.Proxy != null) request.Proxy = new WebProxy(param.Proxy);
+
+                //byte[] data = Encoding.Default.GetBytes("{\"UniqueKey\":\"" + "temp" + "\",\"CodeType\":\"5004\",\"Base64\":\"" + "" + "\"}");
+                //request.ContentType = "application/json";
+                //request.ContentLength = data.Length;
+
+                using (var response = (HttpWebResponse)request.GetResponse())
+                {
+                    string cookie_str = response.Headers.Get("Set-Cookie");
+                    string cookie2 = response.Headers.Get("SetCookie");
+
+                    Encoding encoding = null;
+                    if (string.IsNullOrEmpty(response.ContentType))
+                    {
+                        encoding = Encoding.Default;
+                    }
+                    else if (response.ContentType.Contains("utf-8"))
+                    {
+                        encoding = Encoding.UTF8;
                     }
                     else
                     {
-                        request.CookieContainer = param.CookieContainer;
-                    }
-                    if (this.OnStart != null) this.OnStart(this, new OnStartEventArgs(param.Uri));
-                    var watch = new Stopwatch();
-                    watch.Start();
-                    request.ServicePoint.Expect100Continue = false;//加快载入速度
-                    request.ServicePoint.UseNagleAlgorithm = false;//禁止Nagle算法加快载入速度
-                    request.AllowWriteStreamBuffering = false;//禁止缓冲加快载入速度      
-                    request.AllowAutoRedirect = false;//禁止自动跳转                   
-                    request.ProtocolVersion = HttpVersion.Version11;
-                    request.ServicePoint.ConnectionLimit = int.MaxValue;//定义最大连接数
-                    request.KeepAlive = true;
-
-                    request.Timeout = param.Timeout;//定义请求超时时间为5秒 
-
-                    if (param.Heads != null)
-                    {
-                        foreach (var item in param.Heads)
-                        {
-                            switch (item.Key)
-                            {
-                                case HttpRequestHeader.ContentType:
-                                    break;
-                                case HttpRequestHeader.Connection: //todo
-                                    request.KeepAlive = true;
-                                    break;
-                                case HttpRequestHeader.Host:
-                                    request.Host = item.Value;
-                                    break;
-                                default:
-                                    request.Headers[item.Key.ToString()] = item.Value;
-                                    break;
-                            }
-                        }
+                        encoding = Encoding.Default;
                     }
 
 
-
-                    // //HttpRequestHeader.ho
-                    // //request.Host = "localhost";
-                    // //SetHeaderValue(request.Headers, "Host", "ithome.com"); //host不行
-                    // request.Headers["UserAgent"] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/617.0";
-                    // //SetHeaderValue(request.Headers, "UserAgent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/617.0");
-                    // //request.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:67.0) Gecko/20100101 Firefox/67.0";
-                    // SetHeaderValue(request.Headers, "Headers", "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8");
-                    // //request.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
-                    // SetHeaderValue(request.Headers, "AcceptEncoding", "gzip, deflate");
-                    // //request.Headers.Add(HttpRequestHeader.AcceptEncoding, "gzip, deflate, br");
-                    // SetHeaderValue(request.Headers, "AcceptLanguage", "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2");
-                    // //request.Headers.Add(HttpRequestHeader.AcceptLanguage, "zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2");
-                    // SetHeaderValue(request.Headers, "ContentType", "text/html; charset=utf-8");
-                    // //request.ContentType = "text/html; charset=utf-8";//定义文档类型及编码
-                    // //SetHeaderValue(request.Headers, "Method", "POST");
-                    // SetHeaderValue(request.Headers, "TEST", "POST");                
-                    // request.Method = "GET";//定义请求方式为GET
-                    //// SetHeaderValue(request.Headers, "Connection", "Keep-Alive"); //不行
-
-
-
-
-                    if (param.Proxy != null) request.Proxy = new WebProxy(param.Proxy);//设置代理服务器IP，伪装请求地址
-
-                    //byte[] data = Encoding.Default.GetBytes("{\"UniqueKey\":\"" + "temp" + "\",\"CodeType\":\"5004\",\"Base64\":\"" + "" + "\"}");
-                    //request.ContentType = "application/json";
-                    //request.ContentLength = data.Length;
-
-                    using (var response = (HttpWebResponse)request.GetResponse())
+                    Console.WriteLine(cookie_str);
+                    //foreach (Cookie cookie in response.Cookies)
+                    //{
+                    //    this.CookiesContainer.Add(cookie);//将Cookie加入容器，保存登录状态
+                    //}
+                    if (response.ContentEncoding.ToLower().Contains("gzip"))//解压
                     {
-                        string cookie_str = response.Headers.Get("Set-Cookie");
-                        Console.WriteLine(cookie_str);
-                        //foreach (Cookie cookie in response.Cookies)
-                        //{
-                        //    this.CookiesContainer.Add(cookie);//将Cookie加入容器，保存登录状态
-                        //}
-                        if (response.ContentEncoding.ToLower().Contains("gzip"))//解压
+                        using (GZipStream stream = new GZipStream(response.GetResponseStream(), CompressionMode.Decompress))
                         {
-                            using (GZipStream stream = new GZipStream(response.GetResponseStream(), CompressionMode.Decompress))
-                            {
-                                using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
-                                {
-                                    pageSource = reader.ReadToEnd();
-                                }
-                            }
-                        }
-                        else if (response.ContentEncoding.ToLower().Contains("deflate"))//解压
-                        {
-                            using (DeflateStream stream = new DeflateStream(response.GetResponseStream(), CompressionMode.Decompress))
-                            {
-                                using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
-                                {
-                                    pageSource = reader.ReadToEnd();
-                                }
-
-                            }
-                        }
-                        else
-                        {
-                            using (StreamReader reader = new StreamReader(response.GetResponseStream(), Encoding.UTF8))
+                            using (StreamReader reader = new StreamReader(stream, encoding))
                             {
                                 pageSource = reader.ReadToEnd();
                             }
                         }
                     }
-                    request.Abort();
-                    watch.Stop();
-                    var threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;//获取当前任务线程ID
-                    var milliseconds = watch.ElapsedMilliseconds;//获取请求执行时间
-                    if (this.OnCompleted != null) this.OnCompleted(this, new OnCompletedEventArgs(param.Uri, threadId, milliseconds, pageSource));
+                    else if (response.ContentEncoding.ToLower().Contains("deflate"))//解压
+                    {
+                        using (DeflateStream stream = new DeflateStream(response.GetResponseStream(), CompressionMode.Decompress))
+                        {
+                            using (StreamReader reader = new StreamReader(stream, encoding))
+                            {
+                                pageSource = reader.ReadToEnd();
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        using (StreamReader reader = new StreamReader(response.GetResponseStream(), encoding))
+                        {
+                            pageSource = reader.ReadToEnd();
+                        }
+                    }
                 }
-                catch (Exception ex)
-                {
-                    if (this.OnError != null) this.OnError(this, new OnErrorEventArgs(param.Uri, ex));
-                }
-                return pageSource;
-            });
+                request.Abort();
+                watch.Stop();
+                var threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;//获取当前任务线程ID
+                var milliseconds = watch.ElapsedMilliseconds;//获取请求执行时间
+                if (this.OnCompleted != null) this.OnCompleted(this, new OnCompletedEventArgs(param.Uri, threadId, milliseconds, pageSource));
+            }
+            catch (Exception ex)
+            {
+                if (this.OnError != null) this.OnError(this, new OnErrorEventArgs(param.Uri, ex));
+            }
+            return pageSource;
         }
-
-
 
 
         public static void SetHeaderValue(WebHeaderCollection header, string name, string value)
@@ -223,9 +222,10 @@ namespace CobWeb.Util.HttpHelper
         public Dictionary<HttpRequestHeader, string> Heads { get; set; }
         public Uri Uri { get; set; }
         public string Proxy { get; set; }
-
+        public string Method { get; set; }
         public string Cookies { get; set; }
         public CookieContainer CookieContainer { get; set; } = new CookieContainer();
         public int Timeout { get; set; } = 5000;
+        public bool AllowAutoRedirect { get; set; }
     }
 }
