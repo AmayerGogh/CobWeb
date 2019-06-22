@@ -25,7 +25,9 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // webBrowser1
@@ -38,6 +40,10 @@
             this.webBrowser1.TabIndex = 0;
             this.webBrowser1.DocumentCompleted += new System.Windows.Forms.WebBrowserDocumentCompletedEventHandler(this.WebBrowser1_DocumentCompleted);
             // 
+            // timer1
+            // 
+            this.timer1.Tick += new System.EventHandler(this.Timer1_Tick);
+            // 
             // FormAdapter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -49,11 +55,13 @@
             this.Name = "FormAdapter";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "调用测试";
+            this.Load += new System.EventHandler(this.FormAdapter_Load);
             this.ResumeLayout(false);
 
         }
         #endregion
 
         private System.Windows.Forms.WebBrowser webBrowser1;
+        private System.Windows.Forms.Timer timer1;
     }
 }

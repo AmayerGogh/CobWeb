@@ -55,5 +55,10 @@ namespace CobWebServer
 
 
         }
+
+        private void FormAdapter_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 }

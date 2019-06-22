@@ -59,6 +59,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\Business\Cqa.91bihu\Cqa.91bihu.csproj">
+      <Project>{DF9E7897-4E56-4109-A698-CB20EBAF2DBA}</Project>
+      <Name>Cqa.91bihu</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Business\Ithome\Ithome.csproj">
       <Project>{3dd5db7e-b383-465c-878a-07e8b6fb688e}</Project>
       <Name>Ithome</Name>

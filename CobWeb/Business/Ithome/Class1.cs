@@ -39,7 +39,7 @@ namespace Ithome
                 {
                     Uri = new Uri(cityUrl),
                     Heads = heads,
-                    Method = "GET",
+                    Method = Spider.MethodType.Get,
                     AllowAutoRedirect = true
                 };
                 cityCrawler.OnStart += (s, e) =>
@@ -56,15 +56,15 @@ namespace Ithome
                    
                     res = e.PageSource;
 
-                    HtmlAgilityPack.HtmlDocument hd = new HtmlAgilityPack.HtmlDocument();
-                    hd.LoadHtml(res);
-                    var nodes = hd.DocumentNode.SelectNodes("//ul[@class='ulcl']//a[@target='_blank']");                  
-                    foreach (var item in nodes)
-                    {
-                        Jobs.Add(item.Attributes["href"].Value);
-                    }
+                    //HtmlAgilityPack.HtmlDocument hd = new HtmlAgilityPack.HtmlDocument();
+                    //hd.LoadHtml(res);
+                    //var nodes = hd.DocumentNode.SelectNodes("//ul[@class='ulcl']//a[@target='_blank']");                  
+                    //foreach (var item in nodes)
+                    //{
+                    //    Jobs.Add(item.Attributes["href"].Value);
+                    //}
                 };
-                cityCrawler.StartAsync(param1).Wait();
+                cityCrawler.PostAsync(param1).Wait();
                 Do2();
 
             }
@@ -107,38 +107,38 @@ namespace Ithome
                     {
                         Uri = new Uri(str as string),
                         Heads = heads,
-                        Method = "GET",
+                        Method = Spider.MethodType.Get,
                         AllowAutoRedirect = true
                     };
                     cityCrawler.OnCompleted += (s, e) =>
                     {
-                        HtmlAgilityPack.HtmlDocument hd = new HtmlAgilityPack.HtmlDocument();
-                        hd.LoadHtml(e.PageSource);
-                        var nodes = hd.DocumentNode.SelectNodes("//span[@id='editor_baidu']/strong").FirstOrDefault();
-                        if (nodes != null)
-                        {
+                        //HtmlAgilityPack.HtmlDocument hd = new HtmlAgilityPack.HtmlDocument();
+                        //hd.LoadHtml(e.PageSource);
+                        //var nodes = hd.DocumentNode.SelectNodes("//span[@id='editor_baidu']/strong").FirstOrDefault();
+                        //if (nodes != null)
+                        //{
 
 
-                            var ar = nodes.InnerText;
-                            Console.WriteLine(ar);
-                            lock (_obj)
-                            {
-                                if (dictionary.ContainsKey(ar))
-                                {
-                                    dictionary[ar] += 1;
-                                }
-                                else
-                                {
-                                    dictionary.Add(ar, 1);
-                                }
-                            }
-                        }
-                        else
-                        {
+                        //    var ar = nodes.InnerText;
+                        //    Console.WriteLine(ar);
+                        //    lock (_obj)
+                        //    {
+                        //        if (dictionary.ContainsKey(ar))
+                        //        {
+                        //            dictionary[ar] += 1;
+                        //        }
+                        //        else
+                        //        {
+                        //            dictionary.Add(ar, 1);
+                        //        }
+                        //    }
+                        //}
+                        //else
+                        //{
 
-                        }
+                        //}
                     };
-                    cityCrawler.Start(param1);
+                    cityCrawler.Get_Post(param1);
                 }, Jobs[i]);
            
             }

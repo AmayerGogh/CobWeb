@@ -6,6 +6,7 @@ using CobWeb.Util;
 using CobWeb.Util.FlashLog;
 using CobWeb.Util.HttpHelper;
 using CobWeb.Util.ThredHelper;
+using Cqa._91bihu;
 using Ithome;
 using LiteDB;
 using log4net;
@@ -83,7 +84,8 @@ namespace CobWeb.Test
     {
         static void Main(string[] args)
         {
-            CodeTimer.Initialize();
+            Test.Test4();
+            //CodeTimer.Initialize();
             //Load load = new Load();
             //load.Init();
 
@@ -180,6 +182,26 @@ namespace CobWeb.Test
         }
 
 
+
+        public static void Test4()
+        {
+            var b = new B();
+            b.Age = 10;
+            Test5(b);
+
+        }
+        static void Test5(A a)
+        {
+            var c = a.SerializeObject();
+        }
+        public class A
+        {
+            public string Name { get; set; }
+        }
+        public class B:A
+        {
+            public int Age { get; set; }
+        }
     }
     /// <summary>
     /// 爬虫测试
@@ -213,7 +235,7 @@ namespace CobWeb.Test
             {
                 Uri = new Uri(cityUrl),
                 Heads = heads,
-                Method ="GET",
+                Method = Spider.MethodType.Get,
             };
             cityCrawler.OnStart += (s, e) =>
             {
@@ -227,7 +249,7 @@ namespace CobWeb.Test
             {
                 Console.WriteLine(e.PageSource);
             };
-            cityCrawler.StartAsync(param).Wait();//没被封锁就别使用代理：60.221.50.118:8090
+            cityCrawler.PostAsync(param).Wait();//没被封锁就别使用代理：60.221.50.118:8090
         }
 
         /// <summary>
@@ -345,9 +367,19 @@ namespace CobWeb.Test
     {
         public static void Test()
         {
-            IthomeSpider ithomeSpider = new IthomeSpider(null);
-            var res =ithomeSpider.Excute(null);
+            Test2();
             Console.WriteLine("完工2");
+        }
+        public static void Test1()
+        {
+            IthomeSpider ithomeSpider = new IthomeSpider(null);
+            var res = ithomeSpider.Excute(null);
+          
+        }
+        public static void Test2()
+        {
+            CqaSpider cqaSpider = new CqaSpider(null);
+            var res = cqaSpider.Excute(null);
         }
     }
 }
