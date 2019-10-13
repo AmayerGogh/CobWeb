@@ -55,7 +55,7 @@ namespace Cqa._91bihu
 
                 var param1 = new SpiderRequestParam()
                 {
-                    Uri = new Uri(cityUrl),
+                    Url = new Uri(cityUrl),
                     GetParam = $"salesregions=&province=&city=&agentId=&agentName=&searchType=customer&source=平安&noCache=false&Source_SubType=-1&excludeAssignSpErr=false&time1_s={url} 00:00:00&time1_e={url} 23:59:59&time2_s=&time2_e=&time3_s=&time3_e=",
                     Heads = heads,
                     Method = Spider.MethodType.Get,
@@ -80,7 +80,7 @@ namespace Cqa._91bihu
                     }
 
                 };
-                cityCrawler.PostAsync(param1).Wait();
+                cityCrawler.SendAsync(param1).Wait();
                 //Do2();
 
             }

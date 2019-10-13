@@ -1,4 +1,5 @@
-﻿using CobWeb.Browser;
+﻿using CL;
+using CobWeb.Browser;
 using CobWeb.Core;
 using CobWeb.Core.Control;
 using CobWeb.Core.Model;
@@ -84,7 +85,7 @@ namespace CobWeb.Test
     {
         static void Main(string[] args)
         {
-            Test.Test4();
+           // Test.Test4();
             //CodeTimer.Initialize();
             //Load load = new Load();
             //load.Init();
@@ -233,7 +234,7 @@ namespace CobWeb.Test
             heads.Add(HttpRequestHeader.Host, "www.ithome.com");          
             var param = new SpiderRequestParam()
             {
-                Uri = new Uri(cityUrl),
+                Url = new Uri(cityUrl),
                 Heads = heads,
                 Method = Spider.MethodType.Get,
             };
@@ -249,7 +250,7 @@ namespace CobWeb.Test
             {
                 Console.WriteLine(e.PageSource);
             };
-            cityCrawler.PostAsync(param).Wait();//没被封锁就别使用代理：60.221.50.118:8090
+            cityCrawler.SendAsync(param).Wait();//没被封锁就别使用代理：60.221.50.118:8090
         }
 
         /// <summary>
@@ -367,8 +368,8 @@ namespace CobWeb.Test
     {
         public static void Test()
         {
-            Test2();
-            Console.WriteLine("完工2");
+            Test3();
+            Console.WriteLine("完工3");
         }
         public static void Test1()
         {
@@ -380,6 +381,12 @@ namespace CobWeb.Test
         {
             CqaSpider cqaSpider = new CqaSpider(null);
             var res = cqaSpider.Excute(null);
+        }
+
+        public static void Test3()
+        {
+            CL_Spider cL_Spider = new CL_Spider(null);
+            var res = cL_Spider.Excute(null);
         }
     }
 }

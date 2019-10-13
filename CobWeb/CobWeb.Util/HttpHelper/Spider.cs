@@ -34,15 +34,15 @@ namespace CobWeb.Util.HttpHelper
         /// <param name="uri">爬虫URL地址</param>
         /// <param name="proxy">代理服务器</param>
         /// <returns>网页源代码</returns>
-        public async Task<string> PostAsync(SpiderRequestParam param)
+        public async Task<string> SendAsync(SpiderRequestParam param)
         {
             return await Task.Run(() =>
             {
-                return Get_Post(param);               
+                return Send(param);               
             });
         }
 
-        public string Get_Post(SpiderRequestParam param)
+        public string Send(SpiderRequestParam param)
         {
             var pageSource = string.Empty;
             try
@@ -50,22 +50,22 @@ namespace CobWeb.Util.HttpHelper
                 HttpWebRequest request = null;
                 if (param.Method== MethodType.Get)
                 {
-                    request = (HttpWebRequest)WebRequest.Create($"{param.Uri.ToString()}?{param.GetParam}");
+                    request = (HttpWebRequest)WebRequest.Create($"{param.Url.ToString()}?{param.GetParam}");
                 }
                 else
                 {
-                    request = (HttpWebRequest)WebRequest.Create(param.Uri);
+                    request = (HttpWebRequest)WebRequest.Create(param.Url);
                 }
                
                 if (param.CookieContainer.Count == 0 && !string.IsNullOrWhiteSpace(param.Cookies))
                 {
-                    request.CookieContainer = CookieHelper.CookieStr2CookieContainer(param.Cookies, param.Uri.Host);
+                    request.CookieContainer = CookieHelper.CookieStr2CookieContainer(param.Cookies, param.Url.Host);
                 }
                 else
                 {
                     request.CookieContainer = param.CookieContainer;
                 }
-                if (this.OnStart != null) this.OnStart(this, new OnStartEventArgs(param.Uri));
+                if (this.OnStart != null) this.OnStart(this, new OnStartEventArgs(param.Url));
                 var watch = new Stopwatch();
                 watch.Start();
                 request.ServicePoint.Expect100Continue = false;//加快载入速度
@@ -79,13 +79,16 @@ namespace CobWeb.Util.HttpHelper
                 request.Method = param.Method.ToString();
                 //request.SendChunked =true;
                 if (param.Proxy != null) request.Proxy = new WebProxy(param.Proxy);
+                //fiddler
+                //request.Proxy = new WebProxy("http://127.0.0.1:8888", true);
                 if (param.Heads != null)
                 {
                     foreach (var item in param.Heads)
                     {
                         switch (item.Key)
                         {
-                            case HttpRequestHeader.ContentType://todo                                
+                            case HttpRequestHeader.ContentType:
+                                request.ContentType = item.Value;
                                 break;
                             case HttpRequestHeader.Connection: //todo
                                 request.KeepAlive = true;
@@ -99,11 +102,24 @@ namespace CobWeb.Util.HttpHelper
                             case HttpRequestHeader.Referer:
                                 request.Referer = item.Value;
                                 break;
+                            case HttpRequestHeader.UserAgent: //非常有必要
+                                request.UserAgent = item.Value;
+                                break;
                             default:
                                 request.Headers[item.Key.ToString()] = item.Value;
                                 break;
                         }
                     }
+                }
+
+                if (param.Url.Scheme =="https")
+                {
+                    ServicePointManager.ServerCertificateValidationCallback = new System.Net.Security.RemoteCertificateValidationCallback((sender,cen,chain,err)=> {
+                        return true;
+                    });
+                    request.ProtocolVersion = HttpVersion.Version10;
+                    
+                    ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
                 }
 
                 if (param.Method==MethodType.Post && param.PostData.IsNotNullOrEmpty())
@@ -115,7 +131,8 @@ namespace CobWeb.Util.HttpHelper
                     {
                         req.Write(buffer, 0, buffer.Length);
                     }
-                }
+                }             
+
                 using (var response = (HttpWebResponse)request.GetResponse())
                 {
                     string cookie_str = response.Headers.Get("Set-Cookie");
@@ -174,12 +191,12 @@ namespace CobWeb.Util.HttpHelper
                 watch.Stop();
                 var threadId = System.Threading.Thread.CurrentThread.ManagedThreadId;//获取当前任务线程ID
                 var milliseconds = watch.ElapsedMilliseconds;//获取请求执行时间
-                if (this.OnCompleted != null) this.OnCompleted(this, new OnCompletedEventArgs(param.Uri, threadId, milliseconds, pageSource));
+                if (this.OnCompleted != null) this.OnCompleted(this, new OnCompletedEventArgs(param.Url, threadId, milliseconds, pageSource));
             }
             catch (Exception ex)
             {
-                throw ex;
-               // if (this.OnError != null) this.OnError(this, new OnErrorEventArgs(param.Uri, ex));
+               // throw ex;
+                if (this.OnError != null) this.OnError(this, new OnErrorEventArgs(param.Url, ex));
             }
             return pageSource;
         }
@@ -243,7 +260,7 @@ namespace CobWeb.Util.HttpHelper
     public class SpiderRequestParam
     {
         public Dictionary<HttpRequestHeader, string> Heads { get; set; }
-        public Uri Uri { get; set; }
+        public Uri Url { get; set; }
         public string Proxy { get; set; }
         public Spider.MethodType Method { get; set; }
         public string Cookies { get; set; }

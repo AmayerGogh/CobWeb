@@ -37,7 +37,7 @@ namespace Ithome
 
                 var param1 = new SpiderRequestParam()
                 {
-                    Uri = new Uri(cityUrl),
+                    Url = new Uri(cityUrl),
                     Heads = heads,
                     Method = Spider.MethodType.Get,
                     AllowAutoRedirect = true
@@ -64,7 +64,7 @@ namespace Ithome
                     //    Jobs.Add(item.Attributes["href"].Value);
                     //}
                 };
-                cityCrawler.PostAsync(param1).Wait();
+                cityCrawler.SendAsync(param1).Wait();
                 Do2();
 
             }
@@ -105,7 +105,7 @@ namespace Ithome
 
                     var param1 = new SpiderRequestParam()
                     {
-                        Uri = new Uri(str as string),
+                        Url = new Uri(str as string),
                         Heads = heads,
                         Method = Spider.MethodType.Get,
                         AllowAutoRedirect = true
@@ -138,7 +138,7 @@ namespace Ithome
 
                         //}
                     };
-                    cityCrawler.Get_Post(param1);
+                    cityCrawler.Send(param1);
                 }, Jobs[i]);
            
             }
